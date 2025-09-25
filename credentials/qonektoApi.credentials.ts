@@ -5,13 +5,14 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class SupersonicGroupQonektoApi implements ICredentialType {
-	name = 'supersonicGroupQonektoApi';
+export class qonektoApi implements ICredentialType {
+	name = 'qonektoApi';
 
-	displayName = 'Supersonic Group Qonekto API';
+	displayName = 'Qonekto API';
 
 	// Link to your community node's README
-	documentationUrl = 'https://github.com/org/@supersonic-group/-qonekto?tab=readme-ov-file#credentials';
+	documentationUrl =
+		'https://github.com/supersonic-group/n8n-nodes-qonekto?tab=readme-ov-file#credentials';
 
 	properties: INodeProperties[] = [
 		{
@@ -21,6 +22,14 @@ export class SupersonicGroupQonektoApi implements ICredentialType {
 			typeOptions: { password: true },
 			required: true,
 			default: '',
+		},
+		{
+			displayName: 'Tenant',
+			name: 'tenant',
+			type: 'string',
+			required: true,
+			default: '',
+			validateType: 'string-alphanumeric',
 		},
 	];
 
@@ -35,8 +44,8 @@ export class SupersonicGroupQonektoApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://app.qonekto.de/api',
-			url: '/v1/user',
+			baseURL: 'https://app.qonekto.de/api/{{$credentials.tenant}}',
+			url: '/whoami',
 		},
 	};
 }
