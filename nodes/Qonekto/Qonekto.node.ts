@@ -19,7 +19,7 @@ export class Qonekto implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'qonektoApi', required: true }],
 		requestDefaults: {
-			baseURL: 'https://app.qonekto.de/api/{{$credentials.tenant}}',
+			baseURL: '=https://app.qonekto.de/api/{{$credentials.tenant}}',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
