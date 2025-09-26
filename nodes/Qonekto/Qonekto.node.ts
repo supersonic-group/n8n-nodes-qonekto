@@ -3,11 +3,12 @@ import doc from './openapi.json';
 import { N8NPropertiesBuilder, N8NPropertiesBuilderConfig } from '@devlikeapro/n8n-openapi-node';
 import QonektoOperationParser from './openapi/QonektoOperationsParser';
 import OpenApiDocConverter from './openapi/OpenApiDocConverter';
+import { OpenAPIV3 } from 'openapi-types';
 
 const config: N8NPropertiesBuilderConfig = {
 	operation: new QonektoOperationParser(),
 };
-const parser = new N8NPropertiesBuilder(OpenApiDocConverter(doc), config);
+const parser = new N8NPropertiesBuilder(OpenApiDocConverter(doc as OpenAPIV3.Document), config);
 const properties = parser.build();
 
 export class Qonekto implements INodeType {

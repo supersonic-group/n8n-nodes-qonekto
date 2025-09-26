@@ -10,10 +10,7 @@ export default class QonektoOperationParser extends DefaultOperationParser {
 	}
 
 	shouldSkip(operation: OpenAPIV3.OperationObject, context: OperationContext): boolean {
-		if (
-			operation.operationId === 'addArchiveintrag' ||
-			operation.operationId === 'triggerPipelineImportFromCRM'
-		) {
+		if (operation.operationId === 'addArchiveintrag') {
 			return true;
 		}
 
