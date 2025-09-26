@@ -18,7 +18,7 @@ export class Qonekto implements INodeType {
 		group: ['transform'],
 		description: 'Interact with the Qonekto API',
 
-		icon: { light: 'file:qonekto.svg', dark: 'file:qonekto.svg' },
+		icon: 'file:qonekto.svg',
 
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],

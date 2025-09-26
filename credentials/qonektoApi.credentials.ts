@@ -11,10 +11,7 @@ export class qonektoApi implements ICredentialType {
 
 	displayName = 'Qonekto API';
 
-	icon: Icon = {
-		light: 'file:qonekto.svg',
-		dark: 'file:qonekto.svg',
-	};
+	icon: Icon = 'file:qonekto.svg';
 
 	// Link to your community node's README
 	documentationUrl =
