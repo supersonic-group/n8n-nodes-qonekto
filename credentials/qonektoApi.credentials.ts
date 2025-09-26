@@ -1,5 +1,6 @@
 import type {
 	IAuthenticateGeneric,
+	Icon,
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
@@ -9,6 +10,11 @@ export class qonektoApi implements ICredentialType {
 	name = 'qonektoApi';
 
 	displayName = 'Qonekto API';
+
+	icon: Icon = {
+		light: 'file:qonekto.svg',
+		dark: 'file:qonekto.svg',
+	};
 
 	// Link to your community node's README
 	documentationUrl =

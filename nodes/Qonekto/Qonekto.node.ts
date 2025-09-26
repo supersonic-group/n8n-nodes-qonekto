@@ -18,7 +18,7 @@ export class Qonekto implements INodeType {
 		group: ['transform'],
 		description: 'Interact with the Qonekto API',
 
-		icon: { light: 'file:qonekto.svg', dark: 'file:qonekto.dark.svg' },
+		icon: { light: 'file:qonekto.svg', dark: 'file:qonekto.svg' },
 
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
@@ -28,7 +28,7 @@ export class Qonekto implements INodeType {
 		subtitle:
 			'={{$parameter["operation"] + ": /api/" + $credentials.tenant + "/" + $parameter["resource"]}}',
 		defaults: {
-			name: '={{"Qonekto (" + $credentials.tenant + ")"}}',
+			name: 'Qonekto',
 		},
 		requestDefaults: {
 			baseURL: '={{"https://app.qonekto.de/api/" + $credentials.tenant}}',
