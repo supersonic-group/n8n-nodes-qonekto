@@ -1,4 +1,4 @@
-import doc from './nodes/Qonekto/v20250926/openapi.json';
+import doc from './nodes/Qonekto/openapi.json';
 import OpenApiDocConverter from './nodes/Qonekto/openapi/OpenApiDocConverter';
 import { N8NPropertiesBuilder, N8NPropertiesBuilderConfig } from '@devlikeapro/n8n-openapi-node';
 import QonektoOperationParser from './nodes/Qonekto/openapi/QonektoOperationsParser';
