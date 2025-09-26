@@ -1,9 +1,9 @@
 {
-  "name": "@supersonic-group/n8n-nodes-qonekto",
+  "name": "n8n-nodes-qonekto",
   "version": "0.1.0",
-  "description": "n8n community node to work with the Example API",
+  "description": "n8n community node to work with the Qonekto API",
   "license": "MIT",
-  "homepage": "https://example.com",
+  "homepage": "https://qonekto.de",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/supersonic-group/n8n-nodes-qonekto/"
   },
   "scripts": {
     "build": "n8n-node build",

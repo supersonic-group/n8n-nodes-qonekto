@@ -1,5 +1,5 @@
 {
-	"node": "@supersonic-group/n8n-nodes-qonekto",
+	"node": "n8n-nodes-qonekto",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Development", "Developer Tools"],
