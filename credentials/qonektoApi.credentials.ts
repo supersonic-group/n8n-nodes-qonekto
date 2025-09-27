@@ -47,7 +47,8 @@ export class qonektoApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: '={{"https://app.qonekto.de/api/" + $credentials.tenant}}',
+			baseURL:
+				'={{($env.QONEKTO_BASE_URL || "https://app.qonekto.de/api/") + $credentials.tenant}}',
 			url: '/whoami',
 		},
 	};

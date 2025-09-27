@@ -23,7 +23,8 @@ export class Qonekto implements INodeType {
 			name: 'Qonekto',
 		},
 		requestDefaults: {
-			baseURL: '={{"https://app.qonekto.de/api/" + $credentials.tenant}}',
+			baseURL:
+				'={{($env.QONEKTO_BASE_URL || "https://app.qonekto.de/api/") + $credentials.tenant}}',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
