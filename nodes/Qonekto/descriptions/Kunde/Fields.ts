@@ -1,4 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from './Shared';
 
 export const ListKunden: INodeProperties[] = [
 	{
@@ -51,7 +52,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Benutzername',
 		name: 'mitteilung-benutzername',
 		description: 'Whether to send the customer the account username via email (if given)',
-		default: true,
+		default: false,
 		type: 'boolean',
 		routing: {
 			send: {
@@ -73,7 +74,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'mitteilung-passwort-link',
 		description:
 			'Whether to send the customer a link to reset their account password via email (if given)',
-		default: true,
+		default: false,
 		type: 'boolean',
 		routing: {
 			send: {
@@ -113,20 +114,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Vermittler ID',
-		name: 'vermittler_id',
-		type: 'string',
-		default: '',
-		description:
-			'Standard-Wert ist der Vermittler des Ameise Benutzers mit dem die API-Verbidung erstellt wurde. The <code>ameise_id</code> of an existing record in the ameise_vermittler table.',
-		routing: {
-			send: {
-				property: 'vermittler_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Vermittler ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -135,20 +123,8 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede ID',
-		name: 'anrede_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
+		...Shared['Anrede ID'],
 		required: true,
-		routing: {
-			send: {
-				property: 'anrede_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -288,20 +264,8 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land ID',
-		name: 'land_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
+		...Shared['Land ID'],
 		required: true,
-		routing: {
-			send: {
-				property: 'land_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -312,7 +276,7 @@ export const CreateKunde: INodeProperties[] = [
 	{
 		displayName: 'Geburtsdatum',
 		name: 'geburtsdatum',
-		type: 'string',
+		type: 'dateTime',
 		default: '',
 		description:
 			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
@@ -357,7 +321,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Per Du',
 		name: 'per_du',
 		type: 'boolean',
-		default: true,
+		default: false,
 		description: 'Whether to pass this to Ameise; currently not passed',
 		routing: {
 			send: {
@@ -397,20 +361,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform ID',
-		name: 'rechtsform_id',
-		type: 'string',
-		default: '',
-		description:
-			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table.',
-		routing: {
-			send: {
-				property: 'rechtsform_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Rechtsform ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -443,7 +394,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Verstorben',
 		name: 'verstorben',
 		type: 'boolean',
-		default: true,
+		default: false,
 		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {
@@ -507,19 +458,7 @@ export const CreateKunde: INodeProperties[] = [
 
 export const FilterKunden: INodeProperties[] = [
 	{
-		displayName: 'Vermittler ID',
-		name: 'vermittler_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_vermittler table',
-		routing: {
-			send: {
-				property: 'vermittler_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Vermittler ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -528,19 +467,7 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede ID',
-		name: 'anrede_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
-		routing: {
-			send: {
-				property: 'anrede_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Anrede ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -675,19 +602,7 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land ID',
-		name: 'land_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
-		routing: {
-			send: {
-				property: 'land_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Land ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -698,7 +613,7 @@ export const FilterKunden: INodeProperties[] = [
 	{
 		displayName: 'Geburtsdatum',
 		name: 'geburtsdatum',
-		type: 'string',
+		type: 'dateTime',
 		default: '',
 		description: 'Must be a valid date in the format <code>Y-m-d,d.m.Y</code>',
 		routing: {
@@ -779,20 +694,7 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform ID',
-		name: 'rechtsform_id',
-		type: 'string',
-		default: '',
-		description:
-			'The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table',
-		routing: {
-			send: {
-				property: 'rechtsform_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Rechtsform ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -993,20 +895,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Vermittler ID',
-		name: 'vermittler_id',
-		type: 'string',
-		default: '',
-		description:
-			'Standard-Wert ist der Vermittler des Ameise Benutzers mit dem die API-Verbidung erstellt wurde. The <code>ameise_id</code> of an existing record in the ameise_vermittler table.',
-		routing: {
-			send: {
-				property: 'vermittler_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Vermittler ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1015,19 +904,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede ID',
-		name: 'anrede_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
-		routing: {
-			send: {
-				property: 'anrede_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Anrede ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1165,19 +1042,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land ID',
-		name: 'land_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
-		routing: {
-			send: {
-				property: 'land_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Land ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1233,7 +1098,7 @@ export const UpsertKunde: INodeProperties[] = [
 		displayName: 'Per Du',
 		name: 'per_du',
 		type: 'boolean',
-		default: true,
+		default: false,
 		description: 'Whether to pass this to Ameise; currently not passed',
 		routing: {
 			send: {
@@ -1273,20 +1138,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform ID',
-		name: 'rechtsform_id',
-		type: 'string',
-		default: '',
-		description:
-			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table.',
-		routing: {
-			send: {
-				property: 'rechtsform_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Rechtsform ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1319,7 +1171,7 @@ export const UpsertKunde: INodeProperties[] = [
 		displayName: 'Verstorben',
 		name: 'verstorben',
 		type: 'boolean',
-		default: true,
+		default: false,
 		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {
@@ -1428,6 +1280,15 @@ export const UpsertKunde: INodeProperties[] = [
 
 export const ShowKunde: INodeProperties[] = [
 	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Show Kunde'],
+			},
+		},
+	},
+	{
 		displayName: 'With Kommunikationen',
 		name: 'with-kommunikationen',
 		description: 'Whether to load and return kommunikationen and default fields for the kunde',
@@ -1473,20 +1334,7 @@ export const ShowKunde: INodeProperties[] = [
 
 export const UpdateKunde: INodeProperties[] = [
 	{
-		displayName: 'Vermittler ID',
-		name: 'vermittler_id',
-		type: 'string',
-		default: '',
-		description:
-			'Standard-Wert ist der Vermittler des Ameise Benutzers mit dem die API-Verbidung erstellt wurde. The <code>ameise_id</code> of an existing record in the ameise_vermittler table.',
-		routing: {
-			send: {
-				property: 'vermittler_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Kunde Ameise ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1495,19 +1343,16 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede ID',
-		name: 'anrede_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
-		routing: {
-			send: {
-				property: 'anrede_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+		...Shared['Vermittler ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Update Kunde'],
 			},
 		},
+	},
+	{
+		...Shared['Anrede ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1645,19 +1490,7 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land ID',
-		name: 'land_id',
-		type: 'string',
-		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
-		routing: {
-			send: {
-				property: 'land_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Land ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1668,7 +1501,7 @@ export const UpdateKunde: INodeProperties[] = [
 	{
 		displayName: 'Geburtsdatum',
 		name: 'geburtsdatum',
-		type: 'string',
+		type: 'dateTime',
 		default: '',
 		description:
 			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
@@ -1753,20 +1586,7 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform ID',
-		name: 'rechtsform_id',
-		type: 'string',
-		default: '',
-		description:
-			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table.',
-		routing: {
-			send: {
-				property: 'rechtsform_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Rechtsform ID'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1799,7 +1619,7 @@ export const UpdateKunde: INodeProperties[] = [
 		displayName: 'Verstorben',
 		name: 'verstorben',
 		type: 'boolean',
-		default: true,
+		default: false,
 		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {

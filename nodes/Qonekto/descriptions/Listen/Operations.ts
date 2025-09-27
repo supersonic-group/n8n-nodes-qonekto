@@ -38,7 +38,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Kunden Detail Felder',
 				value: 'Kunden Detail Felder',
 				action: 'Kunden detail felder',
-				description: 'Kunden-Detail-Felder',
 				routing: {
 					request: {
 						method: 'GET',
