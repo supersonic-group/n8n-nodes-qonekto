@@ -50,7 +50,7 @@ export const CreateKunde: INodeProperties[] = [
 	{
 		displayName: 'Mitteilung Benutzername',
 		name: 'mitteilung-benutzername',
-		description: 'When set, will send customer the account username via email (if given)',
+		description: 'Whether to send the customer the account username via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -72,7 +72,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Passwort Link',
 		name: 'mitteilung-passwort-link',
 		description:
-			'When set, will send customer a link to reset his account password via email (if given)',
+			'Whether to send the customer a link to reset their account password via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -94,7 +94,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Erstinfo Unterbinden',
 		name: 'mitteilung-erstinfo-unterbinden',
 		description:
-			'When set, will **not** send customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given)',
+			'Whether to suppress sending the customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -358,7 +358,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to pass this to Ameise; currently not passed',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -444,7 +444,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -930,7 +930,7 @@ export const UpsertKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Benutzername',
 		name: 'mitteilung-benutzername',
 		description:
-			'Only if customer could not be found. When set, will send customer the account username via email (if given).',
+			'Whether to send the customer the account username via email (if given). Only applies if the customer could not be found.',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -952,7 +952,7 @@ export const UpsertKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Passwort Link',
 		name: 'mitteilung-passwort-link',
 		description:
-			'Only if customer could not be found. When set, will send customer a link to reset his account password via email (if given).',
+			'Whether to send the customer a link to reset their account password via email (if given). Only applies if the customer could not be found.',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -974,7 +974,7 @@ export const UpsertKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Erstinfo Unterbinden',
 		name: 'mitteilung-erstinfo-unterbinden',
 		description:
-			'Only if customer could not be found. When set, will **not** send customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given).',
+			'Whether to suppress sending the customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given). Only applies if the customer could not be found.',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -1234,7 +1234,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to pass this to Ameise; currently not passed',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -1320,7 +1320,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -1430,7 +1430,7 @@ export const ShowKunde: INodeProperties[] = [
 	{
 		displayName: 'With Kommunikationen',
 		name: 'with-kommunikationen',
-		description: 'Load and return kommunikationen and default fields for kunde',
+		description: 'Whether to load and return kommunikationen and default fields for the kunde',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -1451,7 +1451,7 @@ export const ShowKunde: INodeProperties[] = [
 	{
 		displayName: 'With Details',
 		name: 'with-details',
-		description: 'Load and return details for kunde',
+		description: 'Whether to load and return details for the kunde',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -1714,7 +1714,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: false,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to pass this to Ameise; currently not passed',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -1800,7 +1800,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben',
+		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
 		routing: {
 			send: {
 				property: 'verstorben',
