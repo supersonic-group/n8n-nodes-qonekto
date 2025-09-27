@@ -37,6 +37,7 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "*",
     "@devlikeapro/n8n-openapi-node": "^0.1.4",
     "@n8n/node-cli": "*",
     "eslint": "9.32.0",
