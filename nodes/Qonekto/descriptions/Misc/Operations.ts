@@ -15,7 +15,7 @@ export const Misc: INodeProperties[] = [
 			{
 				name: 'Who Am I',
 				value: 'Who Am I',
-				action: 'Who Am I?',
+				action: 'Who am i',
 				description: 'Who Am I?',
 				routing: {
 					request: {
@@ -25,7 +25,7 @@ export const Misc: INodeProperties[] = [
 				},
 			},
 		],
-		default: '',
+		default: 'Who Am I',
 	},
 ];
 

@@ -13,19 +13,6 @@ export const Panda: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Get All Customer Links',
-				value: 'Get All Customer Links',
-				action: 'Get all customer Links',
-				description:
-					'Retrieves all customer links created by the currently logged-in broker that have not been processed yet.',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/panda/customer-links',
-					},
-				},
-			},
-			{
 				name: 'Create A Customer Link',
 				value: 'Create A Customer Link',
 				action: 'Create a customer link',
@@ -35,6 +22,17 @@ export const Panda: INodeProperties[] = [
 					request: {
 						method: 'POST',
 						url: '=/panda/customer-links',
+					},
+				},
+			},
+			{
+				name: 'Create A Tender',
+				value: 'Create A Tender',
+				action: 'Create a tender',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/panda/tenders',
 					},
 				},
 			},
@@ -51,22 +49,22 @@ export const Panda: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Create A Tender',
-				value: 'Create A Tender',
-				action: 'Create a tender',
-				description: 'Create a tender',
+				name: 'Get All Customer Links',
+				value: 'Get All Customer Links',
+				action: 'Get all customer links',
+				description:
+					'Retrieves all customer links created by the currently logged-in broker that have not been processed yet',
 				routing: {
 					request: {
-						method: 'POST',
-						url: '=/panda/tenders',
+						method: 'GET',
+						url: '=/panda/customer-links',
 					},
 				},
 			},
 			{
 				name: 'Imports An Ameise Customer Into Panda',
 				value: 'Imports An Ameise Customer Into Panda',
-				action: 'Imports an Ameise customer into Panda',
-				description: 'Imports an Ameise customer into Panda',
+				action: 'Imports an ameise customer into panda',
 				routing: {
 					request: {
 						method: 'POST',
@@ -75,7 +73,7 @@ export const Panda: INodeProperties[] = [
 				},
 			},
 		],
-		default: '',
+		default: 'Get All Customer Links',
 	},
 ];
 

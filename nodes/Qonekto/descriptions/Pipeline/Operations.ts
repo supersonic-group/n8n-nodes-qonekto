@@ -15,8 +15,7 @@ export const Pipeline: INodeProperties[] = [
 			{
 				name: 'Trigger Pipeline Import From CRM',
 				value: 'Trigger Pipeline Import From CRM',
-				action: 'Trigger Pipeline Import From CRM',
-				description: 'Trigger Pipeline Import From CRM',
+				action: 'Trigger pipeline import from crm',
 				routing: {
 					request: {
 						method: 'GET',
@@ -25,7 +24,7 @@ export const Pipeline: INodeProperties[] = [
 				},
 			},
 		],
-		default: '',
+		default: 'Trigger Pipeline Import From CRM',
 	},
 ];
 

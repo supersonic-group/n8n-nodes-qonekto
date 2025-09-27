@@ -13,22 +13,9 @@ export const Kunde: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List Kunden',
-				value: 'List Kunden',
-				action: 'List Kunden',
-				description: 'List Kunden',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/kunde',
-					},
-				},
-			},
-			{
 				name: 'Create Kunde',
 				value: 'Create Kunde',
-				action: 'Create Kunde',
-				description: 'Create Kunde',
+				action: 'Create kunde',
 				routing: {
 					request: {
 						method: 'POST',
@@ -39,8 +26,7 @@ export const Kunde: INodeProperties[] = [
 			{
 				name: 'Filter Kunden',
 				value: 'Filter Kunden',
-				action: 'Filter Kunden',
-				description: 'Filter Kunden',
+				action: 'Filter kunden',
 				routing: {
 					request: {
 						method: 'POST',
@@ -49,22 +35,20 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Upsert Kunde',
-				value: 'Upsert Kunde',
-				action: 'Upsert Kunde',
-				description: 'Upsert Kunde',
+				name: 'List Kunden',
+				value: 'List Kunden',
+				action: 'List kunden',
 				routing: {
 					request: {
-						method: 'PUT',
-						url: '=/kunde/upsert',
+						method: 'GET',
+						url: '=/kunde',
 					},
 				},
 			},
 			{
 				name: 'Show Kunde',
 				value: 'Show Kunde',
-				action: 'Show Kunde',
-				description: 'Show Kunde',
+				action: 'Show kunde',
 				routing: {
 					request: {
 						method: 'GET',
@@ -75,8 +59,7 @@ export const Kunde: INodeProperties[] = [
 			{
 				name: 'Update Kunde',
 				value: 'Update Kunde',
-				action: 'Update Kunde',
-				description: 'Update Kunde',
+				action: 'Update kunde',
 				routing: {
 					request: {
 						method: 'PUT',
@@ -84,8 +67,19 @@ export const Kunde: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'Upsert Kunde',
+				value: 'Upsert Kunde',
+				action: 'Upsert kunde',
+				routing: {
+					request: {
+						method: 'PUT',
+						url: '=/kunde/upsert',
+					},
+				},
+			},
 		],
-		default: '',
+		default: 'List Kunden',
 	},
 ];
 

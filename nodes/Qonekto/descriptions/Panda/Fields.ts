@@ -26,12 +26,11 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Type',
 		name: 'type',
 		type: 'options',
 		default: 'basic_analysis',
-		description: '',
+		required: true,
 		options: [
 			{
 				name: 'Basic Analysis',
@@ -58,12 +57,11 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
-		displayName: 'Customer Id',
+		displayName: 'Customer ID',
 		name: 'customerId',
 		type: 'number',
 		default: 16,
-		description: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'customerId',
@@ -80,11 +78,11 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Tender Id',
+		displayName: 'Tender ID',
 		name: 'tenderId',
 		type: 'string',
 		default: '',
-		description: 'This field is required when <code>type</code> is <code>risk</code>.',
+		description: 'This field is required when <code>type</code> is <code>risk</code>',
 		routing: {
 			send: {
 				property: 'tenderId',
@@ -101,12 +99,11 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Handle Emails',
 		name: 'handleEmails',
 		type: 'boolean',
 		default: true,
-		description: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'handleEmails',
@@ -123,12 +120,11 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Require Answers',
 		name: 'requireAnswers',
 		type: 'boolean',
 		default: false,
-		description: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'requireAnswers',
@@ -148,8 +144,9 @@ export const CreateACustomerLink: INodeProperties[] = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		default: '',
-		description: 'value muss eine gültige E-Mail-Adresse sein.',
+		description: 'Value muss eine gültige E-Mail-Adresse sein',
 		routing: {
 			send: {
 				property: 'email',
@@ -170,7 +167,6 @@ export const CreateACustomerLink: INodeProperties[] = [
 		name: 'message',
 		type: 'string',
 		default: '',
-		description: '',
 		routing: {
 			send: {
 				property: 'message',
@@ -190,7 +186,7 @@ export const CreateACustomerLink: INodeProperties[] = [
 
 export const GetActiveTendersForACustomer: INodeProperties[] = [
 	{
-		displayName: 'Customer Id',
+		displayName: 'Customer ID',
 		name: 'customerId',
 		required: true,
 		description: 'Customer Ameise ID',
@@ -212,7 +208,7 @@ export const GetActiveTendersForACustomer: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Insurance Line Id',
+		displayName: 'Insurance Line ID',
 		name: 'insuranceLineId',
 		description: 'Panda Insurance Line ID, see "Create a tender" for values',
 		default: '',
@@ -258,12 +254,11 @@ export const CreateATender: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
-		displayName: 'Customer Id',
+		displayName: 'Customer ID',
 		name: 'customerId',
 		type: 'number',
 		default: 16,
-		description: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'customerId',
@@ -280,13 +275,59 @@ export const CreateATender: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
-		displayName: 'Insurance Line Id',
+		displayName: 'Insurance Line ID',
 		name: 'insuranceLineId',
 		type: 'string',
 		default: '',
-		description:
-			'Panda Insurance Line ID, possible values:<br>\n1: Betriebshaftpflicht<br>\n2: Geschäftsinhalt<br>\n3: gewerbliche Rechtsschutz<br>\n4: Cyber<br>\n5: gewerbliches Gebäude<br>\n80: MultiRisk<br>\n6: Vermögensschadenhaftpflicht<br>\n7: Berufshaftpflicht für Ärzte<br>\n8: Maschinen (stationär)<br>\n9: Berufshaftpflicht für Architekten und Ingenieure<br>\n11: Unternehmens D&O<br>\n12: persönliche D&O<br>\n17: Elektronik<br>\n28: Warenkredit<br>\n27: Mietkaution<br>\n15: Vertrauensschaden<br>\n26: Kaution<br>\n16: Glasbruch<br>\n24: Warentransport<br>\n23: Autoinhalt (Werkverkehr)<br>\n10: Maschinen (mobil)<br>\n20: Montage<br>\n41: KFZ Handel-Handwerk<br>\n38: Gruppen-Unfall<br>\n25: Verkehrshaftung<br>\n31: Betriebskosten-/Praxisausfall (infolge Krankheit)<br>\n34: Berufshaftpflicht für Architekten und Ingenieure (Objektschadendeckung)<br>\n14: Bauherrenhaftpflicht (gewerblich)<br>\n21: Bauleistung (gewerblich)<br>\n47: KFZ Flotten<br>\n48: Private Krankenvollversicherung<br>\n49: Berufsunfähigkeit<br>\n50: Wohngebäude<br>\n51: Risikoleben<br>\n52: Betriebsunterbrechung (MBU)<br>\n53: KV Zusatz<br>\n54: PKW (BETA)<br>\n55: Hausrat (BETA)<br>\n56: Tierkrankenversicherung (BETA)<br>\n57: Unfallversicherung (BETA)<br>\n58: Privat-Rechtsschutz (BETA)<br>\n59: Veranstaltungshaftpflicht (BETA)<br>\n61: KFZ Old / Youngtimer<br>\n62: KFZ Premium Cars / Exoten<br>\n63: Privathaftpflicht<br>\n64: Hundehalterhaftpflicht<br>\n65: Pferdehalterhaftpflicht',
+		required: true,
+		description: `Panda Insurance Line ID, possible values:
+1: Betriebshaftpflicht
+2: Geschäftsinhalt
+3: gewerbliche Rechtsschutz
+4: Cyber
+5: gewerbliches Gebäude
+80: MultiRisk
+6: Vermögensschadenhaftpflicht
+7: Berufshaftpflicht für Ärzte
+8: Maschinen (stationär)
+9: Berufshaftpflicht für Architekten und Ingenieure
+11: Unternehmens D&O
+12: persönliche D&O
+17: Elektronik
+28: Warenkredit
+27: Mietkaution
+15: Vertrauensschaden
+26: Kaution
+16: Glasbruch
+24: Warentransport
+23: Autoinhalt (Werkverkehr)
+10: Maschinen (mobil)
+20: Montage
+41: KFZ Handel-Handwerk
+38: Gruppen-Unfall
+25: Verkehrshaftung
+31: Betriebskosten-/Praxisausfall (infolge Krankheit)
+34: Berufshaftpflicht für Architekten und Ingenieure (Objektschadendeckung)
+14: Bauherrenhaftpflicht (gewerblich)
+21: Bauleistung (gewerblich)
+47: KFZ Flotten
+48: Private Krankenvollversicherung
+49: Berufsunfähigkeit
+50: Wohngebäude
+51: Risikoleben
+52: Betriebsunterbrechung (MBU)
+53: KV Zusatz
+54: PKW (BETA)
+55: Hausrat (BETA)
+56: Tierkrankenversicherung (BETA)
+57: Unfallversicherung (BETA)
+58: Privat-Rechtsschutz (BETA)
+59: Veranstaltungshaftpflicht (BETA)
+61: KFZ Old / Youngtimer
+62: KFZ Premium Cars / Exoten
+63: Privathaftpflicht
+64: Hundehalterhaftpflicht
+65: Pferdehalterhaftpflicht`,
 		routing: {
 			send: {
 				property: 'insuranceLineId',

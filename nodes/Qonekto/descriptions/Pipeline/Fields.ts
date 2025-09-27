@@ -2,10 +2,9 @@ import { INodeProperties } from 'n8n-workflow';
 
 export const TriggerPipelineImportFromCRM: INodeProperties[] = [
 	{
-		displayName: 'Id',
+		displayName: 'ID',
 		name: 'id',
 		required: true,
-		description: '',
 		default: '',
 		type: 'string',
 		routing: {

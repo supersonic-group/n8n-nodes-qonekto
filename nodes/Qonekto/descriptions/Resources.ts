@@ -10,30 +10,25 @@ export const Resources: INodeProperties[] = [
 			{
 				name: 'Kunde',
 				value: 'Kunde',
-				description: '',
 			},
 			{
 				name: 'Listen',
 				value: 'Listen',
-				description: '',
-			},
-			{
-				name: 'Panda',
-				value: 'Panda',
-				description: '',
-			},
-			{
-				name: 'Pipeline',
-				value: 'Pipeline',
-				description: '',
 			},
 			{
 				name: 'Misc',
 				value: 'Misc',
-				description: '',
+			},
+			{
+				name: 'Panda',
+				value: 'Panda',
+			},
+			{
+				name: 'Pipeline',
+				value: 'Pipeline',
 			},
 		],
-		default: '',
+		default: 'Kunde',
 	},
 ];
 

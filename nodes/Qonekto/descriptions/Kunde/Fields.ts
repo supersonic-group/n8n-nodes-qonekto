@@ -4,7 +4,7 @@ export const ListKunden: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Changes per_page used for pagination from default 25 to max 100.',
+		description: 'Changes per_page used for pagination from default 25 to max 100',
 		default: 50,
 		type: 'number',
 		routing: {
@@ -50,7 +50,7 @@ export const CreateKunde: INodeProperties[] = [
 	{
 		displayName: 'Mitteilung Benutzername',
 		name: 'mitteilung-benutzername',
-		description: 'When set, will send customer the account username via email (if given).',
+		description: 'When set, will send customer the account username via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -72,7 +72,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Passwort Link',
 		name: 'mitteilung-passwort-link',
 		description:
-			'When set, will send customer a link to reset his account password via email (if given).',
+			'When set, will send customer a link to reset his account password via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -94,7 +94,7 @@ export const CreateKunde: INodeProperties[] = [
 		displayName: 'Mitteilung Erstinfo Unterbinden',
 		name: 'mitteilung-erstinfo-unterbinden',
 		description:
-			'When set, will **not** send customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given).',
+			'When set, will **not** send customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given)',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -113,7 +113,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Vermittler Id',
+		displayName: 'Vermittler ID',
 		name: 'vermittler_id',
 		type: 'string',
 		default: '',
@@ -135,12 +135,12 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
-		displayName: 'Anrede Id',
+		displayName: 'Anrede ID',
 		name: 'anrede_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
+		required: true,
 		routing: {
 			send: {
 				property: 'anrede_id',
@@ -157,11 +157,11 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Vorname',
 		name: 'vorname',
 		type: 'string',
 		default: '',
+		required: true,
 		description:
 			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Ansprechpartner. value darf maximal 255 Zeichen haben.',
 		routing: {
@@ -180,11 +180,11 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Nachname',
 		name: 'nachname',
 		type: 'string',
 		default: '',
+		required: true,
 		description:
 			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Firmennamen. value darf maximal 255 Zeichen haben.',
 		routing: {
@@ -229,7 +229,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'strasse',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'strasse',
@@ -250,7 +250,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'plz',
 		type: 'string',
 		default: '',
-		description: 'value muss zwischen 4 und 5 Stellen haben.',
+		description: 'Value muss zwischen 4 und 5 Stellen haben',
 		routing: {
 			send: {
 				property: 'plz',
@@ -271,7 +271,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'ort',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'ort',
@@ -288,12 +288,12 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
-		displayName: 'Land Id',
+		displayName: 'Land ID',
 		name: 'land_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
+		required: true,
 		routing: {
 			send: {
 				property: 'land_id',
@@ -358,7 +358,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -397,7 +397,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform Id',
+		displayName: 'Rechtsform ID',
 		name: 'rechtsform_id',
 		type: 'string',
 		default: '',
@@ -423,7 +423,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'benutzername_simplr',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'benutzername_simplr',
@@ -444,7 +444,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -465,7 +465,7 @@ export const CreateKunde: INodeProperties[] = [
 		name: 'kommunikation',
 		type: 'json',
 		default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden.',
+		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
 		routing: {
 			send: {
 				property: 'kommunikation',
@@ -487,7 +487,7 @@ export const CreateKunde: INodeProperties[] = [
 		type: 'json',
 		default:
 			'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert.',
+		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
 		routing: {
 			send: {
 				property: 'details',
@@ -507,11 +507,11 @@ export const CreateKunde: INodeProperties[] = [
 
 export const FilterKunden: INodeProperties[] = [
 	{
-		displayName: 'Vermittler Id',
+		displayName: 'Vermittler ID',
 		name: 'vermittler_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_vermittler table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_vermittler table',
 		routing: {
 			send: {
 				property: 'vermittler_id',
@@ -528,11 +528,11 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede Id',
+		displayName: 'Anrede ID',
 		name: 'anrede_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
 		routing: {
 			send: {
 				property: 'anrede_id',
@@ -553,7 +553,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'vorname',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'vorname',
@@ -574,7 +574,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'nachname',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'nachname',
@@ -595,7 +595,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'titel',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'titel',
@@ -616,7 +616,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'strasse',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'strasse',
@@ -637,7 +637,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'plz',
 		type: 'string',
 		default: '',
-		description: 'value muss zwischen 4 und 5 Stellen haben.',
+		description: 'Value muss zwischen 4 und 5 Stellen haben',
 		routing: {
 			send: {
 				property: 'plz',
@@ -658,7 +658,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'ort',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'ort',
@@ -675,11 +675,11 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land Id',
+		displayName: 'Land ID',
 		name: 'land_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
 		routing: {
 			send: {
 				property: 'land_id',
@@ -700,7 +700,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'geburtsdatum',
 		type: 'string',
 		default: '',
-		description: 'Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
+		description: 'Must be a valid date in the format <code>Y-m-d,d.m.Y</code>',
 		routing: {
 			send: {
 				property: 'geburtsdatum',
@@ -721,7 +721,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'beruf',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'beruf',
@@ -742,7 +742,6 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: false,
-		description: '',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -763,7 +762,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'nationalitaet',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'nationalitaet',
@@ -780,12 +779,12 @@ export const FilterKunden: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform Id',
+		displayName: 'Rechtsform ID',
 		name: 'rechtsform_id',
 		type: 'string',
 		default: '',
 		description:
-			'The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table.',
+			'The <code>ameise_id</code> of an existing record in the ameise_rechtsformen table',
 		routing: {
 			send: {
 				property: 'rechtsform_id',
@@ -806,7 +805,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'benutzername_simplr',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'benutzername_simplr',
@@ -827,7 +826,6 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: false,
-		description: '',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -848,7 +846,6 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'kommunikation',
 		type: 'json',
 		default: 'null',
-		description: '',
 		routing: {
 			send: {
 				property: 'kommunikation',
@@ -869,7 +866,6 @@ export const FilterKunden: INodeProperties[] = [
 		name: 'details',
 		type: 'json',
 		default: 'null',
-		description: '',
 		routing: {
 			send: {
 				property: 'details',
@@ -890,7 +886,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: '_skip',
 		type: 'number',
 		default: 0,
-		description: 'How many items to skip in results.',
+		description: 'How many items to skip in results',
 		routing: {
 			send: {
 				property: '_skip',
@@ -911,7 +907,7 @@ export const FilterKunden: INodeProperties[] = [
 		name: '_limit',
 		type: 'number',
 		default: 25,
-		description: 'How many items to return in results, defaults to 25, min 1, max 100.',
+		description: 'How many items to return in results, defaults to 25, min 1, max 100',
 		routing: {
 			send: {
 				property: '_limit',
@@ -997,7 +993,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Vermittler Id',
+		displayName: 'Vermittler ID',
 		name: 'vermittler_id',
 		type: 'string',
 		default: '',
@@ -1019,11 +1015,11 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede Id',
+		displayName: 'Anrede ID',
 		name: 'anrede_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
 		routing: {
 			send: {
 				property: 'anrede_id',
@@ -1110,7 +1106,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'strasse',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'strasse',
@@ -1131,7 +1127,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'plz',
 		type: 'string',
 		default: '',
-		description: 'value muss zwischen 4 und 5 Stellen haben.',
+		description: 'Value muss zwischen 4 und 5 Stellen haben',
 		routing: {
 			send: {
 				property: 'plz',
@@ -1152,7 +1148,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'ort',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'ort',
@@ -1169,11 +1165,11 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land Id',
+		displayName: 'Land ID',
 		name: 'land_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
 		routing: {
 			send: {
 				property: 'land_id',
@@ -1238,7 +1234,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -1277,7 +1273,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform Id',
+		displayName: 'Rechtsform ID',
 		name: 'rechtsform_id',
 		type: 'string',
 		default: '',
@@ -1303,7 +1299,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'benutzername_simplr',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'benutzername_simplr',
@@ -1324,7 +1320,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -1345,7 +1341,7 @@ export const UpsertKunde: INodeProperties[] = [
 		name: 'kommunikation',
 		type: 'json',
 		default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden.',
+		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
 		routing: {
 			send: {
 				property: 'kommunikation',
@@ -1367,7 +1363,7 @@ export const UpsertKunde: INodeProperties[] = [
 		type: 'json',
 		default:
 			'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert.',
+		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
 		routing: {
 			send: {
 				property: 'details',
@@ -1384,11 +1380,11 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		required: true,
 		displayName: 'Search',
 		name: '_search',
 		type: 'json',
 		default: '[\n  "vorname",\n  "nachname",\n  "kommunikation.email_private"\n]',
+		required: true,
 		description:
 			'Parameter names which should be used to search for existing customer. Allows kommunikation.email_**any** to match any kontext (private, business). Furthermore customer may have the kommunikation.* property not as the default kommunikation value.',
 		routing: {
@@ -1412,7 +1408,7 @@ export const UpsertKunde: INodeProperties[] = [
 		type: 'json',
 		default: '{\n  "anrede_id": "1",\n  "land_id": "DE"\n}',
 		description:
-			'Default parameters that should be set only for newly created customer (if not passed via other parameters).',
+			'Default parameters that should be set only for newly created customer (if not passed via other parameters)',
 		routing: {
 			send: {
 				property: '_default',
@@ -1434,7 +1430,7 @@ export const ShowKunde: INodeProperties[] = [
 	{
 		displayName: 'With Kommunikationen',
 		name: 'with-kommunikationen',
-		description: 'Load and return kommunikationen and default fields for kunde.',
+		description: 'Load and return kommunikationen and default fields for kunde',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -1455,7 +1451,7 @@ export const ShowKunde: INodeProperties[] = [
 	{
 		displayName: 'With Details',
 		name: 'with-details',
-		description: 'Load and return details for kunde.',
+		description: 'Load and return details for kunde',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -1477,7 +1473,7 @@ export const ShowKunde: INodeProperties[] = [
 
 export const UpdateKunde: INodeProperties[] = [
 	{
-		displayName: 'Vermittler Id',
+		displayName: 'Vermittler ID',
 		name: 'vermittler_id',
 		type: 'string',
 		default: '',
@@ -1499,11 +1495,11 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anrede Id',
+		displayName: 'Anrede ID',
 		name: 'anrede_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_anreden table',
 		routing: {
 			send: {
 				property: 'anrede_id',
@@ -1590,7 +1586,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'strasse',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'strasse',
@@ -1611,7 +1607,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'plz',
 		type: 'string',
 		default: '',
-		description: 'value muss zwischen 4 und 5 Stellen haben.',
+		description: 'Value muss zwischen 4 und 5 Stellen haben',
 		routing: {
 			send: {
 				property: 'plz',
@@ -1632,7 +1628,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'ort',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'ort',
@@ -1649,11 +1645,11 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Land Id',
+		displayName: 'Land ID',
 		name: 'land_id',
 		type: 'string',
 		default: '',
-		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table.',
+		description: 'The <code>ameise_id</code> of an existing record in the ameise_laender table',
 		routing: {
 			send: {
 				property: 'land_id',
@@ -1718,7 +1714,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'per_du',
 		type: 'boolean',
 		default: false,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'per_du',
@@ -1757,7 +1753,7 @@ export const UpdateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Rechtsform Id',
+		displayName: 'Rechtsform ID',
 		name: 'rechtsform_id',
 		type: 'string',
 		default: '',
@@ -1783,7 +1779,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'benutzername_simplr',
 		type: 'string',
 		default: '',
-		description: 'value darf maximal 255 Zeichen haben.',
+		description: 'Value darf maximal 255 Zeichen haben',
 		routing: {
 			send: {
 				property: 'benutzername_simplr',
@@ -1804,7 +1800,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'verstorben',
 		type: 'boolean',
 		default: true,
-		description: 'Wird aktuell nicht an die Ameise übergeben.',
+		description: 'Wird aktuell nicht an die Ameise übergeben',
 		routing: {
 			send: {
 				property: 'verstorben',
@@ -1825,7 +1821,7 @@ export const UpdateKunde: INodeProperties[] = [
 		name: 'kommunikation',
 		type: 'json',
 		default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden.',
+		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
 		routing: {
 			send: {
 				property: 'kommunikation',
@@ -1847,7 +1843,7 @@ export const UpdateKunde: INodeProperties[] = [
 		type: 'json',
 		default:
 			'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert.',
+		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
 		routing: {
 			send: {
 				property: 'details',

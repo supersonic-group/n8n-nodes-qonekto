@@ -16,7 +16,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Anreden',
 				value: 'Anreden',
 				action: 'Anreden',
-				description: 'Anreden',
 				routing: {
 					request: {
 						method: 'GET',
@@ -28,7 +27,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Gesellschaften',
 				value: 'Gesellschaften',
 				action: 'Gesellschaften',
-				description: 'Gesellschaften',
 				routing: {
 					request: {
 						method: 'GET',
@@ -39,7 +37,7 @@ export const Listen: INodeProperties[] = [
 			{
 				name: 'Kunden Detail Felder',
 				value: 'Kunden Detail Felder',
-				action: 'Kunden-Detail-Felder',
+				action: 'Kunden detail felder',
 				description: 'Kunden-Detail-Felder',
 				routing: {
 					request: {
@@ -50,9 +48,8 @@ export const Listen: INodeProperties[] = [
 			},
 			{
 				name: 'Länder',
-				value: 'L-nder',
-				action: 'Länder',
-				description: 'Länder',
+				value: 'Länder',
+				action: 'Laender',
 				routing: {
 					request: {
 						method: 'GET',
@@ -64,7 +61,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Rechtsformen',
 				value: 'Rechtsformen',
 				action: 'Rechtsformen',
-				description: 'Rechtsformen',
 				routing: {
 					request: {
 						method: 'GET',
@@ -76,7 +72,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Sparten',
 				value: 'Sparten',
 				action: 'Sparten',
-				description: 'Sparten',
 				routing: {
 					request: {
 						method: 'GET',
@@ -88,7 +83,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Status',
 				value: 'Status',
 				action: 'Status',
-				description: 'Status',
 				routing: {
 					request: {
 						method: 'GET',
@@ -100,7 +94,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Vermittler',
 				value: 'Vermittler',
 				action: 'Vermittler',
-				description: 'Vermittler',
 				routing: {
 					request: {
 						method: 'GET',
@@ -112,7 +105,6 @@ export const Listen: INodeProperties[] = [
 				name: 'Zahlweisen',
 				value: 'Zahlweisen',
 				action: 'Zahlweisen',
-				description: 'Zahlweisen',
 				routing: {
 					request: {
 						method: 'GET',
@@ -121,7 +113,7 @@ export const Listen: INodeProperties[] = [
 				},
 			},
 		],
-		default: '',
+		default: 'Anreden',
 	},
 ];
 

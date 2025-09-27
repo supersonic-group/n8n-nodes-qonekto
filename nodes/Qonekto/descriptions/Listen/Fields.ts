@@ -4,7 +4,7 @@ export const Anreden: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -28,7 +28,7 @@ export const Gesellschaften: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -52,7 +52,7 @@ export const KundenDetailFelder: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -76,7 +76,7 @@ export const Länder: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -100,7 +100,7 @@ export const Rechtsformen: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -124,7 +124,7 @@ export const Sparten: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -148,7 +148,7 @@ export const Status: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -172,7 +172,7 @@ export const Vermittler: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
@@ -196,7 +196,7 @@ export const Zahlweisen: INodeProperties[] = [
 	{
 		displayName: 'Per Page',
 		name: 'per_page',
-		description: 'Enables Pagination and returns results paginated by given per_page.',
+		description: 'Enables Pagination and returns results paginated by given per_page',
 		default: 100,
 		type: 'number',
 		routing: {
