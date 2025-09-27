@@ -67,7 +67,10 @@ export async function qonektoApiRequestFull(
 
 type DataWithPagination = {
 	data: [];
-	next_page_url: string | null;
+	next_page_url?: string | null;
+	links?: {
+		next: string | null;
+	};
 };
 
 export async function qonektoApiRequestAllItems(
@@ -95,7 +98,10 @@ export async function qonektoApiRequestAllItems(
 			query,
 		)) as DataWithPagination;
 		returnData.push.apply(returnData, responseData.data as IDataObject[]);
-	} while (responseData.next_page_url !== null);
+	} while (
+		responseData.next_page_url !== null ||
+		(responseData.links && responseData.links.next !== null)
+	);
 
 	return returnData;
 }
