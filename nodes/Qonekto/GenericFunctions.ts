@@ -6,6 +6,7 @@ import {
 	ILoadOptionsFunctions,
 	JsonObject,
 	NodeApiError,
+	sleep,
 } from 'n8n-workflow';
 import type FormData from 'form-data';
 import type { URLSearchParams } from 'url';
@@ -20,11 +21,24 @@ export async function qonektoApiRequest(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
+	headers: Record<string, string> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Omit<Partial<IHttpRequestOptions>, 'returnFullResponse'> = {},
+	retryCount: number = 0,
+	maxRetries: number = 3,
 ): Promise<IN8nHttpResponse | Readable> {
-	const response = await qonektoApiRequestFull.call(this, url, method, body, qs, mergeOptions);
+	const response = await qonektoApiRequestFull.call(
+		this,
+		url,
+		method,
+		headers,
+		body,
+		qs,
+		mergeOptions,
+		retryCount,
+		maxRetries,
+	);
 	return response.body;
 }
 
@@ -32,11 +46,24 @@ export async function qonektoApiRequestFull(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
+	headers: Record<string, string> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Partial<IHttpRequestOptions> = {},
+	retryCount: number = 0,
+	maxRetries: number = 3,
 ): Promise<IN8nHttpFullResponse> {
-	console.log('qonektoApiRequest', url, method, body, qs, mergeOptions);
+	console.log(
+		'qonektoApiRequest',
+		url,
+		method,
+		headers,
+		body,
+		qs,
+		mergeOptions,
+		retryCount,
+		maxRetries,
+	);
 
 	const credentials = await this.getCredentials('qonektoApi');
 	const baseUrl = process.env.QONEKTO_BASE_URL || 'https://app.qonekto.de/api/';
@@ -44,13 +71,12 @@ export async function qonektoApiRequestFull(
 	const options: IHttpRequestOptions = {
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json',
+			...headers,
 		},
 		url: baseUrl + credentials.tenant + '/' + (url.startsWith('/') ? url.slice(1) : url),
 		method,
 		qs,
 		body,
-		json: true,
 		returnFullResponse: true,
 		...mergeOptions,
 	};
@@ -60,6 +86,20 @@ export async function qonektoApiRequestFull(
 	try {
 		return await this.helpers.httpRequestWithAuthentication.call(this, 'qonektoApi', options);
 	} catch (error) {
+		if (error.httpCode === '429' && retryCount < maxRetries) {
+			await sleep(1000 * (retryCount + 1));
+			return await qonektoApiRequestFull.call(
+				this,
+				url,
+				method,
+				headers,
+				body,
+				qs,
+				mergeOptions,
+				retryCount + 1,
+				maxRetries,
+			);
+		}
 		console.error(error);
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
@@ -77,10 +117,10 @@ export async function qonektoApiRequestAllItems(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	uri: string,
 	method: IHttpRequestMethods = 'GET',
+	headers: Record<string, string> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	query: IDataObject = {},
 ): Promise<IDataObject[]> {
-	console.log('qonektoApiRequestAllItems', uri, method, body, query);
 	const returnData: IDataObject[] = [];
 
 	let responseData;
@@ -90,18 +130,11 @@ export async function qonektoApiRequestAllItems(
 
 	do {
 		query.page++;
-		responseData = (await qonektoApiRequest.call(
-			this,
-			uri,
-			method,
-			body,
-			query,
-		)) as DataWithPagination;
+		responseData = (await qonektoApiRequest.call(this, uri, method, headers, body, query, {
+			json: true,
+		})) as DataWithPagination;
 		returnData.push.apply(returnData, responseData.data as IDataObject[]);
-	} while (
-		responseData.next_page_url !== null ||
-		(responseData.links && responseData.links.next !== null)
-	);
+	} while (responseData.next_page_url || (responseData.links && responseData.links.next));
 
 	return returnData;
 }
