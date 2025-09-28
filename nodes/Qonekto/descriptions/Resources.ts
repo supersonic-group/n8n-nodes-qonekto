@@ -16,16 +16,16 @@ export const Resources: INodeProperties[] = [
 				value: 'Listen',
 			},
 			{
-				name: 'Misc',
-				value: 'Misc',
-			},
-			{
 				name: 'Panda',
 				value: 'Panda',
 			},
 			{
 				name: 'Pipeline',
 				value: 'Pipeline',
+			},
+			{
+				name: 'Misc',
+				value: 'Misc',
 			},
 		],
 		default: 'Kunde',

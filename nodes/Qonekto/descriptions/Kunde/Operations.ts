@@ -13,12 +13,12 @@ export const Kunde: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Create Kunde',
-				value: 'Create Kunde',
-				action: 'Create kunde',
+				name: 'List Kunden',
+				value: 'List Kunden',
+				action: 'List kunden',
 				routing: {
 					request: {
-						method: 'POST',
+						method: 'GET',
 						url: '=/kunde',
 					},
 				},
@@ -35,12 +35,12 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'List Kunden',
-				value: 'List Kunden',
-				action: 'List kunden',
+				name: 'Create Kunde',
+				value: 'Create Kunde',
+				action: 'Create kunde',
 				routing: {
 					request: {
-						method: 'GET',
+						method: 'POST',
 						url: '=/kunde',
 					},
 				},

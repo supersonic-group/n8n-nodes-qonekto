@@ -21,7 +21,7 @@
     "dev": "N8N_BLOCK_ENV_ACCESS_IN_NODE=true N8N_SECURE_COOKIE=false N8N_LOG_LEVEL=debug n8n-node dev",
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",
-    "release": "n8n-node release",
+    "release": "dotenv n8n-node release",
     "prepublishOnly": "n8n-node prerelease"
   },
   "files": [
@@ -37,10 +37,12 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "*",
     "@devlikeapro/n8n-openapi-node": "^0.1.4",
     "@n8n/node-cli": "*",
+    "@types/node": "*",
+    "dotenv-cli": "^10.0.0",
     "eslint": "9.32.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "prettier": "3.6.2",
     "release-it": "^19.0.4",
     "typescript": "5.9.2"
