@@ -34,6 +34,20 @@ export class qonektoApi implements ICredentialType {
 			default: '',
 			validateType: 'string-alphanumeric',
 		},
+		{
+			displayName: 'Base URL',
+			name: 'base_url',
+			type: 'options',
+			required: true,
+			default: 'https://app.qonekto.de/api/',
+			validateType: 'url',
+			options: [
+				{
+					name: 'Production',
+					value: 'https://app.qonekto.de/api/',
+				},
+			],
+		},
 	];
 
 	authenticate: IAuthenticateGeneric = {
@@ -47,8 +61,7 @@ export class qonektoApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL:
-				'={{($env.QONEKTO_BASE_URL || "https://app.qonekto.de/api/") + $credentials.tenant}}',
+			baseURL: '={{$credentials.base_url + $credentials.tenant}}',
 			url: '/whoami',
 		},
 	};
