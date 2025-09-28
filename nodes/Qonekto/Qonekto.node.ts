@@ -2,15 +2,22 @@ import {
 	IDataObject,
 	IExecuteFunctions,
 	ILoadOptionsFunctions,
+	INodeExecutionData,
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	NodeConnectionTypes,
+	NodeOutput,
 } from 'n8n-workflow';
 import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
-import { qonektoApiRequestAllItems } from './GenericFunctions';
+import {
+	getItemBinaryData,
+	qonektoApiRequest,
+	qonektoApiRequestAllItems,
+} from './GenericFunctions';
+import FormData from 'form-data';
 
 async function makeLoadOptions(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -81,6 +88,69 @@ export class Qonekto implements INodeType {
 			},
 			async getZahlweisen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				return makeLoadOptions(this, 'zahlweisen');
+			},
+		},
+	};
+
+	customOperations = {
+		Kunde: {
+			async ['Upload File'](this: IExecuteFunctions): Promise<NodeOutput> {
+				const items = this.getInputData();
+				const returnData: INodeExecutionData[] = [];
+
+				for (let i = 0; i < items.length; i++) {
+					try {
+						const multiPartBody = new FormData();
+						multiPartBody.append('typ', 'dokument');
+
+						const inputDataFieldName = this.getNodeParameter('file', i) as string;
+						const { contentLength, fileContent, mimeType } = await getItemBinaryData.call(
+							this,
+							inputDataFieldName,
+							i,
+						);
+
+						const betreff = this.getNodeParameter('betreff', i) as string;
+						multiPartBody.append('betreff', betreff);
+						multiPartBody.append('file', fileContent, {
+							contentType: mimeType,
+							knownLength: contentLength,
+							filename: betreff,
+						});
+
+						const response = await qonektoApiRequest.call(
+							this,
+							// 'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
+							'https://webhook.site/6b4e5782-d916-4012-b0c4-8e151387f1c8',
+							'POST',
+							{
+								'Content-Type': `multipart/related; boundary=${multiPartBody.getBoundary()}`,
+								'Content-Length': multiPartBody.getLengthSync(),
+							},
+							multiPartBody.getBuffer(),
+							{},
+							{
+								json: false,
+							},
+							0,
+							1,
+						);
+
+						const executionData = this.helpers.constructExecutionMetaData(
+							this.helpers.returnJsonArray(response as IDataObject[]),
+							{ itemData: { item: i } },
+						);
+						returnData.push(...executionData);
+					} catch (error) {
+						if (this.continueOnFail()) {
+							returnData.push({ json: { error: error.message } });
+							continue;
+						}
+						throw error;
+					}
+				}
+
+				return [returnData];
 			},
 		},
 	};

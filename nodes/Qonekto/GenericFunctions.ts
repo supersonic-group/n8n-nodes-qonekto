@@ -1,4 +1,5 @@
 import {
+	BINARY_ENCODING,
 	IDataObject,
 	IExecuteFunctions,
 	IHttpRequestMethods,
@@ -6,6 +7,7 @@ import {
 	ILoadOptionsFunctions,
 	JsonObject,
 	NodeApiError,
+	NodeOperationError,
 	sleep,
 } from 'n8n-workflow';
 import type FormData from 'form-data';
@@ -17,11 +19,40 @@ import {
 } from 'n8n-workflow/dist/esm/interfaces';
 import type { Readable } from 'stream';
 
+export async function getItemBinaryData(
+	this: IExecuteFunctions,
+	inputDataFieldName: string,
+	i: number,
+) {
+	if (!inputDataFieldName) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'The name of the input field containing the binary file data must be set',
+			{
+				itemIndex: i,
+			},
+		);
+	}
+	const binaryData = this.helpers.assertBinaryData(i, inputDataFieldName);
+
+	const fileContent: Buffer | Readable = Buffer.from(binaryData.data, BINARY_ENCODING);
+	const contentLength: number = fileContent.length;
+	const originalFilename: string | undefined = binaryData.fileName;
+	const mimeType = binaryData.mimeType;
+
+	return {
+		fileContent,
+		contentLength,
+		originalFilename,
+		mimeType,
+	};
+}
+
 export async function qonektoApiRequest(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
-	headers: Record<string, string> = {},
+	headers: Record<string, string | number> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Omit<Partial<IHttpRequestOptions>, 'returnFullResponse'> = {},
@@ -46,13 +77,14 @@ export async function qonektoApiRequestFull(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
-	headers: Record<string, string> = {},
+	headers: Record<string, string | number> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Partial<IHttpRequestOptions> = {},
-	retryCount: number = 0,
+	retryCount: number = 1,
 	maxRetries: number = 3,
 ): Promise<IN8nHttpFullResponse> {
+	retryCount = Math.max(1, Math.min(retryCount, maxRetries));
 	console.log(
 		'qonektoApiRequest',
 		url,
@@ -65,19 +97,22 @@ export async function qonektoApiRequestFull(
 		maxRetries,
 	);
 
-	const credentials = await this.getCredentials('qonektoApi');
-	const baseUrl = process.env.QONEKTO_BASE_URL || 'https://app.qonekto.de/api/';
+	const credentials: {
+		tenant: string;
+		base_url: string;
+	} = await this.getCredentials('qonektoApi');
 
 	const options: IHttpRequestOptions = {
 		headers: {
 			Accept: 'application/json',
 			...headers,
 		},
-		url: baseUrl + credentials.tenant + '/' + (url.startsWith('/') ? url.slice(1) : url),
+		url,
 		method,
 		qs,
 		body,
 		returnFullResponse: true,
+		baseURL: credentials.base_url + credentials.tenant + '/',
 		...mergeOptions,
 	};
 	if (Object.keys(options.body as IDataObject).length === 0) {
@@ -117,7 +152,7 @@ export async function qonektoApiRequestAllItems(
 	this: IExecuteFunctions | ILoadOptionsFunctions,
 	uri: string,
 	method: IHttpRequestMethods = 'GET',
-	headers: Record<string, string> = {},
+	headers: Record<string, string | number> = {},
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	query: IDataObject = {},
 ): Promise<IDataObject[]> {

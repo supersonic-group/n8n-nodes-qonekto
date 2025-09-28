@@ -78,6 +78,24 @@ export const Kunde: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'Upload File',
+				value: 'Upload File',
+				action: 'Upload file',
+				description: 'Upload provided file to Kontakthistorie',
+			},
+			{
+				name: 'Create File',
+				value: 'Create File',
+				action: 'Create file',
+				description: 'Create file with provided content in Kontakthistorie',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}/archiveintrag',
+					},
+				},
+			},
 		],
 		default: 'List Kunden',
 	},

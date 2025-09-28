@@ -81,7 +81,7 @@ Security
 ## Development
 
 You can override the host for development by setting the environment variable QONEKTO_BASE_URL (for
-example, https://dev.qonekto.de/api/). The node will then call {QONEKTO_BASE_URL}{tenant}/...
+example, https://dev.qonekto.de/api/).
 
 ## Resources
 

@@ -1681,6 +1681,134 @@ export const UpdateKunde: INodeProperties[] = [
 	},
 ];
 
+export const UploadFile: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		displayName: 'Betreff',
+		name: 'betreff',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		displayName: 'File',
+		name: 'file',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'Name of the binary property to upload as file',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+];
+
+export const CreateFile: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+	},
+	{
+		displayName: 'Typ',
+		name: 'typ',
+		type: 'options',
+		default: 'sonstiges',
+		options: [
+			{ name: 'Fax', value: 'fax' },
+			{ name: 'E-Mail', value: 'email' },
+			{ name: 'SMS', value: 'sms' },
+			{ name: 'Telefon', value: 'telefon' },
+			{ name: 'Brief', value: 'brief' },
+			{ name: 'Persönlich', value: 'persoenlich' },
+			{ name: 'Chat', value: 'chat' },
+			{ name: 'Sonstiges', value: 'sonstiges' },
+		],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'typ',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Betreff',
+		name: 'betreff',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'betreff',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Content',
+		name: 'content',
+		type: 'string',
+		typeOptions: {
+			editor: 'htmlEditor',
+		},
+		default: '',
+		required: true,
+		description: 'Text content of the entry. Used when typ is not "dokument".',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'content',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+];
+
 export default [
 	...ListKunden,
 	...CreateKunde,
@@ -1688,4 +1816,6 @@ export default [
 	...UpsertKunde,
 	...ShowKunde,
 	...UpdateKunde,
+	...UploadFile,
+	...CreateFile,
 ];
