@@ -120,8 +120,7 @@ export class Qonekto implements INodeType {
 
 						const response = await qonektoApiRequest.call(
 							this,
-							// 'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
-							'https://webhook.site/6b4e5782-d916-4012-b0c4-8e151387f1c8',
+							'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
 							'POST',
 							{
 								'Content-Type': `multipart/related; boundary=${multiPartBody.getBoundary()}`,
