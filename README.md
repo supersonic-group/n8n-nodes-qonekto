@@ -1,15 +1,16 @@
 # n8n-nodes-qonekto
 
-This is a n8n community node. It lets you use Qonekto in your n8n workflows.
+This is an n8n community node that lets you use the Qonekto API in your n8n workflows.
 
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+Qonekto provides an HTTP API for managing customers and related resources. This node wraps common endpoints so you can
+automate tasks in n8n.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
 [Installation](#installation)
 [Operations](#operations)
 [Credentials](#credentials)
-[Compatibility](#compatibility)
+[Development](#development)
 [Resources](#resources)
 [Version history](#version-history)
 
@@ -19,23 +20,78 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Operations
 
-_List the operations supported by your node._
+The node exposes the following resources and operations.
+
+- Kunde (Customer)
+    - Create Kunde — POST /kunde
+    - Filter Kunden — POST /kunde/filter
+    - List Kunden — GET /kunde
+    - Show Kunde — GET /kunde/{ameise_id}
+    - Update Kunde — PUT /kunde/{ameise_id}
+    - Upsert Kunde — PUT /kunde/upsert
+
+- Listen (Lookup lists)
+    - Anreden — GET /anreden
+    - Gesellschaften — GET /gesellschaften
+    - Kunden Detail Felder — GET /kunden_detail_felder
+    - Länder — GET /laender
+    - Rechtsformen — GET /rechtsformen
+    - Sparten — GET /sparten
+    - Status — GET /status
+    - Vermittler — GET /vermittler
+    - Zahlweisen — GET /zahlweisen
+
+- Panda
+    - Create A Customer Link — POST /panda/customer-links
+    - Create A Tender — POST /panda/tenders
+    - Get Active Tenders For A Customer — GET /panda/tenders
+    - Get All Customer Links — GET /panda/customer-links
+    - Imports An Ameise Customer Into Panda — POST /panda/customers/{ameiseId}/import
+
+- Pipeline
+    - Trigger Pipeline Import From CRM — GET /pipeline/{pipeline_id}/trigger-from-crm
+
+- Misc
+    - Who Am I — GET /whoami
+
+Note: The exact input fields for each operation are provided in the node’s parameters within n8n (see the Fields panel
+when configuring the node).
 
 ## Credentials
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+This node uses a bearer token and tenant identifier to authenticate against the Qonekto API.
 
-## Compatibility
+- API Token (required): Used as a Bearer token for the Authorization header.
+- Tenant (required): Your Qonekto tenant identifier used to build the base URL.
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+Behavior
+
+- Base URL: Defaults to https://app.qonekto.de/api/{tenant}.
+- Credential Test: The credential test performs a request to GET /whoami to verify access.
+
+How to obtain credentials
+
+- Visit the Admin > API Tokens page in your Qonekto backend
+- Create a new Token and enter a corresponding name, for example "n8n automation"
+
+Security
+
+- n8n stores credentials securely. Avoid hardcoding tokens; configure them via n8n’s Credentials UI.
+
+## Development
+
+You can override the host for development by setting the environment variable QONEKTO_BASE_URL (for
+example, https://dev.qonekto.de/api/). The node will then call {QONEKTO_BASE_URL}{tenant}/...
 
 ## Resources
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* [Qonekto API Docs](https://app.qonekto.de/api/docs/)
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+- [Qonekto API Docs](https://app.qonekto.de/api/docs/)
+- Repository: https://github.com/supersonic-group/n8n-nodes-qonekto
+- Issues: https://github.com/supersonic-group/n8n-nodes-qonekto/issues
 
 ## Version history
 
 ### 2025.09.26
 
-- initial version
+- Initial version
