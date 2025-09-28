@@ -131,7 +131,6 @@ export class Qonekto implements INodeType {
 							{
 								json: false,
 							},
-							0,
 							1,
 						);
 

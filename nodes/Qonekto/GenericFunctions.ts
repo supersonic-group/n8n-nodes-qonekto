@@ -56,8 +56,8 @@ export async function qonektoApiRequest(
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Omit<Partial<IHttpRequestOptions>, 'returnFullResponse'> = {},
-	retryCount: number = 0,
 	maxRetries: number = 3,
+	retryCount: number = 1,
 ): Promise<IN8nHttpResponse | Readable> {
 	const response = await qonektoApiRequestFull.call(
 		this,
@@ -81,8 +81,8 @@ export async function qonektoApiRequestFull(
 	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
 	qs: IDataObject = {},
 	mergeOptions: Partial<IHttpRequestOptions> = {},
-	retryCount: number = 1,
 	maxRetries: number = 3,
+	retryCount: number = 1,
 ): Promise<IN8nHttpFullResponse> {
 	retryCount = Math.max(1, Math.min(retryCount, maxRetries));
 	console.log(
@@ -131,8 +131,8 @@ export async function qonektoApiRequestFull(
 				body,
 				qs,
 				mergeOptions,
-				retryCount + 1,
 				maxRetries,
+				retryCount + 1,
 			);
 		}
 		console.error(error);
