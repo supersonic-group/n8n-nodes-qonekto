@@ -1692,11 +1692,12 @@ export const UploadFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Betreff',
-		name: 'betreff',
+		displayName: 'File',
+		name: 'file',
 		type: 'string',
 		default: '',
 		required: true,
+		description: 'Name of the binary property to upload as file',
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1705,12 +1706,11 @@ export const UploadFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'File',
-		name: 'file',
+		displayName: 'Betreff',
+		name: 'betreff',
 		type: 'string',
 		default: '',
-		required: true,
-		description: 'Name of the binary property to upload as file',
+		description: 'If empty, will use the original filename from the binary property',
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],

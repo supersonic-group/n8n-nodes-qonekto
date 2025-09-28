@@ -104,29 +104,23 @@ export class Qonekto implements INodeType {
 						multiPartBody.append('typ', 'dokument');
 
 						const inputDataFieldName = this.getNodeParameter('file', i) as string;
-						const { contentLength, fileContent, mimeType } = await getItemBinaryData.call(
-							this,
-							inputDataFieldName,
-							i,
-						);
+						const { contentLength, fileContent, originalFilename, mimeType } =
+							await getItemBinaryData.call(this, inputDataFieldName, i);
 
 						const betreff = this.getNodeParameter('betreff', i) as string;
-						multiPartBody.append('betreff', betreff);
+						multiPartBody.append('betreff', betreff || originalFilename);
 						multiPartBody.append('file', fileContent, {
 							contentType: mimeType,
 							knownLength: contentLength,
-							filename: betreff,
+							filename: betreff || originalFilename,
 						});
 
 						const response = await qonektoApiRequest.call(
 							this,
 							'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
 							'POST',
-							{
-								'Content-Type': `multipart/related; boundary=${multiPartBody.getBoundary()}`,
-								'Content-Length': multiPartBody.getLengthSync(),
-							},
-							multiPartBody.getBuffer(),
+							{},
+							multiPartBody,
 							{},
 							{
 								json: false,
