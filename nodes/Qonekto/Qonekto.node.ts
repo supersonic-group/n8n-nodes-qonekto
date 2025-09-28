@@ -28,7 +28,7 @@ async function makeLoadOptions(
 	}),
 ): Promise<INodePropertyOptions[]> {
 	const items = await qonektoApiRequestAllItems.call(self, uri);
-	return items.map(mapFn);
+	return [{ name: '', value: '' }, ...items.map(mapFn)];
 }
 
 export class Qonekto implements INodeType {
