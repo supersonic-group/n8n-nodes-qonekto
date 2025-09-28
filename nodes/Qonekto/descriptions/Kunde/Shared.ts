@@ -73,7 +73,7 @@ export const Shared: Record<string, INodeProperties> = {
 		type: 'options',
 		default: '',
 		description:
-			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The ID for the country of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The ID for the rechtsform of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 		routing: {
 			send: {
 				property: 'rechtsform_id',
@@ -84,6 +84,17 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 		typeOptions: {
 			loadOptionsMethod: 'getRechtsformen',
+		},
+	},
+	'Sparte ID': {
+		displayName: 'Sparte Name or ID',
+		name: 'sparte_id',
+		type: 'options',
+		default: '',
+		description:
+			'The ID for the sparte of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		typeOptions: {
+			loadOptionsMethod: 'getSparten',
 		},
 	},
 };

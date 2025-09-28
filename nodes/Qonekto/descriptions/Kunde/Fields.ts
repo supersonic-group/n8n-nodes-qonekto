@@ -1787,11 +1787,11 @@ export const CreateFile: INodeProperties[] = [
 		name: 'content',
 		type: 'string',
 		typeOptions: {
-			editor: 'htmlEditor',
+			rows: 4,
 		},
 		default: '',
 		required: true,
-		description: 'Text content of the entry. Used when typ is not "dokument".',
+		description: 'Text content of the entry',
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1804,6 +1804,106 @@ export const CreateFile: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Datum',
+		name: 'datum',
+		type: 'dateTime',
+		default: '',
+		description: 'If empty, will use the current date and time',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'datum',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Vertrag ID',
+		name: 'vertrags_id',
+		description: 'Ameise ID of the related Vertrag',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'zuordnung.vertrags_id',
+				propertyInDotNotation: true,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		...Shared['Sparte ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'zuordnung.sparte_id',
+				propertyInDotNotation: true,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Kundensichtbar',
+		name: 'kundensichtbar',
+		description: 'Whether to allow the customer to view the created file',
+		type: 'boolean',
+		default: true,
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'meta.kundensichtbar',
+				propertyInDotNotation: true,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+	},
+	{
+		displayName: 'Tags',
+		name: 'tags',
+		type: 'json',
+		default: '["Tag"]',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Create File'],
+			},
+		},
+		routing: {
+			send: {
+				property: 'tags',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ JSON.parse($value) }}',
 			},
 		},
 	},
