@@ -78,7 +78,7 @@ export class Qonekto implements INodeType {
 				return makeLoadOptions(this, 'rechtsformen');
 			},
 			async getSparten(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'rechtsformen');
+				return makeLoadOptions(this, 'sparten');
 			},
 			async getStatus(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				return makeLoadOptions(this, 'status');
