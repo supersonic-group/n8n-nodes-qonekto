@@ -10,7 +10,6 @@ automate tasks in n8n.
 [Installation](#installation)
 [Operations](#operations)
 [Credentials](#credentials)
-[Development](#development)
 [Resources](#resources)
 [Version history](#version-history)
 
@@ -29,6 +28,8 @@ The node exposes the following resources and operations.
     - Show Kunde — GET /kunde/{ameise_id}
     - Update Kunde — PUT /kunde/{ameise_id}
     - Upsert Kunde — PUT /kunde/upsert
+  - Upload File — POST /kunde/{kunde_ameise_id}/archiveintrag
+  - Create File — POST /kunde/{kunde_ameise_id}/archiveintrag
 
 - Listen (Lookup lists)
     - Anreden — GET /anreden
@@ -59,14 +60,15 @@ when configuring the node).
 
 ## Credentials
 
-This node uses a bearer token and tenant identifier to authenticate against the Qonekto API.
+This node uses a bearer token, a tenant identifier, and a selectable base URL to authenticate against the Qonekto API.
 
 - API Token (required): Used as a Bearer token for the Authorization header.
 - Tenant (required): Your Qonekto tenant identifier used to build the base URL.
+- Base URL (required): The API host to use. Currently available option: Production (https://app.qonekto.de/api/).
 
 Behavior
 
-- Base URL: Defaults to https://app.qonekto.de/api/{tenant}.
+- Effective Base URL: {base_url}{tenant}
 - Credential Test: The credential test performs a request to GET /whoami to verify access.
 
 How to obtain credentials
@@ -78,10 +80,6 @@ Security
 
 - n8n stores credentials securely. Avoid hardcoding tokens; configure them via n8n’s Credentials UI.
 
-## Development
-
-You can override the host for development by setting the environment variable QONEKTO_BASE_URL (for
-example, https://dev.qonekto.de/api/).
 
 ## Resources
 
