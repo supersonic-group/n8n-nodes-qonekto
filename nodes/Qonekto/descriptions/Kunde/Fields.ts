@@ -1718,6 +1718,66 @@ export const UploadFile: INodeProperties[] = [
 			},
 		},
 	},
+	{
+		displayName: 'Datum',
+		name: 'datum',
+		type: 'dateTime',
+		default: '',
+		description: 'If empty, will use the current date and time',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		displayName: 'Vertrag ID',
+		name: 'vertrags_id',
+		description: 'Ameise ID of the related Vertrag',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		...Shared['Sparte ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		displayName: 'Kundensichtbar',
+		name: 'kundensichtbar',
+		description: 'Whether to allow the customer to view the created file',
+		type: 'boolean',
+		default: true,
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
+	{
+		displayName: 'Tags',
+		name: 'tags',
+		type: 'json',
+		default: '["Tag"]',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upload File'],
+			},
+		},
+	},
 ];
 
 export const CreateFile: INodeProperties[] = [
