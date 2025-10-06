@@ -33,7 +33,8 @@
       "dist/credentials/qonektoApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Qonekto/Qonekto.node.js"
+      "dist/nodes/Qonekto/Qonekto.node.js",
+      "dist/nodes/Qonekto/QonektoTrigger.node.js"
     ]
   },
   "devDependencies": {
