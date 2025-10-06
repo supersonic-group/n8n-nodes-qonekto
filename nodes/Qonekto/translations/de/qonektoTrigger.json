@@ -1,0 +1,15 @@
+{
+  "header": {
+    "description": "Startet den Workflow, wenn eine Qonekto-Event mit der gewünschten Aktion für den gewünschten Objekt-Typ auftritt"
+  },
+  "nodeView": {
+    "action": {
+      "displayName": "Aktion",
+      "description": "Die Aktion auf die gewartet werden soll"
+    },
+    "action.displayName": "Aktion",
+    "action.options.created.name": "Erstellt",
+    "action.options.updated.name": "Bearbeitet",
+    "action.description": "Die Aktion auf die gewartet werden soll"
+  }
+}
