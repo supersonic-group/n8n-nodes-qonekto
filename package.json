@@ -18,7 +18,7 @@
   "scripts": {
     "build": "n8n-node build",
     "build:watch": "tsc --watch",
-    "dev": "N8N_BLOCK_ENV_ACCESS_IN_NODE=true N8N_SECURE_COOKIE=false N8N_LOG_LEVEL=debug n8n-node dev",
+    "dev": "N8N_DEFAULT_LOCALE=de N8N_BLOCK_ENV_ACCESS_IN_NODE=true N8N_SECURE_COOKIE=false N8N_LOG_LEVEL=debug n8n-node dev",
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",
     "release": "dotenv n8n-node release",
