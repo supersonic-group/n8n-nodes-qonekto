@@ -1,55 +1,33 @@
-// TODO: rewrite based on https://github.com/n8n-io/n8n/blob/master/packages/nodes-base/nodes/Gitlab/GitlabTrigger.node.ts
 import {
 	IDataObject,
-	IExecuteFunctions,
-	ILoadOptionsFunctions,
-	INodeExecutionData,
-	INodePropertyOptions,
+	IHookFunctions,
 	INodeType,
 	INodeTypeDescription,
+	IWebhookFunctions,
+	IWebhookResponseData,
+	JsonObject,
+	NodeApiError,
 	NodeConnectionTypes,
-	NodeOutput,
 } from 'n8n-workflow';
-import Resources from './descriptions/Resources';
-import Operations from './descriptions/Operations';
-import Fields from './descriptions/Fields';
-import {
-	getItemBinaryData,
-	qonektoApiRequest,
-	qonektoApiRequestAllItems,
-} from './GenericFunctions';
-import FormData from 'form-data';
+import { qonektoApiRequest, qonektoApiRequestFull } from './GenericFunctions';
 
-async function makeLoadOptions(
-	self: IExecuteFunctions | ILoadOptionsFunctions,
-	uri: string,
-	mapFn: (item: IDataObject) => INodePropertyOptions = (item) => ({
-		name: (item.text || item.name || item.ameise_id) as string,
-		value: item.ameise_id as string,
-	}),
-): Promise<INodePropertyOptions[]> {
-	const items = await qonektoApiRequestAllItems.call(self, uri);
-	return [{ name: '', value: '' }, ...items.map(mapFn)];
-}
-
-export class Qonekto implements INodeType {
+export class QonektoTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Qonekto Trigger',
 		name: 'qonektoTrigger',
-		group: ['transform'],
-		description: 'Interact with the Qonekto API',
+		group: ['trigger'],
+		description: 'Starts the workflow when a Qonekto event for the given action and the given subject type occurs',
 
 		icon: 'file:qonekto.svg',
 
-		usableAsTool: true,
-		inputs: [NodeConnectionTypes.Main],
+		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
 
 		credentials: [{ name: 'qonektoApi', required: true }],
 		subtitle:
-			'={{$parameter["operation"] + ": /api/" + $credentials.tenant + "/" + $parameter["resource"]}}',
+			'={{$credentials.tenant + ": " + $parameter["action"] + " " + $parameter["subject_type"]}}',
 		defaults: {
-			name: 'Qonekto',
+			name: 'Qonekto Trigger',
 		},
 		requestDefaults: {
 			baseURL: '={{$credentials.base_url + $credentials.tenant}}',
@@ -61,124 +39,172 @@ export class Qonekto implements INodeType {
 
 		version: 20250926,
 
-		properties: [...Resources, ...Operations, ...Fields],
+		webhooks: [
+			{
+				name: 'default',
+				httpMethod: 'POST',
+				responseMode: 'onReceived',
+				path: 'webhook',
+			},
+		],
+
+		properties: [
+			{
+				displayName: 'Action',
+				name: 'action',
+				type: 'options',
+				options: [
+					{ name: 'Created', value: 'created' },
+					{ name: 'Updated', value: 'updated' },
+				],
+				required: true,
+				default: 'created',
+				description: 'The action to listen to',
+			},
+			{
+				displayName: 'Subject Type',
+				name: 'subject_type',
+				type: 'options',
+				options: [
+					{ name: 'Salutation', value: 'ameise.anrede' },
+					{ name: 'Insurer', value: 'ameise.gesellschaft' },
+					{ name: 'Customer', value: 'ameise.kunde' },
+					{ name: 'Customer Detail', value: 'ameise.kundendetail' },
+					{ name: 'Customer Detail Field', value: 'ameise.kundendetailfeld' },
+					{ name: 'Customer Communication', value: 'ameise.kundenkommunikation' },
+					{ name: 'Country', value: 'ameise.land' },
+					{ name: 'Legal Form', value: 'ameise.rechtsform' },
+					{ name: 'Division', value: 'ameise.sparte' },
+					{ name: 'Status', value: 'ameise.status' },
+					{ name: 'Broker', value: 'ameise.vermittler' },
+					{ name: 'Contract', value: 'ameise.vertrag' },
+					{ name: 'Payment Method', value: 'ameise.zahlweise' },
+				],
+				required: true,
+				default: 'ameise.anrede',
+				description: 'The subject type to listen to',
+			},
+		],
 	};
 
-	methods = {
-		loadOptions: {
-			async getAnreden(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'anreden');
-			},
-			async getGesellschaften(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'gesellschaften');
-			},
-			async getLaender(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'laender');
-			},
-			async getRechtsformen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'rechtsformen');
-			},
-			async getSparten(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'sparten');
-			},
-			async getStatus(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'status');
-			},
-			async getVermittler(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'vermittler');
-			},
-			async getZahlweisen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'zahlweisen');
-			},
-		},
-	};
+	webhookMethods = {
+		default: {
+			async checkExists(this: IHookFunctions): Promise<boolean> {
+				const webhookData = this.getWorkflowStaticData('node');
 
-	customOperations = {
-		Kunde: {
-			async ['Upload File'](this: IExecuteFunctions): Promise<NodeOutput> {
-				const items = this.getInputData();
-				const returnData: INodeExecutionData[] = [];
-
-				for (let i = 0; i < items.length; i++) {
-					try {
-						const multiPartBody = new FormData();
-						multiPartBody.append('typ', 'dokument');
-
-						const datum = this.getNodeParameter('datum', i) as string;
-						if (datum) {
-							const date = new Date(datum);
-							date.setUTCMilliseconds(0);
-							multiPartBody.append('datum', date.toISOString().replace('.000Z', '+00:00'));
-						}
-
-						const vertrags_id = this.getNodeParameter('vertrags_id', i) as string;
-						if (vertrags_id) {
-							multiPartBody.append('zuordnung[vertrags_id]', vertrags_id);
-						}
-
-						const sparte_id = this.getNodeParameter('sparte_id', i) as string;
-						if (sparte_id) {
-							multiPartBody.append('zuordnung[sparte_id]', sparte_id);
-						}
-
-						const kundensichtbar = this.getNodeParameter('kundensichtbar', i) as string;
-						multiPartBody.append('meta[kundensichtbar]', JSON.stringify(kundensichtbar));
-
-						const tagsJson = this.getNodeParameter('tags', i) as string;
-						if (tagsJson) {
-							let tags: string[] = [];
-							try {
-								tags = JSON.parse(tagsJson);
-								// eslint-disable-next-line @typescript-eslint/no-unused-vars
-							} catch (e) {
-								tags = tagsJson.split(',');
-							}
-							for (const tag of tags) {
-								multiPartBody.append('tags[]', tag);
-							}
-						}
-
-						const inputDataFieldName = this.getNodeParameter('file', i) as string;
-						const { contentLength, fileContent, originalFilename, mimeType } =
-							await getItemBinaryData.call(this, inputDataFieldName, i);
-
-						const betreff = this.getNodeParameter('betreff', i) as string;
-						multiPartBody.append('betreff', betreff || originalFilename);
-						multiPartBody.append('file', fileContent, {
-							contentType: mimeType,
-							knownLength: contentLength,
-							filename: betreff || originalFilename,
-						});
-
-						const response = await qonektoApiRequest.call(
-							this,
-							'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
-							'POST',
-							{},
-							multiPartBody,
-							{},
-							{
-								json: false,
-							},
-							1,
-						);
-
-						const executionData = this.helpers.constructExecutionMetaData(
-							this.helpers.returnJsonArray(response as IDataObject[]),
-							{ itemData: { item: i } },
-						);
-						returnData.push(...executionData);
-					} catch (error) {
-						if (this.continueOnFail()) {
-							returnData.push({ json: { error: error.message } });
-							continue;
-						}
-						throw error;
-					}
+				if (webhookData.webhookId === undefined || webhookData.webhookToken === undefined) {
+					// No webhook id is set so no webhook can exist
+					return false;
 				}
 
-				return [returnData];
+				try {
+					await qonektoApiRequest.call(
+						this,
+						'webhook/managed/status',
+						'POST',
+						{},
+						{
+							id: webhookData.webhookId,
+							token: webhookData.webhookToken,
+						},
+					);
+				} catch (error) {
+					if (error.cause.httpCode === '404' || error.description.includes('404')) {
+						// Webhook does not exist
+						delete webhookData.webhookId;
+						delete webhookData.webhookToken;
+
+						return false;
+					}
+
+					// Some error occured
+					throw error;
+				}
+
+				// If it did not error then the webhook exists
+				return true;
+			},
+			async create(this: IHookFunctions): Promise<boolean> {
+				const webhookUrl = this.getNodeWebhookUrl('default');
+
+				const action = this.getNodeParameter('action') as string;
+				const subject_type = this.getNodeParameter('subject_type') as string;
+
+				const body = {
+					url: webhookUrl,
+					action,
+					subject_type,
+				};
+
+				let responseData: JsonObject;
+				try {
+					responseData = (await qonektoApiRequest.call(
+						this,
+						'webhook/managed',
+						'POST',
+						{},
+						body,
+					)) as JsonObject;
+				} catch (error) {
+					throw new NodeApiError(this.getNode(), error as JsonObject);
+				}
+
+				if (responseData.id === undefined || responseData.token === undefined) {
+					// Required data is missing so was not successful
+					throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+						message: 'Qonekto webhook creation response did not contain the expected data.',
+					});
+				}
+
+				const webhookData = this.getWorkflowStaticData('node');
+				webhookData.webhookId = responseData.id as string;
+				webhookData.webhookToken = responseData.token as string;
+
+				return true;
+			},
+			async delete(this: IHookFunctions): Promise<boolean> {
+				const webhookData = this.getWorkflowStaticData('node');
+
+				if (webhookData.webhookId !== undefined && webhookData.webhookToken !== undefined) {
+					const body = {
+						id: webhookData.webhookId,
+						token: webhookData.webhookToken,
+					};
+
+					let response;
+					try {
+						response = await qonektoApiRequestFull.call(this, 'webhook/managed', 'DELETE', {}, body);
+					} catch {
+						return false;
+					}
+					if (response.statusCode !== 200) {
+						return false;
+					}
+
+					// Remove from the static workflow data so that it is clear
+					// that no webhooks are registered anymore
+					delete webhookData.webhookId;
+					delete webhookData.webhookToken;
+				}
+
+				return true;
 			},
 		},
 	};
+
+	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
+		const bodyData = this.getBodyData();
+
+		const returnData: IDataObject[] = [];
+
+		returnData.push({
+			body: bodyData,
+			headers: this.getHeaderData(),
+			query: this.getQueryData(),
+		});
+
+		return {
+			workflowData: [this.helpers.returnJsonArray(returnData)],
+		};
+	}
 }

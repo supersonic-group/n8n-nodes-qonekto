@@ -2,6 +2,7 @@ import {
 	BINARY_ENCODING,
 	IDataObject,
 	IExecuteFunctions,
+	IHookFunctions,
 	IHttpRequestMethods,
 	IHttpRequestOptions,
 	ILoadOptionsFunctions,
@@ -49,7 +50,7 @@ export async function getItemBinaryData(
 }
 
 export async function qonektoApiRequest(
-	this: IExecuteFunctions | ILoadOptionsFunctions,
+	this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
 	headers: Record<string, string | number> = {},
@@ -74,7 +75,7 @@ export async function qonektoApiRequest(
 }
 
 export async function qonektoApiRequestFull(
-	this: IExecuteFunctions | ILoadOptionsFunctions,
+	this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions,
 	url: string,
 	method: IHttpRequestMethods = 'GET',
 	headers: Record<string, string | number> = {},
@@ -149,7 +150,7 @@ type DataWithPagination = {
 };
 
 export async function qonektoApiRequestAllItems(
-	this: IExecuteFunctions | ILoadOptionsFunctions,
+	this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions,
 	uri: string,
 	method: IHttpRequestMethods = 'GET',
 	headers: Record<string, string | number> = {},
