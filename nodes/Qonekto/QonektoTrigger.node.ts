@@ -1,5 +1,4 @@
 import {
-	IDataObject,
 	IHookFunctions,
 	INodeType,
 	INodeTypeDescription,
@@ -16,7 +15,8 @@ export class QonektoTrigger implements INodeType {
 		displayName: 'Qonekto Trigger',
 		name: 'qonektoTrigger',
 		group: ['trigger'],
-		description: 'Starts the workflow when a Qonekto event for the given action and the given subject type occurs',
+		description:
+			'Starts the workflow when a Qonekto event for the given action and the given subject type occurs',
 
 		icon: 'file:qonekto.svg',
 
@@ -166,7 +166,13 @@ export class QonektoTrigger implements INodeType {
 
 					let response;
 					try {
-						response = await qonektoApiRequestFull.call(this, 'webhook/managed', 'DELETE', {}, body);
+						response = await qonektoApiRequestFull.call(
+							this,
+							'webhook/managed',
+							'DELETE',
+							{},
+							body,
+						);
 					} catch {
 						return false;
 					}
@@ -186,18 +192,8 @@ export class QonektoTrigger implements INodeType {
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		const bodyData = this.getBodyData();
-
-		const returnData: IDataObject[] = [];
-
-		returnData.push({
-			body: bodyData,
-			headers: this.getHeaderData(),
-			query: this.getQueryData(),
-		});
-
 		return {
-			workflowData: [this.helpers.returnJsonArray(returnData)],
+			workflowData: [this.helpers.returnJsonArray([this.getBodyData()])],
 		};
 	}
 }
