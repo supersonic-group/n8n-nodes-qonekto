@@ -85,18 +85,7 @@ export async function qonektoApiRequestFull(
 	maxRetries: number = 3,
 	retryCount: number = 1,
 ): Promise<IN8nHttpFullResponse> {
-	retryCount = Math.max(1, Math.min(retryCount, maxRetries));
-	console.log(
-		'qonektoApiRequest',
-		url,
-		method,
-		headers,
-		body,
-		qs,
-		mergeOptions,
-		retryCount,
-		maxRetries,
-	);
+	retryCount = Math.max(Math.min(1, maxRetries), retryCount);
 
 	const credentials: {
 		tenant: string;

@@ -29,13 +29,6 @@ export class QonektoTrigger implements INodeType {
 		defaults: {
 			name: 'Qonekto Trigger',
 		},
-		requestDefaults: {
-			baseURL: '={{$credentials.base_url + $credentials.tenant}}',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		},
 
 		version: 20250926,
 
