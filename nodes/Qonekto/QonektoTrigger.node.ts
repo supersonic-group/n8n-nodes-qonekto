@@ -30,7 +30,7 @@ export class QonektoTrigger implements INodeType {
 			name: 'Qonekto Trigger',
 		},
 
-		version: 20250926,
+		version: 20251008,
 
 		webhooks: [
 			{
