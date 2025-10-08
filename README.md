@@ -11,11 +11,12 @@ automate tasks in n8n.
 [Operations](#operations)
 [Credentials](#credentials)
 [Resources](#resources)
-[Version history](#version-history)
+[Version history](CHANGELOG.md)
 
 ## Installation
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
+Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community
+nodes documentation.
 
 ## Operations
 
@@ -30,6 +31,12 @@ The node exposes the following resources and operations.
     - Upsert Kunde — PUT /kunde/upsert
   - Upload File — POST /kunde/{kunde_ameise_id}/archiveintrag
   - Create File — POST /kunde/{kunde_ameise_id}/archiveintrag
+
+- Kunden-Tag (Customer Tags)
+    - List Customer Tags — GET /kunde/{ameise_id}/tags
+    - Set Customer Tags — PUT /kunde/{ameise_id}/tags
+    - Add Customer Tags — POST /kunde/{ameise_id}/tags
+    - Remove Customer Tags — DELETE /kunde/{ameise_id}/tags
 
 - Listen (Lookup lists)
     - Anreden — GET /anreden
@@ -80,16 +87,9 @@ Security
 
 - n8n stores credentials securely. Avoid hardcoding tokens; configure them via n8n’s Credentials UI.
 
-
 ## Resources
 
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
 - [Qonekto API Docs](https://app.qonekto.de/api/docs/)
 - Repository: https://github.com/supersonic-group/n8n-nodes-qonekto
 - Issues: https://github.com/supersonic-group/n8n-nodes-qonekto/issues
-
-## Version history
-
-### 2025.09.26
-
-- Initial version
