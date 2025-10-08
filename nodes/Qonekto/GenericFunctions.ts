@@ -11,7 +11,6 @@ import {
 	NodeOperationError,
 	sleep,
 } from 'n8n-workflow';
-import type FormData from 'form-data';
 import type { URLSearchParams } from 'url';
 import {
 	GenericValue,

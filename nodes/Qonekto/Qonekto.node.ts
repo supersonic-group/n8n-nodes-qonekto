@@ -12,8 +12,11 @@ import {
 import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
-import { getItemBinaryData, qonektoApiRequest, qonektoApiRequestAllItems } from './GenericFunctions';
-import FormData from 'form-data';
+import {
+	getItemBinaryData,
+	qonektoApiRequest,
+	qonektoApiRequestAllItems,
+} from './GenericFunctions';
 
 async function makeLoadOptions(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -139,11 +142,13 @@ export class Qonekto implements INodeType {
 
 						const betreff = this.getNodeParameter('betreff', i) as string;
 						multiPartBody.append('betreff', betreff || originalFilename);
+						// @ts-expect-error FormData should be imported from 'form-data',
+						// but it is not available in n8n.
 						multiPartBody.append('file', fileContent, {
 							contentType: mimeType,
 							knownLength: contentLength,
 							filename: betreff || originalFilename,
-						});
+						} as string);
 
 						const response = await qonektoApiRequest.call(
 							this,
