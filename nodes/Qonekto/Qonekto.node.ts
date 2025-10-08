@@ -143,7 +143,7 @@ export class Qonekto implements INodeType {
 						const betreff = this.getNodeParameter('betreff', i) as string;
 						multiPartBody.append('betreff', betreff || originalFilename);
 						// @ts-expect-error FormData should be imported from 'form-data',
-						// but it is not available in n8n.
+						// but the import is not allowed in n8n but should still work.
 						multiPartBody.append('file', fileContent, {
 							contentType: mimeType,
 							knownLength: contentLength,
