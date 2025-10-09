@@ -57,7 +57,7 @@ export class Qonekto implements INodeType {
 			},
 		},
 
-		version: 20251008,
+		version: 20250926,
 
 		properties: [...Resources, ...Operations, ...Fields],
 	};
