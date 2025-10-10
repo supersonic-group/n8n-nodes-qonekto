@@ -285,7 +285,7 @@ export const CreateKunde: INodeProperties[] = [
 				property: 'geburtsdatum',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: '={{ $value }}',
+				value: '={{ $value.format("yyyy-MM-dd") }}',
 			},
 		},
 		displayOptions: {
@@ -621,7 +621,7 @@ export const FilterKunden: INodeProperties[] = [
 				property: 'geburtsdatum',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: '={{ $value }}',
+				value: '={{ $value.format("yyyy-MM-dd") }}',
 			},
 		},
 		displayOptions: {
@@ -1510,7 +1510,7 @@ export const UpdateKunde: INodeProperties[] = [
 				property: 'geburtsdatum',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: '={{ $value }}',
+				value: '={{ $value.format("yyyy-MM-dd") }}',
 			},
 		},
 		displayOptions: {
@@ -1884,7 +1884,7 @@ export const CreateFile: INodeProperties[] = [
 				property: 'datum',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: '={{ $value }}',
+				value: '={{ $value.format("yyyy-MM-dd\'T\'HH:mm:ssZZ") }}',
 			},
 		},
 	},
