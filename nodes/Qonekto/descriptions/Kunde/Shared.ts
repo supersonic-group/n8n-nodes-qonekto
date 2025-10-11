@@ -13,10 +13,25 @@ export const Shared: Record<string, INodeProperties> = {
 	'Anrede ID': {
 		displayName: 'Anrede Name or ID',
 		name: 'anrede_id',
-		type: 'options',
+		type: 'resourceLocator',
 		default: '',
-		description:
-			'The ID for the anrede of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description: 'Select an Anrede',
+		modes: [
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getAnreden',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+			},
+		],
 		routing: {
 			send: {
 				property: 'anrede_id',
@@ -24,9 +39,6 @@ export const Shared: Record<string, INodeProperties> = {
 				type: 'body',
 				value: '={{ $value }}',
 			},
-		},
-		typeOptions: {
-			loadOptionsMethod: 'getAnreden',
 		},
 	},
 	'Vermittler ID': {
@@ -36,6 +48,15 @@ export const Shared: Record<string, INodeProperties> = {
 		default: '',
 		description: 'Select a Vermittler',
 		modes: [
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getVermittler',
+					searchable: true,
+				},
+			},
 			{
 				displayName: 'ID',
 				name: 'id',
@@ -50,15 +71,6 @@ export const Shared: Record<string, INodeProperties> = {
 					},
 				],
 			},
-			{
-				displayName: 'List',
-				name: 'list',
-				type: 'list',
-				typeOptions: {
-					searchListMethod: 'getVermittler',
-					searchable: true,
-				},
-			},
 		],
 		routing: {
 			send: {
@@ -72,10 +84,25 @@ export const Shared: Record<string, INodeProperties> = {
 	'Land ID': {
 		displayName: 'Land Name or ID',
 		name: 'land_id',
-		type: 'options',
+		type: 'resourceLocator',
 		default: '',
-		description:
-			'The ID for the country of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description: 'Select a Land',
+		modes: [
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getLaender',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+			},
+		],
 		routing: {
 			send: {
 				property: 'land_id',
@@ -84,17 +111,29 @@ export const Shared: Record<string, INodeProperties> = {
 				value: '={{ $value }}',
 			},
 		},
-		typeOptions: {
-			loadOptionsMethod: 'getLaender',
-		},
 	},
 	'Rechtsform ID': {
 		displayName: 'Rechtsform Name or ID',
 		name: 'rechtsform_id',
-		type: 'options',
+		type: 'resourceLocator',
 		default: '',
-		description:
-			'Wird aktuell nicht an die Ameise übergeben. Benötigt wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. The ID for the rechtsform of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description: 'Select a Rechtsform (required if Anrede is a juristic person)',
+		modes: [
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getRechtsformen',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+			},
+		],
 		routing: {
 			send: {
 				property: 'rechtsform_id',
@@ -103,19 +142,28 @@ export const Shared: Record<string, INodeProperties> = {
 				value: '={{ $value }}',
 			},
 		},
-		typeOptions: {
-			loadOptionsMethod: 'getRechtsformen',
-		},
 	},
 	'Sparte ID': {
 		displayName: 'Sparte Name or ID',
 		name: 'sparte_id',
-		type: 'options',
+		type: 'resourceLocator',
 		default: '',
-		description:
-			'The ID for the sparte of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
-		typeOptions: {
-			loadOptionsMethod: 'getSparten',
-		},
+		description: 'Select a Sparte',
+		modes: [
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getSparten',
+					searchable: true,
+				},
+			},
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+			},
+		],
 	},
 };
