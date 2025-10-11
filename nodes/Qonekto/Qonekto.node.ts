@@ -3,6 +3,7 @@ import {
 	IExecuteFunctions,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
+	INodeListSearchResult,
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
@@ -17,6 +18,7 @@ import {
 	qonektoApiRequest,
 	qonektoApiRequestAllItems,
 } from './GenericFunctions';
+import { INodeListSearchItems } from 'n8n-workflow/dist/esm/interfaces';
 
 async function makeLoadOptions(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -28,6 +30,30 @@ async function makeLoadOptions(
 ): Promise<INodePropertyOptions[]> {
 	const items = await qonektoApiRequestAllItems.call(self, uri);
 	return [{ name: '', value: '' }, ...items.map(mapFn)];
+}
+
+async function makeListSearch(
+	self: IExecuteFunctions | ILoadOptionsFunctions,
+	uri: string,
+	filter?: string,
+	mapFn: (item: IDataObject) => INodeListSearchItems = (item) => ({
+		name: (item.text || item.name || item.ameise_id) as string,
+		value: item.ameise_id as string,
+	}),
+) {
+	const items = await qonektoApiRequestAllItems.call(self, uri);
+	return {
+		results: [{ name: '', value: '' }, ...items.map(mapFn)].filter((item) => {
+			if (filter !== undefined && filter !== null && filter.trim() !== '') {
+				return (
+					item.name.toLowerCase().includes(filter.toLowerCase()) ||
+					('' + item.value).toLowerCase().includes(filter.toLowerCase())
+				);
+			}
+			return true;
+		}),
+		paginationToken: null,
+	};
 }
 
 export class Qonekto implements INodeType {
@@ -87,6 +113,56 @@ export class Qonekto implements INodeType {
 			},
 			async getZahlweisen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				return makeLoadOptions(this, 'zahlweisen');
+			},
+		},
+		listSearch: {
+			async getAnreden(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'anreden', filter);
+			},
+			async getGesellschaften(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'gesellschaften', filter);
+			},
+			async getLaender(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'laender', filter);
+			},
+			async getRechtsformen(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'rechtsformen', filter);
+			},
+			async getSparten(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'sparten', filter);
+			},
+			async getStatus(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'status', filter);
+			},
+			async getVermittler(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'vermittler', filter);
+			},
+			async getZahlweisen(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+			): Promise<INodeListSearchResult> {
+				return makeListSearch(this, 'zahlweisen', filter);
 			},
 		},
 	};

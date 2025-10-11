@@ -32,10 +32,34 @@ export const Shared: Record<string, INodeProperties> = {
 	'Vermittler ID': {
 		displayName: 'Vermittler Name or ID',
 		name: 'vermittler_id',
-		type: 'options',
+		type: 'resourceLocator',
 		default: '',
-		description:
-			'The ID for the vermittler of the object. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+		description: 'Select a Vermittler',
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[0-9A-Za-z]{6}$',
+							errorMessage: 'The ID must be alpanumeric and 6 characters long',
+						},
+					},
+				],
+			},
+			{
+				displayName: 'List',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'getVermittler',
+					searchable: true,
+				},
+			},
+		],
 		routing: {
 			send: {
 				property: 'vermittler_id',
@@ -43,9 +67,6 @@ export const Shared: Record<string, INodeProperties> = {
 				type: 'body',
 				value: '={{ $value }}',
 			},
-		},
-		typeOptions: {
-			loadOptionsMethod: 'getVermittler',
 		},
 	},
 	'Land ID': {
