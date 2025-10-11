@@ -4,11 +4,36 @@ export const Shared: Record<string, INodeProperties> = {
 	'Kunde Ameise ID': {
 		displayName: 'Ameise Kundennummer',
 		name: 'kunde_ameise_id',
-		type: 'string',
-		validateType: 'number',
+		type: 'resourceLocator',
 		default: '',
 		required: true,
 		description: 'The ID of the Kunde in Ameise',
+		modes: [
+			{
+				displayName: 'ID',
+				name: 'id',
+				type: 'string',
+				validation: [
+					{
+						type: 'regex',
+						properties: {
+							regex: '^[0-9]+$',
+							errorMessage: 'Must be a number',
+						},
+					},
+				],
+			},
+			{
+				displayName: 'Search',
+				name: 'list',
+				type: 'list',
+				typeOptions: {
+					searchListMethod: 'searchKunden',
+					searchable: true,
+					searchFilterRequired: true,
+				},
+			},
+		],
 	},
 	'Anrede ID': {
 		displayName: 'Anrede Name or ID',

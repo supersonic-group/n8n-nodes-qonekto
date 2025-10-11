@@ -4,7 +4,6 @@ import {
 	ILoadOptionsFunctions,
 	INodeExecutionData,
 	INodeListSearchResult,
-	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	NodeConnectionTypes,
@@ -19,18 +18,6 @@ import {
 	qonektoApiRequestAllItems,
 } from './GenericFunctions';
 import { INodeListSearchItems } from 'n8n-workflow/dist/esm/interfaces';
-
-async function makeLoadOptions(
-	self: IExecuteFunctions | ILoadOptionsFunctions,
-	uri: string,
-	mapFn: (item: IDataObject) => INodePropertyOptions = (item) => ({
-		name: (item.text || item.name || item.ameise_id) as string,
-		value: item.ameise_id as string,
-	}),
-): Promise<INodePropertyOptions[]> {
-	const items = await qonektoApiRequestAllItems.call(self, uri);
-	return [{ name: '', value: '' }, ...items.map(mapFn)];
-}
 
 async function makeListSearch(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -89,32 +76,6 @@ export class Qonekto implements INodeType {
 	};
 
 	methods = {
-		loadOptions: {
-			async getAnreden(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'anreden');
-			},
-			async getGesellschaften(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'gesellschaften');
-			},
-			async getLaender(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'laender');
-			},
-			async getRechtsformen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'rechtsformen');
-			},
-			async getSparten(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'sparten');
-			},
-			async getStatus(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'status');
-			},
-			async getVermittler(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'vermittler');
-			},
-			async getZahlweisen(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				return makeLoadOptions(this, 'zahlweisen');
-			},
-		},
 		listSearch: {
 			async getAnreden(
 				this: ILoadOptionsFunctions,
@@ -163,6 +124,48 @@ export class Qonekto implements INodeType {
 				filter?: string,
 			): Promise<INodeListSearchResult> {
 				return makeListSearch(this, 'zahlweisen', filter);
+			},
+
+			async searchKunden(
+				this: ILoadOptionsFunctions,
+				filter?: string,
+				paginationToken?: string,
+			): Promise<INodeListSearchResult> {
+				const response = (await qonektoApiRequest.call(
+					this,
+					'/kunde',
+					'GET',
+					{},
+					{},
+					{
+						search: filter,
+						page: paginationToken ? parseInt(paginationToken) : 1,
+					},
+				)) as {
+					data: {
+						ameise_id: number;
+						nachname: string;
+						vorname: string;
+						vermittler_id: string;
+					}[];
+					meta: { current_page: number; last_page: number };
+				};
+
+				return {
+					results: response.data.map(
+						(item): INodeListSearchItems => ({
+							name: (item.nachname + ' ' + item.vorname).trim() + ' (#' + item.ameise_id + ')',
+							value: item.ameise_id,
+							description:
+								'Kundennummer: ' + item.ameise_id + ' • Vermittler: ' + item.vermittler_id,
+							url: 'https://maklerinfo.biz/maklerportal/?show=kunde&kunde=' + item.ameise_id,
+						}),
+					),
+					paginationToken:
+						response.meta.current_page < response.meta.last_page
+							? (response.meta.current_page + 1).toString()
+							: null,
+				};
 			},
 		},
 	};
