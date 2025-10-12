@@ -3,8 +3,39 @@ import { Shared } from './Shared';
 
 export const ListKunden: INodeProperties[] = [
 	{
-		displayName: 'Optional Fields',
-		name: 'optional fields',
+		displayName: 'Optional Search',
+		name: 'optional search',
+		type: 'collection',
+		placeholder: 'Add Search Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Search',
+				name: 'search',
+				description:
+					'Searches for all Kunden beginning with keyword in `vorname`, `nachname` or a match in any `kommunikation` fields. Cannot use filter parameter when passing search parameter.',
+				default: '',
+				type: 'string',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'search',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['List Kunden'],
+			},
+		},
+	},
+	{
+		displayName: 'Pagination Fields',
+		name: 'pagination fields',
 		type: 'collection',
 		placeholder: 'Add Field',
 		default: {},
@@ -25,16 +56,16 @@ export const ListKunden: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Search',
-				name: 'search',
-				description:
-					'Searches for all Kunden beginning with keyword in `vorname`, `nachname` or a match in any `kommunikation` fields. Cannot use filter parameter when passing search parameter.',
-				default: '',
-				type: 'string',
+				displayName: 'Page',
+				name: 'page',
+				description: 'Returns result of given page number, when Pagination is enabled',
+				default: 1,
+				hint: 'Requires "Per Page" to be set to enable Pagination',
+				type: 'number',
 				routing: {
 					send: {
 						type: 'query',
-						property: 'search',
+						property: 'page',
 						value: '={{ $value }}',
 						propertyInDotNotation: false,
 					},
