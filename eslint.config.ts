@@ -53,6 +53,7 @@ export const config: ConfigArray = tseslint.config(
 			'n8n-nodes-base/node-class-description-outputs-wrong': 'off',
 			'n8n-nodes-base/node-param-type-options-max-value-present': 'off',
 			'n8n-nodes-base/node-param-options-type-unsorted-items': 'off',
+			'n8n-nodes-base/node-param-collection-type-unsorted-items': 'off',
 		},
 	},
 );
