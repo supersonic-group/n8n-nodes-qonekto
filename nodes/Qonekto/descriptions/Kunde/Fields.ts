@@ -1,5 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
-import { Shared } from './Shared';
+import { Shared, SharedCollections } from './Shared';
 
 export const ListKunden: INodeProperties[] = [
 	{
@@ -83,80 +83,6 @@ export const ListKunden: INodeProperties[] = [
 
 export const CreateKunde: INodeProperties[] = [
 	{
-		displayName: 'Mitteilung Benutzername',
-		name: 'mitteilung-benutzername',
-		description: 'Whether to send the customer the account username via email (if given)',
-		default: false,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-benutzername',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Mitteilung Passwort Link',
-		name: 'mitteilung-passwort-link',
-		description:
-			'Whether to send the customer a link to reset their account password via email (if given)',
-		default: false,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-passwort-link',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Mitteilung Erstinfo Unterbinden',
-		name: 'mitteilung-erstinfo-unterbinden',
-		description:
-			'Whether to suppress sending the customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given)',
-		default: true,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-erstinfo-unterbinden',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		...Shared['Vermittler ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
 		...Shared['Anrede ID'],
 		required: true,
 		displayOptions: {
@@ -213,91 +139,6 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Titel',
-		name: 'titel',
-		type: 'string',
-		default: '',
-		description:
-			'Wird nicht verwendet, wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'titel',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Strasse',
-		name: 'strasse',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
-		routing: {
-			send: {
-				property: 'strasse',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Plz',
-		name: 'plz',
-		type: 'string',
-		default: '',
-		description: 'Value muss zwischen 4 und 5 Stellen haben',
-		routing: {
-			send: {
-				property: 'plz',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Ort',
-		name: 'ort',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
-		routing: {
-			send: {
-				property: 'ort',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
 		...Shared['Land ID'],
 		required: true,
 		displayOptions: {
@@ -308,21 +149,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Geburtsdatum',
-		name: 'geburtsdatum',
-		type: 'dateTime',
-		default: '',
-		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
-		routing: {
-			send: {
-				property: 'geburtsdatum',
-				propertyInDotNotation: false,
-				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
-			},
-		},
+		...SharedCollections['Kunde Optional Fields'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -331,157 +158,7 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Beruf',
-		name: 'beruf',
-		type: 'string',
-		default: '',
-		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld die Branche. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'beruf',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Per Du',
-		name: 'per_du',
-		type: 'boolean',
-		default: false,
-		description: 'Whether to pass this to Ameise; currently not passed',
-		routing: {
-			send: {
-				property: 'per_du',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Nationalitaet',
-		name: 'nationalitaet',
-		type: 'string',
-		default: '',
-		description:
-			'Wird aktuell nicht an die Ameise übergeben. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'nationalitaet',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		...Shared['Rechtsform ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Benutzername Simplr',
-		name: 'benutzername_simplr',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
-		routing: {
-			send: {
-				property: 'benutzername_simplr',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Verstorben',
-		name: 'verstorben',
-		type: 'boolean',
-		default: false,
-		description: 'Whether to mark the customer as deceased; currently not passed to Ameise',
-		routing: {
-			send: {
-				property: 'verstorben',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Kommunikation',
-		name: 'kommunikation',
-		type: 'json',
-		default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
-		routing: {
-			send: {
-				property: 'kommunikation',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Details',
-		name: 'details',
-		type: 'json',
-		default:
-			'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
-		routing: {
-			send: {
-				property: 'details',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
-			},
-		},
+		...SharedCollections['Kunde Notification Settings'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -778,90 +455,12 @@ export const FilterKunden: INodeProperties[] = [
 	},
 ];
 
-export const UpsertKunde: INodeProperties[] = [
-	{
-		displayName: 'Mitteilung Benutzername',
-		name: 'mitteilung-benutzername',
-		description:
-			'Whether to send the customer the account username via email (if given). Only applies if the customer could not be found.',
-		default: true,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-benutzername',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Mitteilung Passwort Link',
-		name: 'mitteilung-passwort-link',
-		description:
-			'Whether to send the customer a link to reset their account password via email (if given). Only applies if the customer could not be found.',
-		default: true,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-passwort-link',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
-	},
-	{
-		displayName: 'Mitteilung Erstinfo Unterbinden',
-		name: 'mitteilung-erstinfo-unterbinden',
-		description:
-			'Whether to suppress sending the customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given). Only applies if the customer could not be found.',
-		default: true,
-		type: 'boolean',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'mitteilung-erstinfo-unterbinden',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
-	},
+const KundeFields: INodeProperties[] = [
 	{
 		...Shared['Vermittler ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		...Shared['Anrede ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Vorname',
@@ -876,12 +475,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -900,12 +493,6 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Titel',
@@ -920,12 +507,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -943,12 +524,6 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Plz',
@@ -962,12 +537,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -985,21 +554,9 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		...Shared['Land ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Geburtsdatum',
@@ -1014,12 +571,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -1038,12 +589,6 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Per Du',
@@ -1057,12 +602,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -1081,21 +620,9 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		...Shared['Rechtsform ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Benutzername Simplr',
@@ -1109,12 +636,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -1132,12 +653,6 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ $value }}',
 			},
 		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
-			},
-		},
 	},
 	{
 		displayName: 'Kommunikation',
@@ -1151,12 +666,6 @@ export const UpsertKunde: INodeProperties[] = [
 				propertyInDotNotation: false,
 				type: 'body',
 				value: '={{ JSON.parse($value) }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upsert Kunde'],
 			},
 		},
 	},
@@ -1175,6 +684,18 @@ export const UpsertKunde: INodeProperties[] = [
 				value: '={{ JSON.parse($value) }}',
 			},
 		},
+	},
+];
+
+export const UpsertKunde: INodeProperties[] = [
+	{
+		displayName: 'Fields to Set on Customer (Existing or New)',
+		name: 'kunde fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		required: true,
+		default: {},
+		options: KundeFields.slice(0),
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1183,19 +704,56 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Search',
+		...SharedCollections['Kunde Notification Settings'],
+		description: 'Notification Settings (Only for Newly Created Customer)',
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['Upsert Kunde'],
+			},
+		},
+	},
+	{
+		displayName: 'Fields to Use to Search for Existing Customer',
 		name: '_search',
-		type: 'json',
-		default: '[\n  "vorname",\n  "nachname",\n  "kommunikation.email_private"\n]',
+		type: 'multiOptions',
+		default: ['vorname', 'nachname', 'kommunikation.email_any'],
 		required: true,
 		description:
 			'Parameter names which should be used to search for existing customer. Allows kommunikation.email_**any** to match any kontext (private, business). Furthermore customer may have the kommunikation.* property not as the default kommunikation value.',
+		options: [
+			...KundeFields.filter((item) => item.type !== 'json').map((item) => {
+				return {
+					name: item.displayName,
+					value: item.name,
+				};
+			}),
+			...['email', 'telefon', 'mobil', 'website', 'fax'].flatMap((art) =>
+				['any', 'private', 'business'].map((kontext) => ({
+					name:
+						'Kommunikation: ' +
+						{
+							any: 'Any',
+							private: 'Private',
+							business: 'Business',
+						}[kontext] +
+						' ' +
+						{
+							email: 'E-Mail',
+							telefon: 'Telefon',
+							mobil: 'Mobil',
+							website: 'Website',
+							fax: 'Fax',
+						}[art],
+					value: `kommunikation.${art}_${kontext}`,
+				})),
+			),
+		],
 		routing: {
 			send: {
 				property: '_search',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: '={{ JSON.parse($value) }}',
 			},
 		},
 		displayOptions: {
@@ -1206,20 +764,19 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Default',
+		displayName: 'Kunde Fields to Set only for Newly Created Customer',
 		name: '_default',
-		type: 'json',
-		default: '{\n  "anrede_id": "1",\n  "land_id": "DE"\n}',
+		type: 'collection',
 		description:
-			'Default parameters that should be set only for newly created customer (if not passed via other parameters)',
-		routing: {
-			send: {
-				property: '_default',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
-			},
-		},
+			'Parameters that will only be set for a newly created customer and not already set. If a customer is found, the values of the fields in this collection will not be used.',
+		default: {},
+		options: KundeFields.slice(0).map((item) => {
+			item.routing = item.routing || {};
+			item.routing.send = item.routing.send || {};
+			item.routing.send.property = '_default.' + item.routing.send.property;
+			item.routing.send.propertyInDotNotation = true;
+			return item;
+		}),
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1578,58 +1135,7 @@ export const UploadFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Datum',
-		name: 'datum',
-		type: 'dateTime',
-		default: '',
-		description: 'If empty, will use the current date and time',
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upload File'],
-			},
-		},
-	},
-	{
-		displayName: 'Vertrag ID',
-		name: 'vertrags_id',
-		description: 'Ameise ID of the related Vertrag',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upload File'],
-			},
-		},
-	},
-	{
-		...Shared['Sparte ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upload File'],
-			},
-		},
-	},
-	{
-		displayName: 'Kundensichtbar',
-		name: 'kundensichtbar',
-		description: 'Whether to allow the customer to view the created file',
-		type: 'boolean',
-		default: true,
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Upload File'],
-			},
-		},
-	},
-	{
-		displayName: 'Tags',
-		name: 'tags',
-		type: 'json',
-		default: '["Tag"]',
+		...SharedCollections['File Optional Fields'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
@@ -1727,103 +1233,11 @@ export const CreateFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Datum',
-		name: 'datum',
-		type: 'dateTime',
-		default: '',
-		description: 'If empty, will use the current date and time',
+		...SharedCollections['File Optional Fields'],
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
 				operation: ['Create File'],
-			},
-		},
-		routing: {
-			send: {
-				property: 'datum',
-				propertyInDotNotation: false,
-				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd\'T\'HH:mm:ssZZ") : null }}',
-			},
-		},
-	},
-	{
-		displayName: 'Vertrag ID',
-		name: 'vertrags_id',
-		description: 'Ameise ID of the related Vertrag',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create File'],
-			},
-		},
-		routing: {
-			send: {
-				property: 'zuordnung.vertrags_id',
-				propertyInDotNotation: true,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-	},
-	{
-		...Shared['Sparte ID'],
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create File'],
-			},
-		},
-		routing: {
-			send: {
-				property: 'zuordnung.sparte_id',
-				propertyInDotNotation: true,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-	},
-	{
-		displayName: 'Kundensichtbar',
-		name: 'kundensichtbar',
-		description: 'Whether to allow the customer to view the created file',
-		type: 'boolean',
-		default: true,
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create File'],
-			},
-		},
-		routing: {
-			send: {
-				property: 'meta.kundensichtbar',
-				propertyInDotNotation: true,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-	},
-	{
-		displayName: 'Tags',
-		name: 'tags',
-		type: 'json',
-		default: '["Tag"]',
-		displayOptions: {
-			show: {
-				resource: ['Kunde'],
-				operation: ['Create File'],
-			},
-		},
-		routing: {
-			send: {
-				property: 'tags',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
 			},
 		},
 	},
