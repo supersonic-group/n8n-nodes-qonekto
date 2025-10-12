@@ -36,7 +36,7 @@ export const Shared: Record<string, INodeProperties> = {
 		],
 	},
 	'Anrede ID': {
-		displayName: 'Anrede Name or ID',
+		displayName: 'Anrede ID',
 		name: 'anrede_id',
 		type: 'resourceLocator',
 		default: '',
@@ -67,7 +67,7 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Vermittler ID': {
-		displayName: 'Vermittler Name or ID',
+		displayName: 'Vermittler ID',
 		name: 'vermittler_id',
 		type: 'resourceLocator',
 		default: '',
@@ -107,7 +107,7 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Land ID': {
-		displayName: 'Land Name or ID',
+		displayName: 'Land ID',
 		name: 'land_id',
 		type: 'resourceLocator',
 		default: '',
@@ -138,7 +138,7 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Rechtsform ID': {
-		displayName: 'Rechtsform Name or ID',
+		displayName: 'Rechtsform ID',
 		name: 'rechtsform_id',
 		type: 'resourceLocator',
 		default: '',
@@ -169,7 +169,7 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Sparte ID': {
-		displayName: 'Sparte Name or ID',
+		displayName: 'Sparte ID',
 		name: 'sparte_id',
 		type: 'resourceLocator',
 		default: '',
