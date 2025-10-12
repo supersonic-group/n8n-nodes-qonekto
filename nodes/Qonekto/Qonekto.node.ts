@@ -12,11 +12,7 @@ import {
 import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
-import {
-	getItemBinaryData,
-	qonektoApiRequest,
-	qonektoApiRequestAllItems,
-} from './GenericFunctions';
+import { getItemBinaryData, qonektoApiRequest } from './GenericFunctions';
 import { INodeListSearchItems } from 'n8n-workflow/dist/esm/interfaces';
 
 async function makeListSearch(
@@ -28,9 +24,9 @@ async function makeListSearch(
 		value: item.ameise_id as string,
 	}),
 ) {
-	const items = await qonektoApiRequestAllItems.call(self, uri);
+	const items = (await qonektoApiRequest.call(self, uri)) as IDataObject[];
 	return {
-		results: [{ name: '', value: '' }, ...items.map(mapFn)].filter((item) => {
+		results: items.map(mapFn).filter((item) => {
 			if (filter !== undefined && filter !== null && filter.trim() !== '') {
 				return (
 					item.name.toLowerCase().includes(filter.toLowerCase()) ||
