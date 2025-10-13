@@ -150,7 +150,7 @@ export class Qonekto implements INodeType {
 				return {
 					results: response.data.map(
 						(item): INodeListSearchItems => ({
-							name: (item.nachname + ' ' + item.vorname).trim() + ' (#' + item.ameise_id + ')',
+							name: (item.vorname + ' ' + item.nachname).trim() + ' (#' + item.ameise_id + ')',
 							value: item.ameise_id,
 							description:
 								'Kundennummer: ' + item.ameise_id + ' • Vermittler: ' + item.vermittler_id,
