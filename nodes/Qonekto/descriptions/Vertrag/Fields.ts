@@ -29,6 +29,37 @@ export const ListVertraege: INodeProperties[] = [
 		},
 	},
 	{
+		displayName: 'Optional Search',
+		name: 'optional search',
+		type: 'collection',
+		placeholder: 'Add Search Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Search',
+				name: 'search',
+				description:
+					'Searches for all Vertraege beginning with keyword in `versicherungsscheinnummer`, or `risiko`',
+				default: '',
+				type: 'string',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'search',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['Vertrag'],
+				operation: ['List Vertraege'],
+			},
+		},
+	},
+	{
 		displayName: 'Pagination Fields',
 		name: 'pagination fields',
 		type: 'collection',
@@ -588,6 +619,51 @@ export const FilterVertraege: INodeProperties[] = [
 						value:
 							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
 					},
+				},
+			},
+		],
+		displayOptions: { show: { resource: ['Vertrag'], operation: ['Filter Vertraege'] } },
+	},
+	{
+		displayName: 'Pagination Fields',
+		name: 'pagination fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Skip',
+				name: '_skip',
+				type: 'number',
+				default: 0,
+				description: 'How many items to skip in results',
+				routing: {
+					send: {
+						property: '_skip',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Limit',
+				name: '_limit',
+				type: 'number',
+				default: 25,
+				description: 'How many items to return in results',
+				hint: 'Max: 100',
+				routing: {
+					send: {
+						property: '_limit',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+				typeOptions: {
+					minValue: 1,
+					maxValue: 100,
 				},
 			},
 		],
