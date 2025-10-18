@@ -533,6 +533,34 @@ export const FilterVertraege: INodeProperties[] = [
 				},
 			},
 			{
+				displayName: 'Risiko',
+				name: 'risiko',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'risiko',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Beitrag Netto',
+				name: 'beitrag_netto',
+				type: 'number',
+				default: '',
+				routing: {
+					send: {
+						property: 'beitrag_netto',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
 				displayName: 'Beginn',
 				name: 'beginn',
 				type: 'dateTime',
