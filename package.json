@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-qonekto",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "n8n community node to work with the Qonekto API",
   "license": "MIT",
   "homepage": "https://qonekto.de",
