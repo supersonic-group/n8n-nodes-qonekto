@@ -259,7 +259,6 @@ export const CreateVertrag: INodeProperties[] = [
 				name: 'sparte_id',
 				type: 'resourceLocator',
 				default: '',
-				required: true,
 				description: 'Select a Sparte',
 				modes: [
 					{
