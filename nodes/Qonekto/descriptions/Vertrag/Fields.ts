@@ -205,6 +205,22 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
+		displayName: 'Versicherungsscheinnummer',
+		name: 'versicherungsscheinnummer',
+		type: 'string',
+		default: '',
+		required: true,
+		routing: {
+			send: {
+				property: 'versicherungsscheinnummer',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
+	},
+	{
 		displayName: 'Risiko',
 		name: 'risiko',
 		type: 'string',
@@ -330,20 +346,6 @@ export const CreateVertrag: INodeProperties[] = [
 				routing: {
 					send: {
 						property: 'zahlweise_id',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Versicherungsscheinnummer',
-				name: 'versicherungsscheinnummer',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						property: 'versicherungsscheinnummer',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
