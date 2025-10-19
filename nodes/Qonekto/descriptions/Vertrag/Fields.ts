@@ -146,32 +146,6 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
-		displayName: 'Sparte ID',
-		name: 'sparte_id',
-		type: 'resourceLocator',
-		default: '',
-		required: true,
-		description: 'Select a Sparte',
-		modes: [
-			{
-				displayName: 'List',
-				name: 'list',
-				type: 'list',
-				typeOptions: { searchListMethod: 'getSparten', searchable: true },
-			},
-			{ displayName: 'ID', name: 'id', type: 'string' },
-		],
-		routing: {
-			send: {
-				property: 'sparte_id',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
-	},
-	{
 		displayName: 'Beginn',
 		name: 'beginn',
 		type: 'dateTime',
@@ -274,6 +248,31 @@ export const CreateVertrag: INodeProperties[] = [
 				routing: {
 					send: {
 						property: 'vermittler_id',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Sparte ID',
+				name: 'sparte_id',
+				type: 'resourceLocator',
+				default: '',
+				required: true,
+				description: 'Select a Sparte',
+				modes: [
+					{
+						displayName: 'List',
+						name: 'list',
+						type: 'list',
+						typeOptions: { searchListMethod: 'getSparten', searchable: true },
+					},
+					{ displayName: 'ID', name: 'id', type: 'string' },
+				],
+				routing: {
+					send: {
+						property: 'sparte_id',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
