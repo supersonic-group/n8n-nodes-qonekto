@@ -11,6 +11,7 @@ export const ListVertraege: INodeProperties[] = [
 		options: [
 			{
 				...Shared['Kunde Ameise ID'],
+				required: false,
 				name: 'kunde_id',
 				routing: {
 					send: {
