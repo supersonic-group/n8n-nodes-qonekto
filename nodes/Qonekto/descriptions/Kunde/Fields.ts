@@ -1,5 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared, SharedCollections } from './Shared';
+import {
+	GenericValue,
+	IExecuteSingleFunctions,
+	IHttpRequestOptions,
+	INodeParameterResourceLocator,
+} from 'n8n-workflow/dist/esm/interfaces';
 
 export const ListKunden: INodeProperties[] = [
 	{
@@ -526,7 +532,7 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Plz',
+		displayName: 'PLZ',
 		name: 'plz',
 		type: 'string',
 		default: '',
@@ -687,6 +693,43 @@ const KundeFields: INodeProperties[] = [
 	},
 ];
 
+const makeKundeFieldsPresendAction = (nodeParameter: string, bodyParameter: string | null) => {
+	return async function (
+		this: IExecuteSingleFunctions,
+		requestOptions: IHttpRequestOptions,
+	): Promise<IHttpRequestOptions> {
+		const fields = this.getNodeParameter(nodeParameter) as Record<
+			string,
+			GenericValue | INodeParameterResourceLocator
+		>;
+		for (const field of Object.keys(fields)) {
+			if (
+				fields[field] &&
+				typeof fields[field] === 'object' &&
+				'value' in fields[field] &&
+				fields[field].value
+			) {
+				fields[field] = fields[field].value;
+			} else if (
+				fields[field] &&
+				typeof fields[field] === 'string' &&
+				['kommunikation', 'details'].includes(field)
+			) {
+				fields[field] = JSON.parse(fields[field]);
+			}
+			if (bodyParameter === null) {
+				// @ts-expect-error - Property 'body' does not exist on type 'IHttpRequestOptions'.
+				requestOptions.body[field] = fields[field];
+			}
+		}
+		if (bodyParameter !== null) {
+			// @ts-expect-error - Property 'body' does not exist on type 'IHttpRequestOptions'.
+			requestOptions.body[bodyParameter] = fields;
+		}
+		return requestOptions;
+	};
+};
+
 export const UpsertKunde: INodeProperties[] = [
 	{
 		displayName: 'Fields to Set on Customer (Existing or New)',
@@ -695,11 +738,20 @@ export const UpsertKunde: INodeProperties[] = [
 		placeholder: 'Add Field',
 		required: true,
 		default: {},
-		options: KundeFields.slice(0),
+		options: KundeFields.slice(0).map((item) => {
+			item.routing = undefined;
+			delete item.routing;
+			return item;
+		}),
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
 				operation: ['Upsert Kunde'],
+			},
+		},
+		routing: {
+			send: {
+				preSend: [makeKundeFieldsPresendAction('kunde fields', null)],
 			},
 		},
 	},
@@ -771,17 +823,19 @@ export const UpsertKunde: INodeProperties[] = [
 			'Parameters that will only be set for a newly created customer and not already set. If a customer is found, the values of the fields in this collection will not be used.',
 		default: {},
 		options: KundeFields.slice(0).map((item) => {
-			item.name = '_default.' + item.name;
-			item.routing = item.routing || {};
-			item.routing.send = item.routing.send || {};
-			item.routing.send.property = '_default.' + item.routing.send.property;
-			item.routing.send.propertyInDotNotation = true;
+			item.routing = undefined;
+			delete item.routing;
 			return item;
 		}),
 		displayOptions: {
 			show: {
 				resource: ['Kunde'],
 				operation: ['Upsert Kunde'],
+			},
+		},
+		routing: {
+			send: {
+				preSend: [makeKundeFieldsPresendAction('_default', '_default')],
 			},
 		},
 	},
