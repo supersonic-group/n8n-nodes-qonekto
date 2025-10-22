@@ -771,6 +771,7 @@ export const UpsertKunde: INodeProperties[] = [
 			'Parameters that will only be set for a newly created customer and not already set. If a customer is found, the values of the fields in this collection will not be used.',
 		default: {},
 		options: KundeFields.slice(0).map((item) => {
+			item.name = '_default.' + item.name;
 			item.routing = item.routing || {};
 			item.routing.send = item.routing.send || {};
 			item.routing.send.property = '_default.' + item.routing.send.property;
