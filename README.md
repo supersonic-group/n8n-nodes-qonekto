@@ -54,7 +54,6 @@ The node exposes the following resources and operations.
     - Create A Tender — POST /panda/tenders
     - Get Active Tenders For A Customer — GET /panda/tenders
     - Get All Customer Links — GET /panda/customer-links
-    - Imports An Ameise Customer Into Panda — POST /panda/customers/{ameiseId}/import
 
 - Pipeline
     - Trigger Pipeline Import From CRM — GET /pipeline/{pipeline_id}/trigger-from-crm

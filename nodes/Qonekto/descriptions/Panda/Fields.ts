@@ -1,30 +1,9 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from '../Kunde/Shared';
 
 export const GetAllCustomerLinks: INodeProperties[] = [];
 
 export const CreateACustomerLink: INodeProperties[] = [
-	{
-		displayName: 'Import Customer',
-		name: 'import-customer',
-		description:
-			'If query parameter exists, customer will be imported into Panda if it does not exist yet before calling function',
-		default: '',
-		type: 'string',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'import-customer',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Panda'],
-				operation: ['Create A Customer Link'],
-			},
-		},
-	},
 	{
 		displayName: 'Type',
 		name: 'type',
@@ -57,11 +36,8 @@ export const CreateACustomerLink: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Customer ID',
+		...Shared['Kunde Ameise ID'],
 		name: 'customerId',
-		type: 'number',
-		default: 16,
-		required: true,
 		routing: {
 			send: {
 				property: 'customerId',
@@ -186,12 +162,8 @@ export const CreateACustomerLink: INodeProperties[] = [
 
 export const GetActiveTendersForACustomer: INodeProperties[] = [
 	{
-		displayName: 'Customer ID',
+		...Shared['Kunde Ameise ID'],
 		name: 'customerId',
-		required: true,
-		description: 'Customer Ameise ID',
-		default: '',
-		type: 'string',
 		routing: {
 			send: {
 				type: 'query',
@@ -232,33 +204,8 @@ export const GetActiveTendersForACustomer: INodeProperties[] = [
 
 export const CreateATender: INodeProperties[] = [
 	{
-		displayName: 'Import Customer',
-		name: 'import-customer',
-		description:
-			'If query parameter exists, customer will be imported into Panda if it does not exist yet before calling function',
-		default: '',
-		type: 'string',
-		routing: {
-			send: {
-				type: 'query',
-				property: 'import-customer',
-				value: '={{ $value }}',
-				propertyInDotNotation: false,
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['Panda'],
-				operation: ['Create A Tender'],
-			},
-		},
-	},
-	{
-		displayName: 'Customer ID',
+		...Shared['Kunde Ameise ID'],
 		name: 'customerId',
-		type: 'number',
-		default: 16,
-		required: true,
 		routing: {
 			send: {
 				property: 'customerId',
@@ -345,12 +292,9 @@ export const CreateATender: INodeProperties[] = [
 	},
 ];
 
-export const ImportsAnAmeiseCustomerIntoPanda: INodeProperties[] = [];
-
 export default [
 	...GetAllCustomerLinks,
 	...CreateACustomerLink,
 	...GetActiveTendersForACustomer,
 	...CreateATender,
-	...ImportsAnAmeiseCustomerIntoPanda,
 ];

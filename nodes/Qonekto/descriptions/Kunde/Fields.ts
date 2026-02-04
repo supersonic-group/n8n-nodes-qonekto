@@ -706,8 +706,7 @@ const makeKundeFieldsPresendAction = (nodeParameter: string, bodyParameter: stri
 			if (
 				fields[field] &&
 				typeof fields[field] === 'object' &&
-				'value' in fields[field] &&
-				fields[field].value
+				'value' in fields[field]
 			) {
 				fields[field] = fields[field].value;
 			} else if (

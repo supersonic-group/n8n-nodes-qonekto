@@ -61,17 +61,6 @@ export const Panda: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				name: 'Imports An Ameise Customer Into Panda',
-				value: 'Imports An Ameise Customer Into Panda',
-				action: 'Imports an ameise customer into panda',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '=/panda/customers/{{$parameter["ameiseId"]}}/import',
-					},
-				},
-			},
 		],
 		default: 'Get All Customer Links',
 	},
