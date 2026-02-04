@@ -1,3 +1,5 @@
+import FormData from 'form-data';
+
 import {
 	IDataObject,
 	IExecuteFunctions,
@@ -177,27 +179,29 @@ export class Qonekto implements INodeType {
 						const multiPartBody = new FormData();
 						multiPartBody.append('typ', 'dokument');
 
-						const datum = this.getNodeParameter('datum', i) as string;
+						const optional = this.getNodeParameter('optional fields', i) as Record<string, string>;
+
+						const datum = optional.datum || this.getNodeParameter('datum', i, '') as string;
 						if (datum) {
 							const date = new Date(datum);
 							date.setUTCMilliseconds(0);
 							multiPartBody.append('datum', date.toISOString().replace('.000Z', '+00:00'));
 						}
 
-						const vertrags_id = this.getNodeParameter('vertrags_id', i) as string;
+						const vertrags_id = optional.vertrags_id || this.getNodeParameter('vertrags_id', i, '') as string;
 						if (vertrags_id) {
 							multiPartBody.append('zuordnung[vertrags_id]', vertrags_id);
 						}
 
-						const sparte_id = this.getNodeParameter('sparte_id', i) as string;
+						const sparte_id = optional.sparte_id || this.getNodeParameter('sparte_id', i, '') as string;
 						if (sparte_id) {
 							multiPartBody.append('zuordnung[sparte_id]', sparte_id);
 						}
 
-						const kundensichtbar = this.getNodeParameter('kundensichtbar', i) as string;
+						const kundensichtbar = optional.kundensichtbar || this.getNodeParameter('kundensichtbar', i, '') as string;
 						multiPartBody.append('meta[kundensichtbar]', JSON.stringify(kundensichtbar));
 
-						const tagsJson = this.getNodeParameter('tags', i) as string;
+						const tagsJson = optional.tagsJson || this.getNodeParameter('tags', i, '') as string;
 						if (tagsJson) {
 							let tags: string[] = [];
 							try {
@@ -215,7 +219,7 @@ export class Qonekto implements INodeType {
 						const { contentLength, fileContent, originalFilename, mimeType } =
 							await getItemBinaryData.call(this, inputDataFieldName, i);
 
-						const betreff = this.getNodeParameter('betreff', i) as string;
+						const betreff = this.getNodeParameter('betreff', i, '') as string;
 						multiPartBody.append('betreff', betreff || originalFilename);
 						// @ts-expect-error FormData should be imported from 'form-data',
 						// but the import is not allowed in n8n but should still work.
@@ -230,7 +234,7 @@ export class Qonekto implements INodeType {
 							'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
 							'POST',
 							{},
-							multiPartBody,
+							multiPartBody.getBuffer(),
 							{},
 							{
 								json: false,
