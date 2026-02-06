@@ -15,7 +15,10 @@ import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
 import { getItemBinaryData, qonektoApiRequest } from './GenericFunctions';
-import { INodeListSearchItems } from 'n8n-workflow/dist/esm/interfaces';
+import {
+	INodeListSearchItems,
+	INodeParameterResourceLocator,
+} from 'n8n-workflow/dist/esm/interfaces';
 
 async function makeListSearch(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -229,9 +232,11 @@ export class Qonekto implements INodeType {
 							filename: betreff || originalFilename,
 						} as string);
 
+						const ameise_id = this.getNodeParameter('kunde_ameise_id', i) as INodeParameterResourceLocator;
+
 						const response = await qonektoApiRequest.call(
 							this,
-							'kunde/' + this.getNodeParameter('kunde_ameise_id', i) + '/archiveintrag',
+							'kunde/' + ameise_id.value + '/archiveintrag',
 							'POST',
 							{},
 							multiPartBody.getBuffer(),
