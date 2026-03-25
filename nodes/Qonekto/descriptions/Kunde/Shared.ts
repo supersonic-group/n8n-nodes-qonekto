@@ -190,6 +190,14 @@ export const Shared: Record<string, INodeProperties> = {
 				type: 'string',
 			},
 		],
+		routing: {
+			send: {
+				property: 'sparte_id',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
 	},
 };
 
@@ -464,6 +472,15 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				type: 'dateTime',
 				default: '',
 				description: 'If empty, will use the current date and time',
+				routing: {
+					send: {
+						property: 'datum',
+						propertyInDotNotation: false,
+						type: 'body',
+						value:
+							"={{ $value && (new Date($value)) ? (new Date($value)).toISOString().replace('.000Z', '+00:00') : null }}",
+					},
+				},
 			},
 			{
 				displayName: 'Vertrag ID',
@@ -471,6 +488,14 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				description: 'Ameise ID of the related Vertrag',
 				type: 'string',
 				default: '',
+				routing: {
+					send: {
+						type: 'body',
+						property: 'vertrags_id',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
 				...Shared['Sparte ID'],
@@ -481,12 +506,28 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				description: 'Whether to allow the customer to view the created file',
 				type: 'boolean',
 				default: true,
+				routing: {
+					send: {
+						type: 'body',
+						property: 'kundensichtbar',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
 				displayName: 'Tags',
 				name: 'tags',
 				type: 'json',
 				default: '["Tag"]',
+				routing: {
+					send: {
+						property: 'tags',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ JSON.parse($value) }}',
+					},
+				},
 			},
 		],
 	},
