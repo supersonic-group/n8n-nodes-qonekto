@@ -1,5 +1,4 @@
 import {
-	BINARY_ENCODING,
 	IDataObject,
 	IExecuteFunctions,
 	IHookFunctions,
@@ -35,7 +34,10 @@ export async function getItemBinaryData(
 	}
 	const binaryData = this.helpers.assertBinaryData(i, inputDataFieldName);
 
-	const fileContent: Buffer | Readable = Buffer.from(binaryData.data, BINARY_ENCODING);
+	const fileContent: Buffer = await this.helpers.getBinaryDataBuffer(
+		i,
+		inputDataFieldName,
+	);
 	const contentLength: number = fileContent.length;
 	const originalFilename: string | undefined = binaryData.fileName;
 	const mimeType = binaryData.mimeType;

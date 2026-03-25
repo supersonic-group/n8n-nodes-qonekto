@@ -1165,7 +1165,7 @@ export const UploadFile: INodeProperties[] = [
 		displayName: 'File',
 		name: 'file',
 		type: 'string',
-		default: '',
+		default: 'data',
 		required: true,
 		description: 'Name of the binary property to upload as file',
 		displayOptions: {
