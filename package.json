@@ -1,54 +1,54 @@
 {
-  "name": "n8n-nodes-qonekto",
-  "version": "1.5.1",
-  "description": "n8n community node to work with the Qonekto API",
-  "license": "MIT",
-  "homepage": "https://qonekto.de",
-  "keywords": [
-    "n8n-community-node-package"
-  ],
-  "author": {
-    "name": "Rouven Hurling",
-    "email": "rouven@supersonic-group.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/supersonic-group/n8n-nodes-qonekto.git"
-  },
-  "scripts": {
-    "build": "n8n-node build",
-    "build:watch": "tsc --watch",
-    "dev": "N8N_DEFAULT_LOCALE=de N8N_BLOCK_ENV_ACCESS_IN_NODE=true N8N_SECURE_COOKIE=false N8N_LOG_LEVEL=debug n8n-node dev",
-    "lint": "n8n-node lint",
-    "lint:fix": "n8n-node lint --fix",
-    "release": "dotenv n8n-node release",
-    "prepublishOnly": "n8n-node prerelease"
-  },
-  "files": [
-    "dist"
-  ],
-  "n8n": {
-    "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/qonektoApi.credentials.js"
-    ],
-    "nodes": [
-      "dist/nodes/Qonekto/Qonekto.node.js",
-      "dist/nodes/Qonekto/QonektoTrigger.node.js"
-    ]
-  },
-  "devDependencies": {
-    "@devlikeapro/n8n-openapi-node": "^0.1.4",
-    "@n8n/node-cli": "*",
-    "@types/node": "*",
-    "dotenv-cli": "^10.0.0",
-    "eslint": "9.32.0",
-    "eslint-plugin-n8n-nodes-base": "^1.16.3",
-    "prettier": "3.6.2",
-    "release-it": "^19.0.4",
-    "typescript": "5.9.2"
-  },
-  "peerDependencies": {
-    "n8n-workflow": "*"
-  }
+	"name": "n8n-nodes-qonekto",
+	"version": "1.5.1",
+	"description": "n8n community node to work with the Qonekto API",
+	"license": "MIT",
+	"homepage": "https://qonekto.de",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"author": {
+		"name": "Rouven Hurling",
+		"email": "rouven@supersonic-group.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/supersonic-group/n8n-nodes-qonekto.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "N8N_MIGRATE_FS_STORAGE_PATH=true N8N_DEFAULT_LOCALE=de N8N_BLOCK_ENV_ACCESS_IN_NODE=true N8N_SECURE_COOKIE=false N8N_LOG_LEVEL=debug n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"release": "dotenv n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/qonektoApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Qonekto/Qonekto.node.js",
+			"dist/nodes/Qonekto/QonektoTrigger.node.js"
+		]
+	},
+	"devDependencies": {
+		"@devlikeapro/n8n-openapi-node": "^0.1.4",
+		"@n8n/node-cli": "*",
+		"@types/node": "*",
+		"dotenv-cli": "^10.0.0",
+		"eslint": "9.39.4",
+		"eslint-plugin-n8n-nodes-base": "^1.16.3",
+		"prettier": "3.8.1",
+		"release-it": "19.2.4",
+		"typescript": "5.9.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
 }
