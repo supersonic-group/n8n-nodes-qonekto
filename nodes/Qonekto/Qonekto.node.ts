@@ -239,7 +239,7 @@ export class Qonekto implements INodeType {
 							'kunde/' + ameise_id.value + '/archiveintrag',
 							'POST',
 							{
-								'Content-Type': `multipart/related; boundary=${multiPartBody.getBoundary()}`,
+								'Content-Type': `multipart/form-data; boundary=${multiPartBody.getBoundary()}`,
 								'Content-Length': multiPartBody.getLengthSync(),
 							},
 							multiPartBody.getBuffer(),
