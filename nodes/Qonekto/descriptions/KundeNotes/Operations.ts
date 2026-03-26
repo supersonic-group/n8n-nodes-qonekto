@@ -8,7 +8,7 @@ export const KundeNotes: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Kunde Notes'],
+				resource: ['KundeNotes'],
 			},
 		},
 		options: [

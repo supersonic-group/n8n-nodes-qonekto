@@ -1,36 +1,22 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from '../Kunde/Shared';
+import { KundeNotesShared } from './Shared';
 
-export const ListCustomerNotes: INodeProperties[] = [];
+export const ListCustomerNotes: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['List Customer Notes'],
+			},
+		},
+	},
+];
 
 export const AddCustomerNote: INodeProperties[] = [
 	{
-		displayName: 'Type',
-		required: true,
-		name: 'type',
-		type: 'options',
-		default: 'default',
-		options: [
-			{
-				name: 'Default',
-				value: 'default',
-			},
-			{
-				name: 'Info',
-				value: 'info',
-			},
-			{
-				name: 'Warning',
-				value: 'warning',
-			},
-		],
-		routing: {
-			send: {
-				property: 'type',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Kunde Ameise ID'],
 		displayOptions: {
 			show: {
 				resource: ['KundeNotes'],
@@ -39,20 +25,16 @@ export const AddCustomerNote: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Text',
-		required: true,
-		name: 'text',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 500 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'text',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+		...KundeNotesShared['Type'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['Add Customer Note'],
 			},
 		},
+	},
+	{
+		...KundeNotesShared['Text'],
 		displayOptions: {
 			show: {
 				resource: ['KundeNotes'],
@@ -64,33 +46,7 @@ export const AddCustomerNote: INodeProperties[] = [
 
 export const EditCustomerNote: INodeProperties[] = [
 	{
-		displayName: 'Type',
-		required: true,
-		name: 'type',
-		type: 'options',
-		default: 'default',
-		options: [
-			{
-				name: 'Default',
-				value: 'default',
-			},
-			{
-				name: 'Info',
-				value: 'info',
-			},
-			{
-				name: 'Warning',
-				value: 'warning',
-			},
-		],
-		routing: {
-			send: {
-				property: 'type',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...Shared['Kunde Ameise ID'],
 		displayOptions: {
 			show: {
 				resource: ['KundeNotes'],
@@ -99,20 +55,25 @@ export const EditCustomerNote: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Text',
-		required: true,
-		name: 'text',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 500 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'text',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+		...KundeNotesShared['Note ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['Edit Customer Note'],
 			},
 		},
+	},
+	{
+		...KundeNotesShared['Type'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['Edit Customer Note'],
+			},
+		},
+	},
+	{
+		...KundeNotesShared['Text'],
 		displayOptions: {
 			show: {
 				resource: ['KundeNotes'],
@@ -122,7 +83,26 @@ export const EditCustomerNote: INodeProperties[] = [
 	},
 ];
 
-export const DeleteCustomerNote: INodeProperties[] = [];
+export const DeleteCustomerNote: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['Delete Customer Note'],
+			},
+		},
+	},
+	{
+		...KundeNotesShared['Note ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotes'],
+				operation: ['Delete Customer Note'],
+			},
+		},
+	},
+];
 
 export default [
 	...ListCustomerNotes,
