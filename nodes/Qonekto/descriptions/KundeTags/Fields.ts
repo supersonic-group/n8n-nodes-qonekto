@@ -1,23 +1,31 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared as KundeShared } from '../Kunde/Shared';
+import { Shared } from './Shared';
 
-export const ListKundeTags: INodeProperties[] = [];
+export const ListKundeTags: INodeProperties[] = [
+	{
+		...KundeShared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeTags'],
+				operation: ['List Kunde Tags'],
+			},
+		},
+	},
+];
 
 export const SetKundeTags: INodeProperties[] = [
 	{
-		displayName: 'Tags',
-		name: 'tags',
-		type: 'json',
-		default: '[\n  "jjuyjlbqswiwvcmy"\n]',
-		description:
-			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'tags',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
+		...KundeShared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeTags'],
+				operation: ['Set Kunde Tags'],
 			},
 		},
+	},
+	{
+		...Shared['Tags'],
 		displayOptions: {
 			show: {
 				resource: ['KundeTags'],
@@ -29,20 +37,16 @@ export const SetKundeTags: INodeProperties[] = [
 
 export const AddKundeTags: INodeProperties[] = [
 	{
-		displayName: 'Tags',
-		name: 'tags',
-		type: 'json',
-		default: '[\n  "jjuyjlbqswiwvcmy"\n]',
-		description:
-			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'tags',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
+		...KundeShared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeTags'],
+				operation: ['Add Kunde Tags'],
 			},
 		},
+	},
+	{
+		...Shared['Tags'],
 		displayOptions: {
 			show: {
 				resource: ['KundeTags'],
@@ -54,20 +58,16 @@ export const AddKundeTags: INodeProperties[] = [
 
 export const RemoveKundeTags: INodeProperties[] = [
 	{
-		displayName: 'Tags',
-		name: 'tags',
-		type: 'json',
-		default: '[\n  "jjuyjlbqswiwvcmy"\n]',
-		description:
-			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'tags',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
+		...KundeShared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeTags'],
+				operation: ['Remove Kunde Tags'],
 			},
 		},
+	},
+	{
+		...Shared['Tags'],
 		displayOptions: {
 			show: {
 				resource: ['KundeTags'],

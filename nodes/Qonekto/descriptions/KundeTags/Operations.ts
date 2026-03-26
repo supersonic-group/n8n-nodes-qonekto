@@ -8,7 +8,7 @@ export const KundeTags: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Kunde Tags'],
+				resource: ['KundeTags'],
 			},
 		},
 		options: [
@@ -37,8 +37,7 @@ export const KundeTags: INodeProperties[] = [
 			{
 				name: 'Add Kunde Tags',
 				value: 'Add Kunde Tags',
-				action: 'Add kunde tag s',
-				description: 'Add Kunde Tag(s)',
+				action: 'Add kunde tags',
 				routing: {
 					request: {
 						method: 'POST',
@@ -49,8 +48,7 @@ export const KundeTags: INodeProperties[] = [
 			{
 				name: 'Remove Kunde Tags',
 				value: 'Remove Kunde Tags',
-				action: 'Remove kunde tag s',
-				description: 'Remove Kunde Tag(s)',
+				action: 'Remove kunde tags',
 				routing: {
 					request: {
 						method: 'DELETE',
