@@ -202,7 +202,7 @@ export class Qonekto implements INodeType {
 						}
 
 						const kundensichtbar = optional.kundensichtbar || this.getNodeParameter('kundensichtbar', i, '') as string;
-						multiPartBody.append('meta[kundensichtbar]', JSON.stringify(kundensichtbar));
+						multiPartBody.append('meta[kundensichtbar]', JSON.stringify(!!kundensichtbar));
 
 						const tagsJson = optional.tagsJson || this.getNodeParameter('tags', i, '') as string;
 						if (tagsJson) {
