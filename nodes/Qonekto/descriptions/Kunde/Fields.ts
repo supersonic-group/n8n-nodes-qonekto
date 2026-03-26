@@ -399,7 +399,8 @@ export const FilterKunden: INodeProperties[] = [
 						property: 'last_simplr_login_at',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value:
+							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
 					},
 				},
 			},
@@ -414,7 +415,8 @@ export const FilterKunden: INodeProperties[] = [
 						property: 'maklervollmacht_created_at',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value:
+							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
 					},
 				},
 			},
@@ -748,11 +750,7 @@ const makeKundeFieldsPresendAction = (nodeParameter: string, bodyParameter: stri
 			GenericValue | INodeParameterResourceLocator
 		>;
 		for (const field of Object.keys(fields)) {
-			if (
-				fields[field] &&
-				typeof fields[field] === 'object' &&
-				'value' in fields[field]
-			) {
+			if (fields[field] && typeof fields[field] === 'object' && 'value' in fields[field]) {
 				fields[field] = fields[field].value;
 			} else if (
 				fields[field] &&
