@@ -8,7 +8,7 @@ export const KundeNotifications: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Kunde Notifications'],
+				resource: ['KundeNotifications'],
 			},
 		},
 		options: [

@@ -1,6 +1,16 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from '../Kunde/Shared';
 
 export const SendCustomerNotification: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeNotifications'],
+				operation: ['Send Customer Notification'],
+			},
+		},
+	},
 	{
 		displayName: 'Notification Type',
 		required: true,
