@@ -1,15 +1,35 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from '../Kunde/Shared';
 
-export const GetContractBankAccount: INodeProperties[] = [];
+export const GetContractBankAccount: INodeProperties[] = [
+	{
+		...Shared['Vertrag Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['ContractBankAccount'],
+				operation: ['Get Contract Bank Account'],
+			},
+		},
+	},
+];
 
 export const ChangeContractBankAccount: INodeProperties[] = [
 	{
-		displayName: 'Iban',
-		required: true,
+		...Shared['Vertrag Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['ContractBankAccount'],
+				operation: ['Change Contract Bank Account'],
+			},
+		},
+	},
+	{
+		displayName: 'IBAN',
 		name: 'iban',
 		type: 'string',
 		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 34 Zeichen haben.',
+		required: true,
+		description: 'Value muss mindestens 1 Zeichen lang sein. Value darf maximal 34 Zeichen haben.',
 		routing: {
 			send: {
 				property: 'iban',
@@ -27,10 +47,10 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 	},
 	{
 		displayName: 'Firstname',
-		required: true,
 		name: 'firstname',
 		type: 'string',
 		default: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'firstname',
@@ -48,10 +68,10 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 	},
 	{
 		displayName: 'Lastname',
-		required: true,
 		name: 'lastname',
 		type: 'string',
 		default: '',
+		required: true,
 		routing: {
 			send: {
 				property: 'lastname',
@@ -69,10 +89,11 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 	},
 	{
 		displayName: 'Deviant',
-		required: true,
 		name: 'deviant',
 		type: 'boolean',
-		default: true,
+		default: false,
+		required: true,
+		description: 'Whether the bank account holder differs from the contract holder',
 		routing: {
 			send: {
 				property: 'deviant',
@@ -89,103 +110,84 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Birthdate',
-		required: true,
-		name: 'birthdate',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'birthdate',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Birthdate',
+				name: 'birthdate',
+				type: 'dateTime',
+				default: '',
+				routing: {
+					send: {
+						property: 'birthdate',
+						propertyInDotNotation: false,
+						type: 'body',
+						value:
+							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+					},
+				},
 			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['ContractBankAccount'],
-				operation: ['Change Contract Bank Account'],
+			{
+				displayName: 'City',
+				name: 'city',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'city',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
 			},
-		},
-	},
-	{
-		displayName: 'City',
-		required: true,
-		name: 'city',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'city',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+			{
+				displayName: 'Nation',
+				name: 'nation',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'nation',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
 			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['ContractBankAccount'],
-				operation: ['Change Contract Bank Account'],
+			{
+				displayName: 'Zip',
+				name: 'zip',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'zip',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
 			},
-		},
-	},
-	{
-		displayName: 'Nation',
-		required: true,
-		name: 'nation',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'nation',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
+			{
+				displayName: 'Street',
+				name: 'street',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'street',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
 			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['ContractBankAccount'],
-				operation: ['Change Contract Bank Account'],
-			},
-		},
-	},
-	{
-		displayName: 'Zip',
-		required: true,
-		name: 'zip',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'zip',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['ContractBankAccount'],
-				operation: ['Change Contract Bank Account'],
-			},
-		},
-	},
-	{
-		displayName: 'Street',
-		required: true,
-		name: 'street',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'street',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		],
 		displayOptions: {
 			show: {
 				resource: ['ContractBankAccount'],

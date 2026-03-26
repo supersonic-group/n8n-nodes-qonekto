@@ -8,7 +8,7 @@ export const ContractBankAccount: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Contract Bank Account'],
+				resource: ['ContractBankAccount'],
 			},
 		},
 		options: [
