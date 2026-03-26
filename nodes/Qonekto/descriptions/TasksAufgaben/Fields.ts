@@ -1,23 +1,12 @@
 import { INodeProperties } from 'n8n-workflow';
+import { TaskShared } from './Shared';
 
 export const ListTasks: INodeProperties[] = [];
 
 export const CreateTask: INodeProperties[] = [
 	{
-		displayName: 'Assignee',
+		...TaskShared['Assignee'],
 		required: true,
-		name: 'assignee',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 8 Zeichen lang sein. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'assignee',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -26,20 +15,8 @@ export const CreateTask: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Title',
+		...TaskShared['Title'],
 		required: true,
-		name: 'title',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 100 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'title',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -48,126 +25,36 @@ export const CreateTask: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Priority',
+		...TaskShared['Priority'],
 		required: true,
-		name: 'priority',
-		type: 'options',
-		default: 'high',
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Create Task'],
+			},
+		},
+	},
+	{
+		...TaskShared['Status'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Create Task'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		options: [
-			{
-				name: 'Low',
-				value: 'low',
-			},
-			{
-				name: 'Medium',
-				value: 'medium',
-			},
-			{
-				name: 'High',
-				value: 'high',
-			},
-			{
-				name: 'Highest',
-				value: 'highest',
-			},
+			{ ...TaskShared['Description'] },
+			{ ...TaskShared['Due Date'] },
+			{ ...TaskShared['Resources'] },
 		],
-		routing: {
-			send: {
-				property: 'priority',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Create Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Status',
-		required: true,
-		name: 'status',
-		type: 'options',
-		default: 'open',
-		options: [
-			{
-				name: 'Open',
-				value: 'open',
-			},
-		],
-		routing: {
-			send: {
-				property: 'status',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Create Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Description',
-		name: 'description',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 1000 Zeichen haben',
-		routing: {
-			send: {
-				property: 'description',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Create Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Due Date',
-		name: 'dueDate',
-		type: 'string',
-		default: '',
-		description: 'Value muss ein gültiges Datum sein',
-		routing: {
-			send: {
-				property: 'dueDate',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Create Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Resources',
-		name: 'resources',
-		type: 'json',
-		default: 'null',
-		routing: {
-			send: {
-				property: 'resources',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -177,24 +64,21 @@ export const CreateTask: INodeProperties[] = [
 	},
 ];
 
-export const GetTask: INodeProperties[] = [];
+export const GetTask: INodeProperties[] = [
+	{
+		...TaskShared['Task ID'],
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Get Task'],
+			},
+		},
+	},
+];
 
 export const UpdateTask: INodeProperties[] = [
 	{
-		displayName: 'Assignee',
-		required: true,
-		name: 'assignee',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 8 Zeichen lang sein. value darf maximal 255 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'assignee',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
+		...TaskShared['Task ID'],
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -203,20 +87,8 @@ export const UpdateTask: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Title',
+		...TaskShared['Assignee'],
 		required: true,
-		name: 'title',
-		type: 'string',
-		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 100 Zeichen haben.',
-		routing: {
-			send: {
-				property: 'title',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -225,130 +97,46 @@ export const UpdateTask: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Priority',
+		...TaskShared['Title'],
 		required: true,
-		name: 'priority',
-		type: 'options',
-		default: 'high',
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Update Task'],
+			},
+		},
+	},
+	{
+		...TaskShared['Priority'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Update Task'],
+			},
+		},
+	},
+	{
+		...TaskShared['Status'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Update Task'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		options: [
-			{
-				name: 'Low',
-				value: 'low',
-			},
-			{
-				name: 'Medium',
-				value: 'medium',
-			},
-			{
-				name: 'High',
-				value: 'high',
-			},
-			{
-				name: 'Highest',
-				value: 'highest',
-			},
+			{ ...TaskShared['Description'] },
+			{ ...TaskShared['Due Date'] },
+			{ ...TaskShared['Resources'] },
 		],
-		routing: {
-			send: {
-				property: 'priority',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Update Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Status',
-		required: true,
-		name: 'status',
-		type: 'options',
-		default: 'open',
-		options: [
-			{
-				name: 'Open',
-				value: 'open',
-			},
-			{
-				name: 'Closed',
-				value: 'closed',
-			},
-		],
-		routing: {
-			send: {
-				property: 'status',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Update Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Description',
-		name: 'description',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 1000 Zeichen haben',
-		routing: {
-			send: {
-				property: 'description',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Update Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Due Date',
-		name: 'dueDate',
-		type: 'string',
-		default: '',
-		description: 'Value muss ein gültiges Datum sein',
-		routing: {
-			send: {
-				property: 'dueDate',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['TasksAufgaben'],
-				operation: ['Update Task'],
-			},
-		},
-	},
-	{
-		displayName: 'Resources',
-		name: 'resources',
-		type: 'json',
-		default: 'null',
-		routing: {
-			send: {
-				property: 'resources',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ JSON.parse($value) }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -358,17 +146,21 @@ export const UpdateTask: INodeProperties[] = [
 	},
 ];
 
-export const DeleteTask: INodeProperties[] = [];
+export const DeleteTask: INodeProperties[] = [
+	{
+		...TaskShared['Task ID'],
+		displayOptions: {
+			show: {
+				resource: ['TasksAufgaben'],
+				operation: ['Delete Task'],
+			},
+		},
+	},
+];
 
 export const ChangeTaskStatus: INodeProperties[] = [
 	{
-		displayName: 'PATCH /aufgabe/{taskId}/status',
-		name: 'operation',
-		type: 'notice',
-		typeOptions: {
-			theme: 'info',
-		},
-		default: '',
+		...TaskShared['Task ID'],
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],
@@ -377,29 +169,8 @@ export const ChangeTaskStatus: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Status',
+		...TaskShared['Status'],
 		required: true,
-		name: 'status',
-		type: 'options',
-		default: 'open',
-		options: [
-			{
-				name: 'Open',
-				value: 'open',
-			},
-			{
-				name: 'Closed',
-				value: 'closed',
-			},
-		],
-		routing: {
-			send: {
-				property: 'status',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],

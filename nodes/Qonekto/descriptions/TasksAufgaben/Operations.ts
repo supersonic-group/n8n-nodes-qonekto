@@ -8,7 +8,7 @@ export const TasksAufgaben: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Tasks Aufgaben'],
+				resource: ['TasksAufgaben'],
 			},
 		},
 		options: [
