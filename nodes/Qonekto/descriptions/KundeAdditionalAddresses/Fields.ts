@@ -1,175 +1,61 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared } from '../Kunde/Shared';
+import { AddressShared } from './Shared';
 
-export const ListCustomerAdditionalAddresses: INodeProperties[] = [];
+export const ListCustomerAdditionalAddresses: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['List Customer Additional Addresses'],
+			},
+		},
+	},
+];
 
 export const CreateCustomerAdditionalAddress: INodeProperties[] = [
 	{
-		displayName: 'Type',
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Create Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Type'],
 		required: true,
-		name: 'type',
-		type: 'options',
-		default: 'firma',
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Create Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Nation'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Create Customer Additional Address'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		options: [
-			{
-				name: 'Ferienhaus',
-				value: 'ferienhaus',
-			},
-			{
-				name: 'Zweitwohnsitz',
-				value: 'zweitwohnsitz',
-			},
-			{
-				name: 'Arbeitgeber',
-				value: 'arbeitgeber',
-			},
-			{
-				name: 'Firma',
-				value: 'firma',
-			},
-			{
-				name: 'Praxis',
-				value: 'praxis',
-			},
-			{
-				name: 'Kanzlei',
-				value: 'kanzlei',
-			},
-			{
-				name: 'Buero',
-				value: 'buero',
-			},
-			{
-				name: 'Lager',
-				value: 'lager',
-			},
-			{
-				name: 'Niederlassung',
-				value: 'niederlassung',
-			},
-			{
-				name: 'Garage',
-				value: 'garage',
-			},
-			{
-				name: 'Filiale',
-				value: 'filiale',
-			},
-			{
-				name: 'Sonstiges',
-				value: 'sonstiges',
-			},
+			{ ...AddressShared['Address Supplement'] },
+			{ ...AddressShared['Street'] },
+			{ ...AddressShared['Zip'] },
+			{ ...AddressShared['City'] },
 		],
-		routing: {
-			send: {
-				property: 'type',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Create Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Nation',
-		required: true,
-		name: 'nation',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'nation',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Create Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Address Supplement',
-		name: 'addressSupplement',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 80 Zeichen haben',
-		routing: {
-			send: {
-				property: 'addressSupplement',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Create Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Street',
-		name: 'street',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'street',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Create Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Zip',
-		name: 'zip',
-		type: 'string',
-		default: '',
-		description: 'Must match the regex /^d+$/',
-		routing: {
-			send: {
-				property: 'zip',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Create Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'City',
-		name: 'city',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'city',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['KundeAdditionalAddresses'],
@@ -181,192 +67,56 @@ export const CreateCustomerAdditionalAddress: INodeProperties[] = [
 
 export const UpdateCustomerAdditionalAddress: INodeProperties[] = [
 	{
-		displayName: 'Type',
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Update Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Address ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Update Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Type'],
 		required: true,
-		name: 'type',
-		type: 'options',
-		default: 'sonstiges',
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Update Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Nation'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Update Customer Additional Address'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
 		options: [
-			{
-				name: 'Ferienhaus',
-				value: 'ferienhaus',
-			},
-			{
-				name: 'Zweitwohnsitz',
-				value: 'zweitwohnsitz',
-			},
-			{
-				name: 'Arbeitgeber',
-				value: 'arbeitgeber',
-			},
-			{
-				name: 'Firma',
-				value: 'firma',
-			},
-			{
-				name: 'Praxis',
-				value: 'praxis',
-			},
-			{
-				name: 'Kanzlei',
-				value: 'kanzlei',
-			},
-			{
-				name: 'Buero',
-				value: 'buero',
-			},
-			{
-				name: 'Lager',
-				value: 'lager',
-			},
-			{
-				name: 'Niederlassung',
-				value: 'niederlassung',
-			},
-			{
-				name: 'Garage',
-				value: 'garage',
-			},
-			{
-				name: 'Filiale',
-				value: 'filiale',
-			},
-			{
-				name: 'Sonstiges',
-				value: 'sonstiges',
-			},
+			{ ...AddressShared['Address Supplement'] },
+			{ ...AddressShared['Street'] },
+			{ ...AddressShared['Zip'] },
+			{ ...AddressShared['City'] },
+			{ ...AddressShared['Living Space SQM'] },
 		],
-		routing: {
-			send: {
-				property: 'type',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Nation',
-		required: true,
-		name: 'nation',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'nation',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Address Supplement',
-		name: 'addressSupplement',
-		type: 'string',
-		default: '',
-		description: 'Value darf maximal 80 Zeichen haben',
-		routing: {
-			send: {
-				property: 'addressSupplement',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Street',
-		name: 'street',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'street',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Zip',
-		name: 'zip',
-		type: 'string',
-		default: '',
-		description: 'Must match the regex /^d+$/',
-		routing: {
-			send: {
-				property: 'zip',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'City',
-		name: 'city',
-		type: 'string',
-		default: '',
-		routing: {
-			send: {
-				property: 'city',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
-		displayOptions: {
-			show: {
-				resource: ['KundeAdditionalAddresses'],
-				operation: ['Update Customer Additional Address'],
-			},
-		},
-	},
-	{
-		displayName: 'Living Space SQM',
-		name: 'livingSpaceSQM',
-		type: 'number',
-		default: 16,
-		routing: {
-			send: {
-				property: 'livingSpaceSQM',
-				propertyInDotNotation: false,
-				type: 'body',
-				value: '={{ $value }}',
-			},
-		},
 		displayOptions: {
 			show: {
 				resource: ['KundeAdditionalAddresses'],
@@ -376,7 +126,26 @@ export const UpdateCustomerAdditionalAddress: INodeProperties[] = [
 	},
 ];
 
-export const DeleteCustomerAdditionalAddress: INodeProperties[] = [];
+export const DeleteCustomerAdditionalAddress: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Delete Customer Additional Address'],
+			},
+		},
+	},
+	{
+		...AddressShared['Address ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeAdditionalAddresses'],
+				operation: ['Delete Customer Additional Address'],
+			},
+		},
+	},
+];
 
 export default [
 	...ListCustomerAdditionalAddresses,
