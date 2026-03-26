@@ -1,6 +1,14 @@
 import { INodeProperties } from 'n8n-workflow';
 
 export const Shared: Record<string, INodeProperties> = {
+	'Vertrag Ameise ID': {
+		displayName: 'Ameise Vertragsnummer',
+		name: 'vertrag_ameise_id',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The ID of the Vertrag in Ameise',
+	},
 	'Kunde Ameise ID': {
 		displayName: 'Ameise Kundennummer',
 		name: 'kunde_ameise_id',
