@@ -1,6 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const KundeTag: INodeProperties[] = [
+export const KundeTags: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
@@ -8,7 +8,7 @@ export const KundeTag: INodeProperties[] = [
 		noDataExpression: true,
 		displayOptions: {
 			show: {
-				resource: ['Kunden-Tag'],
+				resource: ['KundeTags'],
 			},
 		},
 		options: [
@@ -61,4 +61,4 @@ export const KundeTag: INodeProperties[] = [
 	},
 ];
 
-export default KundeTag;
+export default KundeTags;

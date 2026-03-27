@@ -675,12 +675,7 @@ export const FilterVertraege: INodeProperties[] = [
 
 export const ShowVertrag: INodeProperties[] = [
 	{
-		displayName: 'Ameise Vertragsnummer',
-		name: 'vertrag_ameise_id',
-		type: 'string',
-		default: '',
-		required: true,
-		description: 'The ID of the Vertrag in Ameise',
+		...Shared['Vertrag Ameise ID'],
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Show Vertrag'] } },
 	},
 ];

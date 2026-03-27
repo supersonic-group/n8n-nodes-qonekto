@@ -183,6 +183,21 @@ export const FilterKunden: INodeProperties[] = [
 		default: {},
 		options: [
 			{
+				displayName: 'Ameise ID',
+				name: 'ameise_id',
+				type: 'number',
+				default: '',
+				description: 'Filter by Ameise ID',
+				routing: {
+					send: {
+						property: 'ameise_id',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
 				...Shared['Vermittler ID'],
 			},
 			{
@@ -370,6 +385,38 @@ export const FilterKunden: INodeProperties[] = [
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Last Simplr Login At',
+				name: 'last_simplr_login_at',
+				type: 'dateTime',
+				default: '',
+				description: 'Filter by last Simplr login timestamp',
+				routing: {
+					send: {
+						property: 'last_simplr_login_at',
+						propertyInDotNotation: false,
+						type: 'body',
+						value:
+							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+					},
+				},
+			},
+			{
+				displayName: 'Maklervollmacht Created At',
+				name: 'maklervollmacht_created_at',
+				type: 'dateTime',
+				default: '',
+				description: 'Filter by date the Maklervollmacht was created',
+				routing: {
+					send: {
+						property: 'maklervollmacht_created_at',
+						propertyInDotNotation: false,
+						type: 'body',
+						value:
+							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
 					},
 				},
 			},
@@ -703,11 +750,7 @@ const makeKundeFieldsPresendAction = (nodeParameter: string, bodyParameter: stri
 			GenericValue | INodeParameterResourceLocator
 		>;
 		for (const field of Object.keys(fields)) {
-			if (
-				fields[field] &&
-				typeof fields[field] === 'object' &&
-				'value' in fields[field]
-			) {
+			if (fields[field] && typeof fields[field] === 'object' && 'value' in fields[field]) {
 				fields[field] = fields[field].value;
 			} else if (
 				fields[field] &&
