@@ -1,4 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
+import { Shared as KundeShared } from '../Kunde/Shared';
 
 export const AddressShared: Record<string, INodeProperties> = {
 	'Address ID': {
@@ -74,10 +75,9 @@ export const AddressShared: Record<string, INodeProperties> = {
 		},
 	},
 	Nation: {
+		...KundeShared['Land ID'],
 		displayName: 'Nation',
 		name: 'nation',
-		type: 'string',
-		default: '',
 		routing: {
 			send: {
 				property: 'nation',

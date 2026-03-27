@@ -146,10 +146,9 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 				},
 			},
 			{
+				...Shared['Land ID'],
 				displayName: 'Nation',
 				name: 'nation',
-				type: 'string',
-				default: '',
 				routing: {
 					send: {
 						property: 'nation',
