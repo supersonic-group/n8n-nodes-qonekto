@@ -204,12 +204,23 @@ Ameise employee the connector pushes contracts through is `03A71H_XDSJKU`, the t
 
 | Sent | Passes connector validation | Ameise verdict |
 | --- | --- | --- |
-| `07B51E` (and any other local row) | yes | generic HTML `Error #400 - Fehlerhafte anfrage!` — the employee does not own that vermittler |
-| `03A71H` (what the employee owns) | **no** — `Der gewählte Wert für Vermittlernummer ist ungültig.` | never reached |
+| `07B51E` (and any other local row) | yes | generic HTML `Error #400 - Fehlerhafte anfrage!` — the broker does not exist upstream |
+| `03A71H` (the tenant's own Ameise vermittler) | **no** — `Der gewählte Wert für Vermittlernummer ist ungültig.` | never reached |
 
 So there is no value that clears both gates, and the operation is unreachable on this tenant
-regardless of what the node sends. The local broker hierarchy and the tenant's Ameise identity
-are from different brokers.
+regardless of what the node sends.
+
+The mechanism is in `ContractRules::rules()`, which validates the field as
+`Rule::exists('ameise_vermittler', 'ameise_id')->where('tenant_id', …)` — a local
+reference-table lookup with no relation to the tenant's Ameise identity. That is why 737 ids
+that exist nowhere upstream pass the gate, and why the one id that does exist upstream fails it.
+
+The connector session established the upstream half, which cannot be checked from here (the
+Stocks proxy needs the `api-proxy` scope, and the write token used for this run carries only
+`api-full`): `GET /api/brokers` returns **8 brokers, all `*A71H`**, `GET /api/brokers/03A71H`
+answers 200, and `GET /api/brokers/07B51E` answers a clean `404 {"message":"Broker does not
+exist."}`. The intersection with the tenant's 737 local rows is empty. So `07B51E` is not a
+broker this employee lacks rights to — it is not a broker at all.
 
 The node is not implicated: the payload the connector built from its request is complete and
 well-formed, captured from the failing call as
@@ -229,11 +240,12 @@ Two things fall out of this that are worth acting on, neither of them the node's
   that is locally valid but not owned by the employee produces a generic HTML 400 from Ameise
   naming no field. A pre-flight check would turn that into a 422 naming `vermittler_id`, which
   is the difference between this taking ten minutes and taking a day.
-- **The demo tenant cannot exercise contract creation.** Proving that path end-to-end needs
-  either a tenant whose local vermittler data matches its Ameise identity, or a `03A71H` row
-  seeded into `ameise_vermittler` — not attempted here, because `Vermittler` is
-  `IsConnectedToCrm` and pushing an invented broker upstream is a worse outcome than an
-  unexercised operation.
+- **The demo tenant cannot exercise contract creation**, because its local reference data
+  describes a different broker tree than its credentials. That is a tenant data problem, not a
+  node or payload problem. Proving the path end-to-end needs a tenant whose reference data
+  matches its Ameise identity — not a `03A71H` row seeded into `ameise_vermittler`, which would
+  only make our own gate pass while upstream still said no, and which nobody should be writing
+  into an `IsConnectedToCrm` table to make a test go green.
 
 Verified 2026-09-07 12:21–12:30 UTC against connector `ce01a4c0`, with `vermittler_id` set to
 `03A71H` and with the full and minimal optional sets; both attempts fail identically at the
