@@ -64,20 +64,29 @@ function readPage(body: unknown): PageInfo | null {
  * operation resolved `routing.send.paginate` truthy — that is, the one whose Return All
  * is on — and never for the others.
  *
- * `per_page` and `perPage` are both set because the two families of list endpoint spell
- * it differently and each ignores the other's spelling: Laravel reads only `per_page`,
- * and the passthrough controllers whitelist their query parameters
- * (`$request->only([...])`) so `per_page` is dropped before it reaches Ameise. Sending
- * both avoids having to keep a per-resource table in step with the operations.
+ * All three spellings of the page size go out on every request, because the endpoints
+ * spell it differently and each ignores the others: Laravel's own list endpoints read
+ * `per_page`, the Tasks and Claims passthroughs read `perPage`, and customer relations
+ * reads `pageSize` — that last one is upstream's spelling on that endpoint alone, and
+ * sending `perPage` there returns every record on a single page while claiming
+ * `numberOfPages: 1`. Nothing leaks: the passthrough controllers whitelist their query
+ * parameters (`$request->only([...])`), so a spelling an endpoint does not use is dropped
+ * before it reaches Ameise. Sending all three avoids keeping a per-resource table in step
+ * with the operations.
  */
 export async function paginateAllPages(
 	this: IExecutePaginationFunctions,
 	requestOptions: DeclarativeRestApiSettings.ResultOptions,
 ): Promise<INodeExecutionData[]> {
 	const query = (requestOptions.options.qs ??= {});
-	if (query.per_page === undefined && query.perPage === undefined) {
+	if (
+		query.per_page === undefined &&
+		query.perPage === undefined &&
+		query.pageSize === undefined
+	) {
 		query.per_page = DEFAULT_PAGE_SIZE;
 		query.perPage = DEFAULT_PAGE_SIZE;
+		query.pageSize = DEFAULT_PAGE_SIZE;
 	}
 
 	// Whatever page the user asked to start on; Return All continues from there.

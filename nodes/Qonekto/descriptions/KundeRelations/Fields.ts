@@ -1,9 +1,59 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
+import { returnAllField } from '../Pagination';
 
 export const ListCustomerRelations: INodeProperties[] = [
 	{
 		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['KundeRelations'],
+				operation: ['List Customer Relations'],
+			},
+		},
+	},
+	returnAllField('KundeRelations', 'List Customer Relations'),
+	{
+		displayName: 'Pagination Fields',
+		name: 'pagination fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Page Size',
+				name: 'pageSize',
+				type: 'number',
+				default: 50,
+				// Upstream spells it pageSize on this endpoint alone, and silently ignores
+				// perPage — a request carrying only perPage comes back as one page holding
+				// every record.
+				description: 'Number of results per page',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'pageSize',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				description: 'Returns result of given page number',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'page',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 		displayOptions: {
 			show: {
 				resource: ['KundeRelations'],

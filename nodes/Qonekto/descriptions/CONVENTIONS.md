@@ -115,9 +115,14 @@ some of the rules below (each is marked); the rest are convention and are not ch
     `items`/`numberOfPages` one the Tasks and Claims endpoints pass through) and returns one item
     per record; a response it does not recognise falls back to the single-page behaviour.
 
-    Do not add Return All to an endpoint the connector cannot page. `GET /kunde/{id}/relations`
-    answers with a paginated Ameise envelope but `CustomerRelationsCtrl::index` forwards no query
-    parameters, so page 2 is unreachable and a toggle would promise more than it can deliver.
+    Check the endpoint can actually be paged before adding the toggle, and check what it calls
+    the page size. Verify against a result set large enough to span pages: an endpoint that
+    ignores the parameter answers `numberOfPages: 1` with everything in it, which is
+    indistinguishable from a short list. Customer relations reads `pageSize`, not `perPage`, and
+    ignoring that is exactly what made it look paginated for as long as it was not
+    (`CustomerRelationsCtrl::index` also forwarded nothing at all until the v1 path landed). The
+    walk sends all three spellings, so the only thing that has to be right here is the collection
+    field the user sets.
 
 12. **Idempotency is wired automatically — do not hand-roll it per operation.** Every non-GET
     operation whose URL is not a `/filter` read reaches a route carrying the connector's

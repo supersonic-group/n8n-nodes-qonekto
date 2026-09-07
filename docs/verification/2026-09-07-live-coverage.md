@@ -131,11 +131,8 @@ operation here with an effect outside the CRM, and it was left alone on purpose.
 - **Claims end-to-end now works.** It could not be exercised before because the broker had no
   claims and every list answered 404. Creating one made the whole resource reachable: create,
   list by contract, list by customer, get, update, Return All and delete all succeeded.
-- **`List Customer Relations` cannot be paged.** It answers with the upstream's paginated
-  envelope (`currentPage` / `numberOfPages`), but `CustomerRelationsCtrl::index` forwards no
-  query parameters, so page two is unreachable through the API. A customer with more relations
-  than the upstream page size has some of them invisible. Connector-side; the node has no Return
-  All there for that reason.
+- **`List Customer Relations` could not be paged** at the time of the run — see the follow-up
+  below, which resolves it.
 - **`Get Claim Statuses`** answers `[{"id": "OPEN", "text": "offen"}]` while the node sends
   `offen`/`geschlossen`. That is correct — `ClaimRules` validates `in:offen,geschlossen` and the
   connector maps to the upstream id.
@@ -158,3 +155,23 @@ all deleted again by the operations that follow them in the table.
 Locally, `Kunde` `ameise_id=170430` and `Vertrag` `ameise_id=153011` were inserted so route model
 binding resolves records that exist only in INTE. They are test rows; remove them with
 `forceDelete()` when the fixture is no longer wanted.
+
+## Follow-up, same day
+
+`List Customer Relations` was reported as unpageable above. It has since been fixed
+connector-side and re-verified here.
+
+`CustomerRelationsCtrl::index` now whitelists `page` and `pageSize` and the service reads the
+non-deprecated `v1/customers/{id}/relations` path, which actually paginates; the legacy path it
+replaced ignored every pagination parameter it was given. The v1 item shape is translated back
+to the old one, and a field-by-field comparison of the run above against the re-run confirms
+nothing the node reads moved — same keys on the item and on `relatedCustomer`, same
+`mainAddress.nation` values, with `brokerId` and `status` added.
+
+Two things worth carrying forward. The parameter is **`pageSize`**: the endpoint silently ignores
+`perPage` and answers `numberOfPages: 1` with every record in it, which is why it read as
+"paginated but only ever one page" for so long. And the operation now has a Return All toggle,
+verified against a customer with five relations at `pageSize=2` — three pages walked, five
+records returned, and the same call with Return All off still returning the single-page envelope.
+
+Connector commit: `ce01a4c0`, on the same unmerged branch as the rest.
