@@ -208,3 +208,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+
+# local credential for verification runs, never committed
+n8n-api-key.txt

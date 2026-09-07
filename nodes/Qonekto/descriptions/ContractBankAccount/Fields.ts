@@ -1,6 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
-import { DATE_ONLY_VALUE } from '../Routing';
+import { DATETIME_WITH_OFFSET_VALUE } from '../Routing';
 
 export const GetContractBankAccount: INodeProperties[] = [
 	{
@@ -121,7 +121,7 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 				property: 'birthdate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: DATE_ONLY_VALUE,
+				value: DATETIME_WITH_OFFSET_VALUE,
 			},
 		},
 		displayOptions: {
