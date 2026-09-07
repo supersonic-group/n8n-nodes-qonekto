@@ -6,6 +6,7 @@ import KundeRelations from './KundeRelations/Operations';
 import KundeNotifications from './KundeNotifications/Operations';
 import Vertrag from './Vertrag/Operations';
 import ContractBankAccount from './ContractBankAccount/Operations';
+import ContractProducts from './ContractProducts/Operations';
 import Listen from './Listen/Operations';
 import Panda from './Panda/Operations';
 import ClaimsSchaden from './ClaimsSchaden/Operations';
@@ -22,6 +23,7 @@ export default [
 	...KundeNotifications,
 	...Vertrag,
 	...ContractBankAccount,
+	...ContractProducts,
 	...Listen,
 	...Panda,
 	...ClaimsSchaden,

@@ -40,6 +40,10 @@ export const Resources: INodeProperties[] = [
 				value: 'ContractBankAccount',
 			},
 			{
+				name: 'Contract Product',
+				value: 'ContractProducts',
+			},
+			{
 				name: 'Listen',
 				value: 'Listen',
 			},
