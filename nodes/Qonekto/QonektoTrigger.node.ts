@@ -105,7 +105,14 @@ export class QonektoTrigger implements INodeType {
 						},
 					);
 				} catch (error) {
-					if (error.cause.httpCode === '404' || error.description.includes('404')) {
+					// qonektoApiRequest wraps failures in NodeApiError, which carries httpCode
+					// at the top level; `cause` is often undefined, so reading it first threw a
+					// TypeError before the 404 check ever ran and left the workflow unable to
+					// re-activate once its webhook had gone missing server-side.
+					const httpCode = String(error?.httpCode ?? error?.cause?.httpCode ?? '');
+					const description = String(error?.description ?? '');
+
+					if (httpCode === '404' || description.includes('404')) {
 						// Webhook does not exist
 						delete webhookData.webhookId;
 						delete webhookData.webhookToken;
