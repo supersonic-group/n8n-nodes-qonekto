@@ -86,9 +86,8 @@ export const ListVertraege: INodeProperties[] = [
 			{
 				displayName: 'Page',
 				name: 'page',
-				description: 'Returns result of given page number, when Pagination is enabled',
+				description: 'Returns result of given page number',
 				default: 1,
-				hint: 'Requires "Per Page" to be set to enable Pagination',
 				type: 'number',
 				routing: {
 					send: {
@@ -309,7 +308,8 @@ export const CreateVertrag: INodeProperties[] = [
 				name: 'status_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Status',
+				description:
+					'Select a Status. Contract creation only accepts the status IDs E, F, R, X, Y and Z (ContractRules::ALLOWED_STATUS_IDS_FOR_CREATE).',
 				modes: [
 					{
 						displayName: 'List',
@@ -357,6 +357,7 @@ export const CreateVertrag: INodeProperties[] = [
 				name: 'ablauf',
 				type: 'dateTime',
 				default: '',
+				description: 'Must be on or after Beginn',
 				routing: {
 					send: {
 						property: 'ablauf',

@@ -6,6 +6,7 @@ export const Shared: Record<string, INodeProperties> = {
 		name: 'tags',
 		type: 'json',
 		default: '["Tag"]',
+		required: true,
 		description:
 			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. value darf maximal 255 Zeichen haben.',
 		routing: {

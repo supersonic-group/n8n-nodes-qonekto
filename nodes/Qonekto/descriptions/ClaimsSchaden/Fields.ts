@@ -126,13 +126,22 @@ export const UpdateClaim: INodeProperties[] = [
 		},
 	},
 	{
+		...ClaimShared['Status'],
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['ClaimsSchaden'],
+				operation: ['Update Claim'],
+			},
+		},
+	},
+	{
 		displayName: 'Optional Fields',
 		name: 'optional fields',
 		type: 'collection',
 		placeholder: 'Add Field',
 		default: {},
 		options: [
-			{ ...ClaimShared['Status'] },
 			{ ...ClaimShared['Custom Number'] },
 			{ ...ClaimShared['Comment'] },
 			{ ...ClaimShared['Claim Date'] },

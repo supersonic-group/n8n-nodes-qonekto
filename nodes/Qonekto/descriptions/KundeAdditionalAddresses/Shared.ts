@@ -121,7 +121,7 @@ export const AddressShared: Record<string, INodeProperties> = {
 		name: 'zip',
 		type: 'string',
 		default: '',
-		description: 'Must match the regex /^d+$/',
+		description: 'Must match the regex /^\\d+$/',
 		routing: {
 			send: {
 				property: 'zip',

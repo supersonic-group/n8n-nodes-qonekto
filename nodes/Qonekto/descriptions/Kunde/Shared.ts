@@ -256,7 +256,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				name: 'plz',
 				type: 'string',
 				default: '',
-				description: 'Value muss zwischen 4 und 5 Stellen haben',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
 				routing: {
 					send: {
 						property: 'plz',

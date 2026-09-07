@@ -64,9 +64,8 @@ export const ListKunden: INodeProperties[] = [
 			{
 				displayName: 'Page',
 				name: 'page',
-				description: 'Returns result of given page number, when Pagination is enabled',
+				description: 'Returns result of given page number',
 				default: 1,
-				hint: 'Requires "Per Page" to be set to enable Pagination',
 				type: 'number',
 				routing: {
 					send: {
@@ -268,7 +267,7 @@ export const FilterKunden: INodeProperties[] = [
 				name: 'plz',
 				type: 'string',
 				default: '',
-				description: 'Value muss zwischen 4 und 5 Stellen haben',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
 				routing: {
 					send: {
 						property: 'plz',
@@ -583,7 +582,7 @@ const KundeFields: INodeProperties[] = [
 		name: 'plz',
 		type: 'string',
 		default: '',
-		description: 'Value muss zwischen 4 und 5 Stellen haben',
+		description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
 		routing: {
 			send: {
 				property: 'plz',
@@ -1028,7 +1027,7 @@ export const UpdateKunde: INodeProperties[] = [
 				name: 'plz',
 				type: 'string',
 				default: '',
-				description: 'Value muss zwischen 4 und 5 Stellen haben',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
 				routing: {
 					send: {
 						property: 'plz',
