@@ -45,10 +45,11 @@ export const UpdateContractProducts: INodeProperties[] = [
 		displayName: 'Anweisungen',
 		name: 'anweisungen',
 		type: 'json',
-		default: '[{"Setze": "Produkt[Name]/Elementarprodukt[Name]", "Wert": null}]',
+		default:
+			'[{"Setze": "Produkt[Produktname]/Elementarprodukt[Elementarproduktname]/VariableWert[Variablenname]", "Wert": null}]',
 		required: true,
 		description:
-			'List of update instructions. Each entry is either {"Setze": path, "Wert": value} or {"Loesche": path}, never both. Component paths use Produkt[Name]/Elementarprodukt[Name] notation, with a "/" inside a name escaped as "\\/". Missing components are created automatically. "Setze" is only supported for VariableWert; send "Wert": null to clear one.',
+			'List of update instructions. Each entry is either {"Setze": path, "Wert": value} or {"Loesche": path}, never both. A "Setze" path must end at a VariableWert — a path stopping at a Produkt or Elementarprodukt is rejected with "Aktuallisierung wird nur für VariableWert unterstützt". Both Produkt[X]/VariableWert[Y] and Produkt[X]/Elementarprodukt[Y]/VariableWert[Z] are accepted. Use Get Sparte Product Template to discover the real names. A "/" inside a name is escaped as "\\/". Missing components are created automatically; send "Wert": null to clear one.',
 		// No `send` routing: the operation sets the whole body from this value, because the
 		// API expects a top-level array rather than an object with this as a property.
 		displayOptions: {
