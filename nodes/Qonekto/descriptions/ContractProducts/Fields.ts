@@ -1,5 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const GetSparteProductTemplate: INodeProperties[] = [
 	{
@@ -216,8 +217,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 				property: 'Halter.Geburtsdatum',
 				propertyInDotNotation: true,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 		displayOptions: {

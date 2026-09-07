@@ -1,4 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const ClaimShared: Record<string, INodeProperties> = {
 	'Claim ID': {
@@ -74,8 +75,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 				property: 'claimDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 	},
@@ -90,8 +90,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 				property: 'notificationDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 	},

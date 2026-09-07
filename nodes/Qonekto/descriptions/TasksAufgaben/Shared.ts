@@ -1,4 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const TaskShared: Record<string, INodeProperties> = {
 	'Task ID': {
@@ -121,8 +122,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 				property: 'dueDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 	},

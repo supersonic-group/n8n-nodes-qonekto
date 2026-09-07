@@ -1,5 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 import { TaskShared } from './Shared';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const ListTasks: INodeProperties[] = [
 	{
@@ -105,8 +106,7 @@ export const ListTasks: INodeProperties[] = [
 					send: {
 						type: 'query',
 						property: 'dueDateFrom',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 						propertyInDotNotation: false,
 					},
 				},
@@ -121,8 +121,7 @@ export const ListTasks: INodeProperties[] = [
 					send: {
 						type: 'query',
 						property: 'dueDateTo',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 						propertyInDotNotation: false,
 					},
 				},

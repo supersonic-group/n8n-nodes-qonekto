@@ -23,10 +23,24 @@ some of the rules below (each is marked); the rest are convention and are not ch
    contract'`, not `'List Claims By Contract'`. *(Lint:
    `node-param-operation-option-action-miscased`.)*
 
-6. **Date fields use `type: 'dateTime'`** with the standard formatting expression:
+6. **Date-only fields use `type: 'dateTime'` and `DATE_ONLY_VALUE`** from `Routing.ts` — never a
+   hand-written date expression:
    ```ts
-   value: '={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}'
+   import { DATE_ONLY_VALUE } from '../Routing';
+
+   value: DATE_ONLY_VALUE,
    ```
+   Do **not** reintroduce `(new Date($value)).toDateTime().format("yyyy-MM-dd")`. It resolves the
+   value in the instance's timezone (`GENERIC_TIMEZONE`, default `America/New_York`), so the
+   UTC-midnight value the date picker produces formats as the *previous day* on any instance
+   behind UTC. That snippet was pasted into 12 fields and every one of them sent dates a day
+   early. `.toUTC()` is not a sufficient fix either — it corrects UTC-midnight but still shifts an
+   ISO string carrying a non-UTC offset. `DATE_ONLY_VALUE` keeps whatever offset the value carries,
+   so the date the user picked is the date the API receives.
+
+   A field that means a genuine *instant* rather than a calendar date (an ATOM timestamp, say)
+   is a different case — it wants a UTC conversion, not this constant. `datum` on the Kunde
+   archive entry is the one such field.
 
 7. **Every ID path parameter needs a field definition.** An operation whose URL references
    `{{$parameter["some_id"]}}` must define the matching field:
@@ -173,7 +187,7 @@ export default [
 
 - Body fields: `{ send: { property: 'name', propertyInDotNotation: false, type: 'body', value: '={{ $value }}' } }`
 - Query fields: `{ send: { type: 'query', property: 'name', value: '={{ $value }}', propertyInDotNotation: false } }`
-- Date fields: use the `dateTime` type with `(new Date($value)).toDateTime().format("yyyy-MM-dd")` expression
+- Date-only fields: use the `dateTime` type with `value: DATE_ONLY_VALUE` (see rule 6)
 
 ### Shared module (`../Kunde/Shared`)
 

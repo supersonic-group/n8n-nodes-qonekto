@@ -1,5 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const GetContractBankAccount: INodeProperties[] = [
 	{
@@ -120,8 +121,7 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 				property: 'birthdate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 		displayOptions: {

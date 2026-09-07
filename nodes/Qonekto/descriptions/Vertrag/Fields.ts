@@ -1,5 +1,6 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const ListVertraege: INodeProperties[] = [
 	{
@@ -157,8 +158,7 @@ export const CreateVertrag: INodeProperties[] = [
 				property: 'beginn',
 				propertyInDotNotation: false,
 				type: 'body',
-				value:
-					'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+				value: DATE_ONLY_VALUE,
 			},
 		},
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
@@ -363,8 +363,7 @@ export const CreateVertrag: INodeProperties[] = [
 						property: 'ablauf',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -604,8 +603,7 @@ export const FilterVertraege: INodeProperties[] = [
 						property: 'beginn',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -619,8 +617,7 @@ export const FilterVertraege: INodeProperties[] = [
 						property: 'ablauf',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},

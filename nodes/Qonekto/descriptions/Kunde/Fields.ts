@@ -6,6 +6,7 @@ import {
 	IHttpRequestOptions,
 	INodeParameterResourceLocator,
 } from 'n8n-workflow/dist/esm/interfaces';
+import { DATE_ONLY_VALUE } from '../Routing';
 
 export const ListKunden: INodeProperties[] = [
 	{
@@ -306,8 +307,7 @@ export const FilterKunden: INodeProperties[] = [
 						property: 'geburtsdatum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -398,8 +398,7 @@ export const FilterKunden: INodeProperties[] = [
 						property: 'last_simplr_login_at',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -414,8 +413,7 @@ export const FilterKunden: INodeProperties[] = [
 						property: 'maklervollmacht_created_at',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -1067,8 +1065,7 @@ export const UpdateKunde: INodeProperties[] = [
 						property: 'geburtsdatum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},

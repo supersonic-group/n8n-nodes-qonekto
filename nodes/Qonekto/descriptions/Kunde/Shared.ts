@@ -1,4 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
+import { ATOM_TIMESTAMP_VALUE, DATE_ONLY_VALUE } from '../Routing';
 
 export const Shared: Record<string, INodeProperties> = {
 	'Vertrag Ameise ID': {
@@ -293,8 +294,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 						property: 'geburtsdatum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							'={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -485,8 +485,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 						property: 'datum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value:
-							"={{ $value && (new Date($value)) ? (new Date($value)).toISOString().replace('.000Z', '+00:00') : null }}",
+						value: ATOM_TIMESTAMP_VALUE,
 					},
 				},
 			},
