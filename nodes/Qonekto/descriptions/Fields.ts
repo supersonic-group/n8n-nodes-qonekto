@@ -13,6 +13,8 @@ import ClaimsSchaden from './ClaimsSchaden/Fields';
 import TasksAufgaben from './TasksAufgaben/Fields';
 import Pipeline from './Pipeline/Fields';
 import Misc from './Misc/Fields';
+import Operations from './Operations';
+import { idempotencyKeyField } from './Idempotency';
 
 export default [
 	...Kunde,
@@ -30,4 +32,5 @@ export default [
 	...TasksAufgaben,
 	...Pipeline,
 	...Misc,
+	idempotencyKeyField(Operations),
 ];

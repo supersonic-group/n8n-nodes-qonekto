@@ -119,11 +119,23 @@ some of the rules below (each is marked); the rest are convention and are not ch
     answers with a paginated Ameise envelope but `CustomerRelationsCtrl::index` forwards no query
     parameters, so page 2 is unreachable and a toggle would promise more than it can deliver.
 
-12. **Defaults are sensible, never example values from the API docs.** `''` for strings and
+12. **Idempotency is wired automatically — do not hand-roll it per operation.** Every non-GET
+    operation whose URL is not a `/filter` read reaches a route carrying the connector's
+    `EnsureWriteIdempotency` middleware, and `Idempotency.ts` derives that set from the
+    operations themselves: `Operations.ts` wraps its export in `withIdempotencyMarker()`, which
+    attaches a postReceive marking a replayed response with `_idempotency_replayed`, and
+    `Fields.ts` appends `idempotencyKeyField(Operations)`, the optional `Idempotency-Key`. A new
+    write operation is covered by adding it to its resource's `Operations.ts` and nothing else.
+
+    A custom operation (`customOperations` in `Qonekto.node.ts`) never goes through declarative
+    routing, so it carries both itself — see `Upload File`, and the `CUSTOM_WRITE_OPERATIONS`
+    list in `Idempotency.ts` that keeps its key field visible.
+
+13. **Defaults are sensible, never example values from the API docs.** `''` for strings and
     numbers (or something meaningful like `50` for `per_page`), `false` for booleans. A stray
     `default: 16` is an example value that leaked in.
 
-13. **`placeholder` must survive the lint rules.** `node-param-placeholder-miscased-id`
+14. **`placeholder` must survive the lint rules.** `node-param-placeholder-miscased-id`
     force-uppercases a bare `id` token, which will silently turn a real field name into a wrong
     one — pick an example that avoids it rather than accepting the autofix.
 

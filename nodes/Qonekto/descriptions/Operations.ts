@@ -13,8 +13,9 @@ import ClaimsSchaden from './ClaimsSchaden/Operations';
 import TasksAufgaben from './TasksAufgaben/Operations';
 import Pipeline from './Pipeline/Operations';
 import Misc from './Misc/Operations';
+import { withIdempotencyMarker } from './Idempotency';
 
-export default [
+export default withIdempotencyMarker([
 	...Kunde,
 	...KundeTags,
 	...KundeAdditionalAddresses,
@@ -30,4 +31,4 @@ export default [
 	...TasksAufgaben,
 	...Pipeline,
 	...Misc,
-];
+]);

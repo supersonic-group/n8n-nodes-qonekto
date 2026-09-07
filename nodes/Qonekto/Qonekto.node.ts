@@ -14,8 +14,13 @@ import {
 import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
-import { getItemBinaryData, qonektoApiRequest } from './GenericFunctions';
+import { getItemBinaryData, qonektoApiRequest, qonektoApiRequestFull } from './GenericFunctions';
 import { paginateAllPages } from './descriptions/Pagination';
+import {
+	IDEMPOTENCY_KEY_HEADER,
+	IDEMPOTENCY_REPLAYED_FLAG,
+	isReplayedResponse,
+} from './descriptions/Idempotency';
 import {
 	INodeListSearchItems,
 	INodeParameterResourceLocator,
@@ -239,14 +244,25 @@ export class Qonekto implements INodeType {
 
 						const ameise_id = this.getNodeParameter('kunde_ameise_id', i) as INodeParameterResourceLocator;
 
-						const response = await qonektoApiRequest.call(
+						// A custom operation never reaches the declarative Idempotency-Key or the
+						// replay marker, so this one carries both itself. It posts to the same
+						// idempotency-protected route as Create File.
+						const headers: Record<string, string | number> = {
+							'Content-Type': `multipart/form-data; boundary=${multiPartBody.getBoundary()}`,
+							'Content-Length': multiPartBody.getLengthSync(),
+						};
+						const idempotencyKey = String(
+							this.getNodeParameter('idempotencyKey', i, '') ?? '',
+						).trim();
+						if (idempotencyKey !== '') {
+							headers[IDEMPOTENCY_KEY_HEADER] = idempotencyKey;
+						}
+
+						const response = await qonektoApiRequestFull.call(
 							this,
 							'kunde/' + ameise_id.value + '/archiveintrag',
 							'POST',
-							{
-								'Content-Type': `multipart/form-data; boundary=${multiPartBody.getBoundary()}`,
-								'Content-Length': multiPartBody.getLengthSync(),
-							},
+							headers,
 							multiPartBody.getBuffer(),
 							{},
 							{
@@ -256,9 +272,14 @@ export class Qonekto implements INodeType {
 						);
 
 						const executionData = this.helpers.constructExecutionMetaData(
-							this.helpers.returnJsonArray(response as IDataObject[]),
+							this.helpers.returnJsonArray(response.body as IDataObject[]),
 							{ itemData: { item: i } },
 						);
+						if (isReplayedResponse(response.headers)) {
+							for (const item of executionData) {
+								item.json[IDEMPOTENCY_REPLAYED_FLAG] = true;
+							}
+						}
 						returnData.push(...executionData);
 					} catch (error) {
 						if (this.continueOnFail()) {
