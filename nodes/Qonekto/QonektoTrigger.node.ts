@@ -49,10 +49,13 @@ export class QonektoTrigger implements INodeType {
 				options: [
 					{ name: 'Created', value: 'created' },
 					{ name: 'Updated', value: 'updated' },
+					{ name: 'Deleted', value: 'deleted' },
+					{ name: 'Archive Entry Created', value: 'api-create-archive' },
 				],
 				required: true,
 				default: 'created',
-				description: 'The action to listen to',
+				description:
+					'The action to listen to. Not every subject type supports every action: "Deleted" is available for Customer, Contract, Customer Detail and Customer Communication, and "Archive Entry Created" for Customer only. Every other subject type supports "Created" and "Updated" alone. An unsupported pair is rejected when the trigger is activated.',
 			},
 			{
 				displayName: 'Subject Type',
