@@ -40,4 +40,22 @@ export const DATE_ONLY_VALUE =
 export const ATOM_TIMESTAMP_VALUE =
 	"={{ $value ? DateTime.fromJSDate(new Date($value)).toUTC().toFormat(\"yyyy-MM-dd'T'HH:mm:ssZZ\") : null }}";
 
+/**
+ * Renders a date-time as ISO 8601 with an explicit offset, keeping the wall-clock
+ * the value already carries.
+ *
+ * The upstream Tasks API accepts only this shape. Verified against INTE: a bare
+ * `2026-03-05` and a `...Z`-suffixed value both come back as
+ * `dueDate: ["This value should be of type string."]`, while
+ * `2026-03-05T00:00:00+00:00` is accepted. So a task due date cannot use
+ * DATE_ONLY_VALUE even though the user picks a calendar date.
+ *
+ * Unlike ATOM_TIMESTAMP_VALUE this deliberately does NOT convert to UTC: a due
+ * date picked as the 5th in Berlin would become the 4th at 23:00 in UTC, which is
+ * the same off-by-one this module exists to prevent. Keeping the offset preserves
+ * the date the user chose.
+ */
+export const DATETIME_WITH_OFFSET_VALUE =
+	'={{ $value ? (DateTime.fromISO(String($value), { setZone: true }).isValid ? DateTime.fromISO(String($value), { setZone: true }).toFormat("yyyy-MM-dd\'T\'HH:mm:ssZZ") : DateTime.fromJSDate(new Date($value)).toUTC().toFormat("yyyy-MM-dd\'T\'HH:mm:ssZZ")) : null }}';
+
 export default DATE_ONLY_VALUE;

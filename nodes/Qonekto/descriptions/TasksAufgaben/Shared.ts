@@ -1,5 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
-import { DATE_ONLY_VALUE } from '../Routing';
+import { DATETIME_WITH_OFFSET_VALUE } from '../Routing';
 
 export const TaskShared: Record<string, INodeProperties> = {
 	'Task ID': {
@@ -122,7 +122,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 				property: 'dueDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: DATE_ONLY_VALUE,
+				value: DATETIME_WITH_OFFSET_VALUE,
 			},
 		},
 	},
