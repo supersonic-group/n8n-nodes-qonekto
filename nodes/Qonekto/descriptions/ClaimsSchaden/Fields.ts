@@ -12,11 +12,47 @@ export const ListClaimsByContract: INodeProperties[] = [
 			},
 		},
 	},
+	{
+		...ClaimShared['List Filter Fields'],
+		displayOptions: {
+			show: {
+				resource: ['ClaimsSchaden'],
+				operation: ['List Claims By Contract'],
+			},
+		},
+	},
+	{
+		...ClaimShared['List Pagination Fields'],
+		displayOptions: {
+			show: {
+				resource: ['ClaimsSchaden'],
+				operation: ['List Claims By Contract'],
+			},
+		},
+	},
 ];
 
 export const ListClaimsByCustomer: INodeProperties[] = [
 	{
 		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['ClaimsSchaden'],
+				operation: ['List Claims By Customer'],
+			},
+		},
+	},
+	{
+		...ClaimShared['List Filter Fields'],
+		displayOptions: {
+			show: {
+				resource: ['ClaimsSchaden'],
+				operation: ['List Claims By Customer'],
+			},
+		},
+	},
+	{
+		...ClaimShared['List Pagination Fields'],
 		displayOptions: {
 			show: {
 				resource: ['ClaimsSchaden'],

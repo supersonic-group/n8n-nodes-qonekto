@@ -95,4 +95,99 @@ export const ClaimShared: Record<string, INodeProperties> = {
 			},
 		},
 	},
+	'List Filter Fields': {
+		displayName: 'Filter Fields',
+		name: 'filter fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Search',
+				name: 'search',
+				type: 'string',
+				default: '',
+				description: 'Filters by claim number, comment, policy number or risk',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'search',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'string',
+				default: '',
+				description: 'Filters by claim status, e.g. offen or geschlossen',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'status',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Type',
+				name: 'type',
+				type: 'string',
+				default: '',
+				description: 'Filters by claim type',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'type',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+	},
+	'List Pagination Fields': {
+		displayName: 'Pagination Fields',
+		name: 'pagination fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Per Page',
+				name: 'perPage',
+				type: 'number',
+				default: 50,
+				// The Claims API is a passthrough and takes camelCase perPage, unlike the
+				// per_page used by the connector's own list endpoints.
+				description: 'Number of results per page',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'perPage',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Page',
+				name: 'page',
+				type: 'number',
+				default: 1,
+				description: 'Returns result of given page number',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'page',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+	},
 };
