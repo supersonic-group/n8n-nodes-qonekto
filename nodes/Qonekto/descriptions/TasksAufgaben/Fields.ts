@@ -37,6 +37,13 @@ export const CreateTask: INodeProperties[] = [
 	{
 		...TaskShared['Status'],
 		required: true,
+		// A task can only be created open; 'closed' is update-only (TaskRules::createRules).
+		options: [
+			{
+				name: 'Open',
+				value: 'open',
+			},
+		],
 		displayOptions: {
 			show: {
 				resource: ['TasksAufgaben'],

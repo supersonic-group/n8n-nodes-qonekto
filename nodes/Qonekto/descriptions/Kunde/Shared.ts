@@ -499,14 +499,22 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				routing: {
 					send: {
 						type: 'body',
-						property: 'vertrags_id',
+						property: 'zuordnung.vertrags_id',
 						value: '={{ $value }}',
-						propertyInDotNotation: false,
+						propertyInDotNotation: true,
 					},
 				},
 			},
 			{
 				...Shared['Sparte ID'],
+				routing: {
+					send: {
+						property: 'zuordnung.sparte_id',
+						propertyInDotNotation: true,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
 			},
 			{
 				displayName: 'Kundensichtbar',
@@ -517,9 +525,9 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				routing: {
 					send: {
 						type: 'body',
-						property: 'kundensichtbar',
+						property: 'meta.kundensichtbar',
 						value: '={{ $value }}',
-						propertyInDotNotation: false,
+						propertyInDotNotation: true,
 					},
 				},
 			},
