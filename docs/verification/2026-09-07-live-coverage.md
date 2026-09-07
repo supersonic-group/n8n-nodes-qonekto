@@ -98,13 +98,14 @@ and one was deliberately not run.
 
 ## The four blocked upstream
 
-**`Create Vertrag`** and **`Create KFZ Contract Products`** fail the same way: MitarbeiterWebservice
-answers with a generic HTML error page — `Error #400 - Fehlerhafte anfrage!` for the contract,
-HTTP 500 for the products — carrying no machine-readable reason. The contract create was tried
-with sparte 050 and 120, with and without the optional fields; all three attempts are identical.
-The request the connector builds looks well-formed in both cases. Settling either needs Ameise's
-own logs. Note that the connector now logs the failing passthrough call, but truncates the
-response body to 1 KB, which on a Symfony error page stops before the message.
+**`Create Vertrag`** cannot succeed on this tenant at all, and the reason is fixture data rather
+than anything either repo does wrong. See the second follow-up below for the working.
+
+**`Create KFZ Contract Products`** draws HTTP 500 from MitarbeiterWebservice with an HTML error
+page carrying no machine-readable reason. Settling it needs Ameise's own logs. Note that the
+connector logs the failing passthrough call but truncated the response body to 1 KB, which on a
+Symfony error page stops before the message; that truncation has since been fixed connector-side,
+so a re-run should finally record something.
 
 **`Create A Tender`** is refused by Panda with `There are no questions available for this
 product` — insurance line 54, the only one visible on this tenant's existing tenders, has no
@@ -175,3 +176,51 @@ verified against a customer with five relations at `pageSize=2` — three pages 
 records returned, and the same call with Return All off still returning the single-page envelope.
 
 Connector commit: `ce01a4c0`, on the same unmerged branch as the rest.
+
+## Second follow-up: why Create Vertrag cannot pass
+
+Recorded above as an opaque upstream rejection. It is not opaque; it is a fixture mismatch, and
+it is invisible from either side on its own.
+
+The connector validates `vermittler_id` against the tenant's local `ameise_vermittler` table.
+On `demo` that table holds 737 rows and **every one of them ends in `B51E`**. Meanwhile the
+Ameise employee the connector pushes contracts through is `03A71H_XDSJKU`, the tenant's
+`ameise_vermittler_id` is `03A71H`, and every real contract read back from INTE carries
+`Vermittler: 03A71H`. The two id spaces do not intersect anywhere:
+
+| Sent | Passes connector validation | Ameise verdict |
+| --- | --- | --- |
+| `07B51E` (and any other local row) | yes | generic HTML `Error #400 - Fehlerhafte anfrage!` — the employee does not own that vermittler |
+| `03A71H` (what the employee owns) | **no** — `Der gewählte Wert für Vermittlernummer ist ungültig.` | never reached |
+
+So there is no value that clears both gates, and the operation is unreachable on this tenant
+regardless of what the node sends. The local broker hierarchy and the tenant's Ameise identity
+are from different brokers.
+
+The node is not implicated: the payload the connector built from its request is complete and
+well-formed, captured from the failing call as
+
+```json
+{"Status":"F","Gesellschaft":"55150","Vermittler":"07B51E","Kunde":170430,"Sparte":"050",
+ "Beitrag":{"Zahlweise":1,"Brutto":14.68,"Netto":12.34,"Steuer":19},
+ "Laufzeit":{"Beginn":"2026-01-01"},"Risiko":"…","Versicherungsscheinnummer":"…",
+ "Adresse":"0","Bankkonto":{"IBAN":"","BIC":"","Bankname":"","Inhaber":{"Abweichend":false}}}
+```
+
+Only the one field's value is wrong, and it is wrong because the data it must be chosen from is.
+
+Two things fall out of this that are worth acting on, neither of them the node's:
+
+- **Nothing checks the vermittler against the token's own hierarchy before pushing.** A value
+  that is locally valid but not owned by the employee produces a generic HTML 400 from Ameise
+  naming no field. A pre-flight check would turn that into a 422 naming `vermittler_id`, which
+  is the difference between this taking ten minutes and taking a day.
+- **The demo tenant cannot exercise contract creation.** Proving that path end-to-end needs
+  either a tenant whose local vermittler data matches its Ameise identity, or a `03A71H` row
+  seeded into `ameise_vermittler` — not attempted here, because `Vermittler` is
+  `IsConnectedToCrm` and pushing an invented broker upstream is a worse outcome than an
+  unexercised operation.
+
+Verified 2026-09-07 12:21–12:30 UTC against connector `ce01a4c0`, with `vermittler_id` set to
+`03A71H` and with the full and minimal optional sets; both attempts fail identically at the
+connector's own validation.
