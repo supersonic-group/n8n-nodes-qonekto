@@ -5,54 +5,66 @@
 # requirement. Provenance lets anyone cryptographically verify that a package
 # was built by this exact workflow, from this exact repository and commit.
 #
-# ─── PREREQUISITES ─────────────────────────────────────────────────────────────
+# ─── HOW THIS REPO AUTHENTICATES ───────────────────────────────────────────────
 #
-# @n8n/node-cli ≥ 0.23.0 is required. Earlier versions do not support the
-# provenance flag passed by `npm run release` in CI, and the publish step will
-# fail. Check the version installed in this project with:
+# npm OIDC Trusted Publishing. There is no NPM_TOKEN secret on the repository or
+# the organisation, and 2.0.0 published successfully with a provenance
+# attestation, which is only possible through the OIDC exchange. Nothing here
+# needs a stored credential, and nothing expires.
 #
-#   npm list @n8n/node-cli
+# That matters because npm's token rules changed underneath everyone in late
+# 2025: classic tokens were revoked on 9 December 2025, granular tokens with
+# write access are capped at a 90-day lifetime, and `npm login` now issues a
+# two-hour session rather than a durable token. None of it touches this
+# workflow — it is exactly the position those changes were pushing publishers
+# into.
 #
-# To upgrade:
+# The trusted-publisher entry on npmjs.com predates 20 May 2026, so npm has it
+# grandfathered to "allow npm publish". If you ever edit that entry you now have
+# to pick an allowed action explicitly: keep it on publish. Choosing stage-only
+# makes plain `npm publish` fail, and the workflow would need `npm stage publish`
+# plus a human approving each release.
 #
-#   npm install --save-dev @n8n/node-cli@latest
+# ─── VERSION FLOOR ─────────────────────────────────────────────────────────────
 #
-# ─── ONE-TIME SETUP ────────────────────────────────────────────────────────────
+# Trusted publishing needs npm >= 11.5.1 and Node >= 22.14.0.
 #
-# Option A — OIDC Trusted Publishing (recommended, no long-lived secrets):
-#   1. Log in to npmjs.com and open your package's settings.
-#   2. Under "Publish access" → "Trusted Publishers", click "Add a publisher".
-#   3. Select GitHub Actions and fill in:
-#        Repository owner: <your-github-username-or-org>
-#        Repository name:  <your-repo-name>
-#        Workflow name:    publish.yml
-#        Environment:      (leave blank unless you use GitHub Environments)
-#   4. Leave the NPM_TOKEN secret unset in this repository. GitHub's OIDC
-#      token is used instead — no secret ever touches your repo settings.
+# `node-version: lts/*` currently resolves to Node 24.x, which bundles npm 11.19
+# — comfortably above the floor. Do NOT pin `node-version: 22`: that line bundles
+# npm 10.9.8, below the floor, and publishing would fail with an authentication
+# error rather than anything that names the real cause.
 #
-# Option B — npm Automation Token (fallback):
-#   1. On npmjs.com: Access Tokens → Generate New Token → Granular Access Token.
-#      Scope it to this package with "Read and write" publish permission.
-#   2. In GitHub: Settings → Secrets and variables → Actions → New secret.
-#      Name it NPM_TOKEN and paste the token value.
+# @n8n/node-cli >= 0.23.0 is also required; `npm run release` detects CI and
+# publishes with NPM_CONFIG_PROVENANCE=true. Check with `npm list @n8n/node-cli`.
 #
-# Both options work with --provenance. Provenance is signed by GitHub's OIDC
-# infrastructure regardless of how npm authentication is handled.
+# ─── IF OIDC EVER HAS TO BE REPLACED ───────────────────────────────────────────
+#
+# Fallback only, and a worse one than it used to be. Generate a granular access
+# token on npmjs.com scoped to this package with read-and-write publish rights,
+# store it as the NPM_TOKEN repository secret, and put a reminder in the calendar
+# — it expires within 90 days and the release will fail silently until it is
+# rotated. The step below picks it up automatically when the secret exists.
+#
+# ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
+#
+# Locally, on a clean `main` that is pushed and ahead of its upstream:
+#
+#   GITHUB_TOKEN=$(gh auth token) npm run release
+#
+# That lints, builds, prompts for the version bump, regenerates the changelog,
+# commits, tags and pushes — and the tag push triggers this workflow, which does
+# the actual npm publish. It does not publish from your machine.
+#
+# The GITHUB_TOKEN is only for creating the GitHub Release. Without it release-it
+# still does everything else and then prints a `releases/new?...` URL for you to
+# open and submit by hand. `dotenv` in the release script reads it from a local
+# `.env` if you would rather keep it there; `.env` is gitignored.
 #
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
 # This workflow triggers on tags matching "*.*.*" (e.g. 0.2.0).
 # If you prefer tags with a "v" prefix (e.g. v0.2.0), change the filter to:
 #   tags: ['v*.*.*']
-#
-# ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
-#
-# Run the following command locally to start an interactive release:
-#
-#   npm run release
-#
-# This will lint, build, prompt for a version bump, update the changelog,
-# commit, tag, and push — which triggers this workflow to publish to npm.
 
 name: Publish
 
