@@ -22,6 +22,13 @@ IDs. The rule lives in `app/Models/Tenant/Importable.php`. Mind the path: `app/M
 also defines `getRouteKeyName()` and returns `'slug'`, so grepping the symbol alone lands on both
 and the wrong one looks plausible.
 
+## What is known to work
+
+`docs/verification/` holds the live coverage runs: which operations were executed against a real
+API, at which commit of this repo and of `mvp-connector`, and which were blocked or skipped.
+Check the newest one before assuming an operation has ever succeeded — several fail upstream
+regardless of what the node sends.
+
 ## Writing descriptions
 
 `nodes/Qonekto/descriptions/CONVENTIONS.md` is the reference — field property order, routing
