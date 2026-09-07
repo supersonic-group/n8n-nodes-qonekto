@@ -37,13 +37,31 @@
 # @n8n/node-cli >= 0.23.0 is also required; `npm run release` detects CI and
 # publishes with NPM_CONFIG_PROVENANCE=true. Check with `npm list @n8n/node-cli`.
 #
+# npm 12 disables dependency lifecycle scripts on install by default. This tree
+# has several that would stop running (isolated-vm, ssh2, cpu-features and
+# unrs-resolver all build or check native bindings), so it is worth knowing that
+# it makes no difference here: `npm ci --ignore-scripts` followed by lint, build
+# and tsc all pass, verified 2026-09-07. The published package is unaffected
+# either way — it declares no dependencies and has no install-time scripts of
+# its own, so nothing runs on a consumer's machine.
+#
 # ─── IF OIDC EVER HAS TO BE REPLACED ───────────────────────────────────────────
 #
-# Fallback only, and a worse one than it used to be. Generate a granular access
-# token on npmjs.com scoped to this package with read-and-write publish rights,
-# store it as the NPM_TOKEN repository secret, and put a reminder in the calendar
-# — it expires within 90 days and the release will fail silently until it is
-# rotated. The step below picks it up automatically when the secret exists.
+# Treat this as a stopgap measured in weeks, not a supported alternative. A
+# granular access token scoped to this package, stored as the NPM_TOKEN
+# repository secret, still works today and the step below picks it up
+# automatically — but it expires within 90 days, and a token used from CI is by
+# definition one that bypasses 2FA, which npm is retiring in two steps:
+#
+#   * early August 2026 — such a token can no longer change package access,
+#     maintainers, or the trusted-publishing configuration without 2FA.
+#   * around January 2027 — such a token loses direct publishing entirely. It
+#     will be able to stage a publish, which then needs a human 2FA approval
+#     before the version becomes installable.
+#
+# So a token fallback adopted after that date is not a way to publish
+# unattended. OIDC is the only unattended path that survives; if it breaks,
+# fixing it beats working around it.
 #
 # ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
 #
