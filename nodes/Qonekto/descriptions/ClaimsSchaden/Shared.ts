@@ -1,5 +1,5 @@
 import { INodeProperties } from 'n8n-workflow';
-import { DATE_ONLY_VALUE } from '../Routing';
+import { DATETIME_WITH_OFFSET_VALUE } from '../Routing';
 
 export const ClaimShared: Record<string, INodeProperties> = {
 	'Claim ID': {
@@ -75,7 +75,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 				property: 'claimDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: DATE_ONLY_VALUE,
+				value: DATETIME_WITH_OFFSET_VALUE,
 			},
 		},
 	},
@@ -90,7 +90,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 				property: 'notificationDate',
 				propertyInDotNotation: false,
 				type: 'body',
-				value: DATE_ONLY_VALUE,
+				value: DATETIME_WITH_OFFSET_VALUE,
 			},
 		},
 	},
