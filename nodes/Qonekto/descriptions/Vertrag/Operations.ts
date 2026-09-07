@@ -56,6 +56,19 @@ export const Vertrag: INodeProperties[] = [
 					},
 				},
 			},
+			{
+				name: 'List Documents',
+				value: 'List Documents',
+				action: 'List documents',
+				description:
+					'List the Archiveintraege assigned to a contract. Contract documents carry no typ and no attachments.',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/vertrag/{{$parameter["vertrag_ameise_id"]}}/dokument',
+					},
+				},
+			},
 		],
 		default: 'List Vertraege',
 	},

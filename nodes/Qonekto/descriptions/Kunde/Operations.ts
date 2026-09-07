@@ -79,6 +79,19 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'List Archive Entries',
+				value: 'List Archive Entries',
+				action: 'List archive entries',
+				description:
+					'List the Archiveintraege in a customer Kontakthistorie. Whether an entry has downloadable content is only known at download time.',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}/archiveintrag',
+					},
+				},
+			},
+			{
 				name: 'Upload File',
 				value: 'Upload File',
 				action: 'Upload file',

@@ -680,11 +680,56 @@ export const ShowVertrag: INodeProperties[] = [
 	},
 ];
 
+export const ListDocuments: INodeProperties[] = [
+	{
+		...Shared['Vertrag Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['Vertrag'],
+				operation: ['List Documents'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Fields',
+				name: 'fields',
+				type: 'string',
+				default: '',
+				placeholder: 'datum,betreff,download_url',
+				description:
+					'Comma-separated list of fields to return. Omit to return every field.',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'fields',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['Vertrag'],
+				operation: ['List Documents'],
+			},
+		},
+	},
+];
+
 export const Fields: INodeProperties[] = [
 	...ListVertraege,
 	...CreateVertrag,
 	...FilterVertraege,
 	...ShowVertrag,
+	...ListDocuments,
 ];
 
 export default Fields;

@@ -1194,6 +1194,50 @@ export const UpdateKunde: INodeProperties[] = [
 	},
 ];
 
+export const ListArchiveEntries: INodeProperties[] = [
+	{
+		...Shared['Kunde Ameise ID'],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['List Archive Entries'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Fields',
+				name: 'fields',
+				type: 'string',
+				default: '',
+				placeholder: 'typ,datum,betreff,download_url',
+				description:
+					'Comma-separated list of fields to return. Omit to return every field.',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'fields',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['Kunde'],
+				operation: ['List Archive Entries'],
+			},
+		},
+	},
+];
+
 export const UploadFile: INodeProperties[] = [
 	{
 		...Shared['Kunde Ameise ID'],
@@ -1347,6 +1391,7 @@ export default [
 	...UpsertKunde,
 	...ShowKunde,
 	...UpdateKunde,
+	...ListArchiveEntries,
 	...UploadFile,
 	...CreateFile,
 ];
