@@ -1,33 +1,35 @@
 # n8n Node Description Conventions
 
-Reference for manually fixing auto-generated description files from `src/generate-descriptions-from-openapi.ts`.
+Reference for writing the description files by hand. Descriptions are hand-written against the
+API source — see the repo root `CLAUDE.md` for where the contract lives. `npm run lint` enforces
+some of the rules below (each is marked); the rest are convention and are not checked.
 
-## What the auto-generator gets wrong
+## Rules
 
-After running the generator with a new `src/openapi.json`, the output needs manual fixes:
+1. **TypeScript style, not JSON.** Single-quoted TS object literals (`key: 'value'`), tabs for
+   indentation.
 
-1. **JSON format instead of TypeScript** — Generator outputs JSON-style (`"key": "value"`) instead of TS-style (
-   `key: 'value'`). Rewrite to use single-quoted TS object literals with tabs for indentation.
+2. **`resource` values contain no spaces** — `'ClaimsSchaden'`, not `'Claims Schaden'`. The
+   directory name matches the resource value.
 
-2. **`resource` values contain spaces** — Generator creates names like `'Claims Schaden'`. Remove spaces:
-   `'ClaimsSchaden'`. Also rename directories accordingly.
+3. **`description` must not duplicate `action` or `name`.** Omit it entirely unless it adds
+   genuinely useful information beyond the action name. *(Lint:
+   `node-param-option-description-identical-to-name`.)*
 
-3. **`description` duplicates `action`** — Generator sets `description` = `action` on operations. Remove the
-   `description` field from operations (unless it adds genuinely useful info beyond the action name).
+4. **The operation selector's `default` is the first operation's value** — e.g.
+   `default: 'List Claims By Contract'`. Never `''`.
 
-4. **Empty `default` on operation selector** — Generator sets `default: ''`. Set it to the first operation's value (e.g.
-   `default: 'List Claims By Contract'`).
+5. **`action` is sentence case** — only the first word is capitalized: `'List claims by
+   contract'`, not `'List Claims By Contract'`. *(Lint:
+   `node-param-operation-option-action-miscased`.)*
 
-5. **`action` casing is wrong** — Generator uses title-case for every word (e.g. `'Create Claim'`). Convention: only the
-   verb and resource name are capitalized, prepositions are lowercase: `'List claims by contract'`, `'Create claim'`.
-
-6. **Date fields use `type: 'string'`** — Should be `type: 'dateTime'` with the standard date formatting expression:
+6. **Date fields use `type: 'dateTime'`** with the standard formatting expression:
    ```ts
    value: '={{ $value && (new Date($value)) ? (new Date($value)).toDateTime().format("yyyy-MM-dd") : null }}'
    ```
 
-7. **ID path parameters are missing** — Operations that reference `{{$parameter["some_id"]}}` in URLs need corresponding
-   field definitions. The generator often omits them or makes them empty arrays. Add fields like:
+7. **Every ID path parameter needs a field definition.** An operation whose URL references
+   `{{$parameter["some_id"]}}` must define the matching field:
    ```ts
    {
        displayName: 'Ameise Vertragsnummer',
@@ -39,16 +41,16 @@ After running the generator with a new `src/openapi.json`, the output needs manu
        displayOptions: { show: { resource: ['...'], operation: ['...'] } },
    }
    ```
-   For Kunde IDs, use `resourceLocator` type with search via `Shared['Kunde Ameise ID']` from `../Kunde/Shared`.
+   Route model binding resolves by `ameise_id`, so these carry Ameise IDs. For Kunde IDs use the
+   `resourceLocator` from `Shared['Kunde Ameise ID']` (`../Kunde/Shared`) rather than a plain
+   string.
 
-8. **`resourceLocator` types replaced with `string`/`number`** — Generator loses hand-tuned `resourceLocator` fields
-   with searchable dropdown modes. Keep existing `resourceLocator` definitions; use the `Shared` module where available.
+8. **Prefer `resourceLocator` over `string`/`number` where a searchable dropdown exists.** Use the
+   `Shared` module rather than redefining one.
 
-9. **`required` placed before `displayName`** — n8n eslint rule requires `displayName` as the first property in every
-   field object. Always put `displayName` first.
+9. **`displayName` is the first property** in every field object. *(Lint requires it.)*
 
-10. **Optional fields not grouped in collections** — Generator flattens all fields as top-level. Group
-    optional/non-required fields inside a `type: 'collection'` wrapper:
+10. **Optional fields are grouped in a collection**, not flattened as top-level fields:
     ```ts
     {
         displayName: 'Optional Fields',
@@ -60,8 +62,10 @@ After running the generator with a new `src/openapi.json`, the output needs manu
         displayOptions: { show: { resource: ['...'], operation: ['...'] } },
     }
     ```
+    This also means an unset field is omitted from the request entirely rather than sent empty —
+    which matters when the API distinguishes "absent" from "null".
 
-11. **Pagination fields not grouped** — List operations should have pagination in a collection:
+11. **Pagination is grouped in its own collection** on list operations:
     ```ts
     {
         displayName: 'Pagination Fields',
@@ -81,19 +85,16 @@ After running the generator with a new `src/openapi.json`, the output needs manu
         displayOptions: { show: { resource: ['...'], operation: ['...'] } },
     }
     ```
-    For POST filter endpoints, use `_skip`/`_limit` in the body instead of `per_page`/`page` in the query.
+    For POST filter endpoints, use `_skip`/`_limit` in the body instead of `per_page`/`page` in
+    the query.
 
-12. **`action` casing must be sentence-case** — The eslint rule `node-param-operation-option-action-miscased` enforces
-    sentence case on `action` strings. Only the first word is capitalized: `'List claims by contract'`, not
-    `'List Claims By Contract'`.
+12. **Defaults are sensible, never example values from the API docs.** `''` for strings and
+    numbers (or something meaningful like `50` for `per_page`), `false` for booleans. A stray
+    `default: 16` is an example value that leaked in.
 
-13. **`description` duplicating `name` on operation options** — The eslint rule
-    `node-param-option-description-identical-to-name` flags descriptions that match the option name. Remove the
-    `description` field from operation options entirely (unless it adds genuinely different info).
-
-14. **Test/example default values leak in** — Generator picks up example values from the OpenAPI spec (e.g.
-    `default: 16`, `default: 87`). Replace with sensible defaults: `''` for strings, `''` for numbers (or a meaningful
-    default like `50` for per_page), `false` for booleans.
+13. **`placeholder` must survive the lint rules.** `node-param-placeholder-miscased-id`
+    force-uppercases a bare `id` token, which will silently turn a real field name into a wrong
+    one — pick an example that avoids it rather than accepting the autofix.
 
 ## Conventions
 
@@ -132,6 +133,8 @@ export const ResourceName: INodeProperties[] = [
 
 export default ResourceName;
 ```
+
+Operations are ordered to match the API's route order, not alphabetically.
 
 ### Fields.ts structure
 
@@ -185,3 +188,6 @@ Available shared field definitions (all `resourceLocator` type with search):
 
 Use spread syntax: `{ ...Shared['Kunde Ameise ID'], displayOptions: { ... } }`
 Override properties after spread as needed (e.g. `required: false`).
+
+Resources with a field repeated across several of their own operations keep a local `Shared.ts`
+(see `TasksAufgaben/Shared.ts`); a field used in only one or two places is defined inline.

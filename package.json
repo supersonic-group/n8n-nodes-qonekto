@@ -38,7 +38,6 @@
 		]
 	},
 	"devDependencies": {
-		"@devlikeapro/n8n-openapi-node": "^0.1.4",
 		"@n8n/node-cli": "*",
 		"@types/node": "*",
 		"dotenv-cli": "^10.0.0",
