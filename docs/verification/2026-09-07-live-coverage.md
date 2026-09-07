@@ -101,11 +101,25 @@ and one was deliberately not run.
 **`Create Vertrag`** cannot succeed on this tenant at all, and the reason is fixture data rather
 than anything either repo does wrong. See the second follow-up below for the working.
 
-**`Create KFZ Contract Products`** draws HTTP 500 from MitarbeiterWebservice with an HTML error
-page carrying no machine-readable reason. Settling it needs Ameise's own logs. Note that the
-connector logs the failing passthrough call but truncated the response body to 1 KB, which on a
-Symfony error page stops before the message; that truncation has since been fixed connector-side,
-so a re-run should finally record something.
+**`Create KFZ Contract Products`** draws HTTP 500 from MitarbeiterWebservice. Re-run after the
+connector's log-truncation fix landed, the whole of what the upstream says is
+
+    Whoops, da ist wohl etwas schief gegangen.
+
+— a generic Symfony 500 page. There is no validation message to extract because it is not a
+validation failure: something throws server-side. Nothing further can be learned from this end,
+and it needs Ameise's own logs.
+
+The request is not in doubt. The logged body is
+
+```json
+{"Halter":{"Beziehungswert":1,"Vorname":"…","Nachname":"…","Strasse":"…","PLZ":"40213",
+ "Ort":"Duesseldorf","Geburtsdatum":632361600,"Geschlecht":1,"Personentyp":1}}
+```
+
+which is the documented shape, with `Geburtsdatum` correctly converted to epoch seconds
+(632361600 is 1990-01-15T00:00:00Z) by `ContractProductsService::createKfz()` — so the node's
+date handling reaches the wire intact.
 
 **`Create A Tender`** is refused by Panda with `There are no questions available for this
 product` — insurance line 54, the only one visible on this tenant's existing tenders, has no
