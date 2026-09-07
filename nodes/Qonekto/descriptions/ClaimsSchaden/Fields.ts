@@ -1,6 +1,7 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
 import { ClaimShared } from './Shared';
+import { returnAllField } from '../Pagination';
 
 export const ListClaimsByContract: INodeProperties[] = [
 	{
@@ -21,6 +22,7 @@ export const ListClaimsByContract: INodeProperties[] = [
 			},
 		},
 	},
+	returnAllField('ClaimsSchaden', 'List Claims By Contract'),
 	{
 		...ClaimShared['List Pagination Fields'],
 		displayOptions: {
@@ -51,6 +53,7 @@ export const ListClaimsByCustomer: INodeProperties[] = [
 			},
 		},
 	},
+	returnAllField('ClaimsSchaden', 'List Claims By Customer'),
 	{
 		...ClaimShared['List Pagination Fields'],
 		displayOptions: {

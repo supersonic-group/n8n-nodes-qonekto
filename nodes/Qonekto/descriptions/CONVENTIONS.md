@@ -102,6 +102,23 @@ some of the rules below (each is marked); the rest are convention and are not ch
     For POST filter endpoints, use `_skip`/`_limit` in the body instead of `per_page`/`page` in
     the query.
 
+    An operation whose response is a *paginated envelope* also gets a Return All toggle, placed
+    immediately above its Pagination Fields collection:
+    ```ts
+    import { returnAllField } from '../Pagination';
+
+    returnAllField('Kunde', 'List Kunden'),
+    ```
+    That is the whole change — the walk itself lives in `Pagination.ts` and is registered once as
+    the node's `requestOperations.pagination`, so it runs for whichever operation has Return All
+    on. It reads either envelope (the connector's Laravel paginator, or the Ameise
+    `items`/`numberOfPages` one the Tasks and Claims endpoints pass through) and returns one item
+    per record; a response it does not recognise falls back to the single-page behaviour.
+
+    Do not add Return All to an endpoint the connector cannot page. `GET /kunde/{id}/relations`
+    answers with a paginated Ameise envelope but `CustomerRelationsCtrl::index` forwards no query
+    parameters, so page 2 is unreachable and a toggle would promise more than it can deliver.
+
 12. **Defaults are sensible, never example values from the API docs.** `''` for strings and
     numbers (or something meaningful like `50` for `per_page`), `false` for booleans. A stray
     `default: 16` is an example value that leaked in.

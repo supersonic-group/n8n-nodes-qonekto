@@ -7,6 +7,7 @@ import {
 	INodeParameterResourceLocator,
 } from 'n8n-workflow/dist/esm/interfaces';
 import { DATE_ONLY_VALUE } from '../Routing';
+import { returnAllField } from '../Pagination';
 
 export const ListKunden: INodeProperties[] = [
 	{
@@ -40,6 +41,7 @@ export const ListKunden: INodeProperties[] = [
 			},
 		},
 	},
+	returnAllField('Kunde', 'List Kunden'),
 	{
 		displayName: 'Pagination Fields',
 		name: 'pagination fields',

@@ -130,37 +130,3 @@ export async function qonektoApiRequestFull(
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
 }
-
-type DataWithPagination = {
-	data: [];
-	next_page_url?: string | null;
-	links?: {
-		next: string | null;
-	};
-};
-
-export async function qonektoApiRequestAllItems(
-	this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions,
-	uri: string,
-	method: IHttpRequestMethods = 'GET',
-	headers: Record<string, string | number> = {},
-	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
-	query: IDataObject = {},
-): Promise<IDataObject[]> {
-	const returnData: IDataObject[] = [];
-
-	let responseData;
-
-	query.per_page = 100;
-	query.page = 0;
-
-	do {
-		query.page++;
-		responseData = (await qonektoApiRequest.call(this, uri, method, headers, body, query, {
-			json: true,
-		})) as DataWithPagination;
-		returnData.push.apply(returnData, responseData.data as IDataObject[]);
-	} while (responseData.next_page_url || (responseData.links && responseData.links.next));
-
-	return returnData;
-}

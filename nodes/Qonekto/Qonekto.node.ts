@@ -15,6 +15,7 @@ import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
 import { getItemBinaryData, qonektoApiRequest } from './GenericFunctions';
+import { paginateAllPages } from './descriptions/Pagination';
 import {
 	INodeListSearchItems,
 	INodeParameterResourceLocator,
@@ -69,6 +70,10 @@ export class Qonekto implements INodeType {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
+		},
+		// Runs only for an operation whose Return All resolved true; see descriptions/Pagination.ts.
+		requestOperations: {
+			pagination: paginateAllPages,
 		},
 
 		version: 20250926,

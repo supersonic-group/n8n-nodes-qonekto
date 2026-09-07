@@ -1,6 +1,7 @@
 import { INodeProperties } from 'n8n-workflow';
 import { TaskShared } from './Shared';
 import { DATETIME_WITH_OFFSET_VALUE } from '../Routing';
+import { returnAllField } from '../Pagination';
 
 export const ListTasks: INodeProperties[] = [
 	{
@@ -250,6 +251,7 @@ export const ListTasks: INodeProperties[] = [
 			},
 		},
 	},
+	returnAllField('TasksAufgaben', 'List Tasks'),
 	{
 		displayName: 'Pagination Fields',
 		name: 'pagination fields',

@@ -1,6 +1,7 @@
 import { INodeProperties } from 'n8n-workflow';
 import { Shared } from '../Kunde/Shared';
 import { DATE_ONLY_VALUE } from '../Routing';
+import { returnAllField } from '../Pagination';
 
 export const ListVertraege: INodeProperties[] = [
 	{
@@ -62,6 +63,7 @@ export const ListVertraege: INodeProperties[] = [
 			},
 		},
 	},
+	returnAllField('Vertrag', 'List Vertraege'),
 	{
 		displayName: 'Pagination Fields',
 		name: 'pagination fields',
