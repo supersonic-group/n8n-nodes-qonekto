@@ -51,6 +51,19 @@ export const Panda: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Get A Tender',
+				value: 'Get A Tender',
+				action: 'Get a tender',
+				description:
+					'Retrieves detailed tender data together with the answers in the question cascade',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/panda/tenders/{{$parameter["tenderId"]}}',
+					},
+				},
+			},
+			{
 				name: 'Create A Tender',
 				value: 'Create A Tender',
 				action: 'Create a tender',
@@ -58,6 +71,19 @@ export const Panda: INodeProperties[] = [
 					request: {
 						method: 'POST',
 						url: '=/panda/tenders',
+					},
+				},
+			},
+			{
+				name: 'Archive A Tender',
+				value: 'Archive A Tender',
+				action: 'Archive a tender',
+				description:
+					'Archives a tender. The Panda API defines no un-archive operation, so this is irreversible.',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/panda/tenders/{{$parameter["tenderId"]}}/archive',
 					},
 				},
 			},

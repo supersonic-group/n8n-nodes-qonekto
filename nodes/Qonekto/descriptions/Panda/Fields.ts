@@ -202,6 +202,23 @@ export const GetActiveTendersForACustomer: INodeProperties[] = [
 	},
 ];
 
+export const GetATender: INodeProperties[] = [
+	{
+		displayName: 'Tender ID',
+		name: 'tenderId',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The ID of the tender',
+		displayOptions: {
+			show: {
+				resource: ['Panda'],
+				operation: ['Get A Tender'],
+			},
+		},
+	},
+];
+
 export const CreateATender: INodeProperties[] = [
 	{
 		...Shared['Kunde Ameise ID'],
@@ -292,9 +309,58 @@ export const CreateATender: INodeProperties[] = [
 	},
 ];
 
+export const ArchiveATender: INodeProperties[] = [
+	{
+		displayName: 'Tender ID',
+		name: 'tenderId',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The ID of the tender',
+		displayOptions: {
+			show: {
+				resource: ['Panda'],
+				operation: ['Archive A Tender'],
+			},
+		},
+	},
+	{
+		displayName: 'Optional Fields',
+		name: 'optional fields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		options: [
+			{
+				displayName: 'Reason',
+				name: 'reason',
+				type: 'string',
+				default: '',
+				description: 'Reason why the tender was archived',
+				routing: {
+					send: {
+						property: 'reason',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['Panda'],
+				operation: ['Archive A Tender'],
+			},
+		},
+	},
+];
+
 export default [
 	...GetAllCustomerLinks,
 	...CreateACustomerLink,
 	...GetActiveTendersForACustomer,
+	...GetATender,
 	...CreateATender,
+	...ArchiveATender,
 ];
