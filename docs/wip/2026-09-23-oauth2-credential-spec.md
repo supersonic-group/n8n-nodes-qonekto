@@ -31,7 +31,12 @@ A working prototype of the credential and the action-node selector was verified 
 - **Selector:** defaults to API Token on both nodes, so existing workflows are unchanged and no node
   version bump is needed. The action node's declarative requests and the shared request helper
   (used by load-options, the trigger's webhook lifecycle and the binary operations) both resolve the
-  credential from the selector. Where the selector is absent the API token credential is used.
+  credential from the selector. The helper reads the selector as an evaluated node parameter with
+  API Token as fallback, the way the declarative path does — not the raw stored value, which would
+  disagree with the declarative path for an expression-valued selector. On the trigger, where the
+  selector is new, the same fallback applies.
+- **Trigger selector:** the first property of the trigger node, with its two credentials shown by
+  selector value, mirroring the action node.
 - **Subtitle and base URL** keep reading tenant and base URL from whichever credential is selected;
   both credentials carry those fields under the same names.
 
@@ -41,17 +46,22 @@ A working prototype of the credential and the action-node selector was verified 
 - One credential per surface: the nodes only call the Tenant API; MCP is not a surface of this package.
 - The trigger gets OAuth too. The server accepts OAuth grants on the managed-webhook routes; creating
   and deleting a webhook needs `api-full`.
-- No custom handling of a narrowed grant: a 403 `insufficient_scope` surfaces as n8n's normal API
-  error; the README says writes and triggers need full access.
+- No custom handling of a narrowed grant: the server's 403 surfaces as n8n's normal API error, whose
+  body reads "Invalid ability provided." (`insufficient_scope` appears only in the WWW-Authenticate
+  header). The README quotes that message and says writes and triggers need full access. A narrowed
+  grant keeps its narrowed scopes across refreshes, so the fix is reconnecting with full access.
 - No credential `test` request: n8n tests OAuth2 credentials by the presence of an access token.
 - German translations for the new credential and the selector, matching the existing ones.
 - **README**, Credentials section, extended with:
   - how to connect, and the one-time approval by Qonekto support per n8n host;
-  - minimum n8n version 2.35.0 (token refresh for dynamically registered credentials);
+  - minimum n8n version 2.35.0 (token refresh for dynamically registered credentials) — stated in
+    the README only; a community node cannot enforce it, and only 2.37.10 is exercised here;
   - writes and the trigger need full access on the consent screen;
   - troubleshooting: n8n's public base URL must be HTTPS (or loopback) or registration is refused;
     a changed n8n host is a new pending client; registration is limited to 10 per hour per IP and
-    runs on every Connect; after 30 days without use the refresh token lapses and the credential
+    runs on every Connect; a tenant slug that does not exist makes n8n skip the tenant's discovery
+    document, register anyway, and fail at consent with "The resource parameter must name a tenant
+    MCP or API URL"; after 30 days without use the refresh token lapses and the credential
     must be reconnected;
   - MCP: use n8n's built-in MCP Client Tool node with its MCP OAuth2 credential and the tenant's
     `/mcp` URL — backed by the verification run below.
