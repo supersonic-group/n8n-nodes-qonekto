@@ -1,22 +1,54 @@
+import { randomBytes } from 'crypto';
 import {
+	GenericValue,
 	IDataObject,
 	IExecuteFunctions,
 	IHookFunctions,
 	IHttpRequestMethods,
 	IHttpRequestOptions,
 	ILoadOptionsFunctions,
+	IN8nHttpFullResponse,
 	JsonObject,
 	NodeApiError,
 	NodeOperationError,
 	sleep,
 } from 'n8n-workflow';
-import type { URLSearchParams } from 'url';
-import {
-	GenericValue,
-	IN8nHttpFullResponse,
-	IN8nHttpResponse,
-} from 'n8n-workflow/dist/esm/interfaces';
-import type { Readable } from 'stream';
+
+type MultipartPart =
+	| { name: string; value: string }
+	| { name: string; value: Buffer; filename: string; contentType?: string };
+
+/**
+ * Encodes a multipart/form-data body. n8n Cloud forbids importing `form-data`, and this
+ * produces the same bytes it did, so the archive entry endpoint sees an unchanged request.
+ */
+export function buildMultipartBody(parts: MultipartPart[]): {
+	body: Buffer;
+	contentType: string;
+} {
+	const boundary = '--------------------------' + randomBytes(12).toString('hex');
+	const quote = (s: string) => s.replace(/"/g, '%22').replace(/[\r\n]/g, ' ');
+	const chunks: Buffer[] = [];
+	for (const part of parts) {
+		let header = `--${boundary}\r\nContent-Disposition: form-data; name="${quote(part.name)}"`;
+		let value: Buffer;
+		if ('filename' in part) {
+			header += `; filename="${quote(part.filename)}"`;
+			header += `\r\nContent-Type: ${part.contentType || 'application/octet-stream'}`;
+			value = part.value;
+		} else {
+			// Parameters typed as string can hold numbers at runtime (an ID from an expression, a
+			// parsed tag), and Buffer.from(number) allocates that many zero bytes instead.
+			value = Buffer.from(String(part.value));
+		}
+		chunks.push(Buffer.from(header + '\r\n\r\n'), value, Buffer.from('\r\n'));
+	}
+	chunks.push(Buffer.from(`--${boundary}--\r\n`));
+	return {
+		body: Buffer.concat(chunks),
+		contentType: `multipart/form-data; boundary=${boundary}`,
+	};
+}
 
 export async function getItemBinaryData(
 	this: IExecuteFunctions,
@@ -38,13 +70,11 @@ export async function getItemBinaryData(
 		i,
 		inputDataFieldName,
 	);
-	const contentLength: number = fileContent.length;
 	const originalFilename: string | undefined = binaryData.fileName;
 	const mimeType = binaryData.mimeType;
 
 	return {
 		fileContent,
-		contentLength,
 		originalFilename,
 		mimeType,
 	};
@@ -55,12 +85,12 @@ export async function qonektoApiRequest(
 	url: string,
 	method: IHttpRequestMethods = 'GET',
 	headers: Record<string, string | number> = {},
-	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
+	body: GenericValue | GenericValue[] | Buffer = {},
 	qs: IDataObject = {},
 	mergeOptions: Omit<Partial<IHttpRequestOptions>, 'returnFullResponse'> = {},
 	maxRetries: number = 3,
 	retryCount: number = 1,
-): Promise<IN8nHttpResponse | Readable> {
+): Promise<IN8nHttpFullResponse['body']> {
 	const response = await qonektoApiRequestFull.call(
 		this,
 		url,
@@ -80,7 +110,7 @@ export async function qonektoApiRequestFull(
 	url: string,
 	method: IHttpRequestMethods = 'GET',
 	headers: Record<string, string | number> = {},
-	body: FormData | GenericValue | GenericValue[] | Buffer | URLSearchParams = {},
+	body: GenericValue | GenericValue[] | Buffer = {},
 	qs: IDataObject = {},
 	mergeOptions: Partial<IHttpRequestOptions> = {},
 	maxRetries: number = 3,
@@ -134,7 +164,6 @@ export async function qonektoApiRequestFull(
 				retryCount + 1,
 			);
 		}
-		console.error(error);
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
 }

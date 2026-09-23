@@ -141,8 +141,8 @@ export class QonektoTrigger implements INodeType {
 						return false;
 					}
 
-					// Some error occured
-					throw error;
+					// Some error occured. Already a NodeApiError, which the constructor returns as-is.
+					throw new NodeApiError(this.getNode(), error as JsonObject);
 				}
 
 				// If it did not error then the webhook exists
@@ -204,7 +204,8 @@ export class QonektoTrigger implements INodeType {
 							{},
 							body,
 						);
-					} catch {
+					} catch (error) {
+						this.logger.warn('Qonekto webhook could not be deleted', { error });
 						return false;
 					}
 					if (response.statusCode !== 200) {

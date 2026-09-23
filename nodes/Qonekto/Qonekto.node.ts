@@ -1,30 +1,33 @@
-import FormData from 'form-data';
-
 import {
 	IDataObject,
 	IExecuteFunctions,
 	ILoadOptionsFunctions,
 	INodeExecutionData,
+	INodeListSearchItems,
 	INodeListSearchResult,
+	INodeParameterResourceLocator,
 	INodeType,
 	INodeTypeDescription,
+	NodeApiError,
 	NodeConnectionTypes,
+	NodeOperationError,
 	NodeOutput,
 } from 'n8n-workflow';
 import Resources from './descriptions/Resources';
 import Operations from './descriptions/Operations';
 import Fields from './descriptions/Fields';
-import { getItemBinaryData, qonektoApiRequest, qonektoApiRequestFull } from './GenericFunctions';
+import {
+	buildMultipartBody,
+	getItemBinaryData,
+	qonektoApiRequest,
+	qonektoApiRequestFull,
+} from './GenericFunctions';
 import { paginateAllPages } from './descriptions/Pagination';
 import {
 	IDEMPOTENCY_KEY_HEADER,
 	IDEMPOTENCY_REPLAYED_FLAG,
 	isReplayedResponse,
 } from './descriptions/Idempotency';
-import {
-	INodeListSearchItems,
-	INodeParameterResourceLocator,
-} from 'n8n-workflow/dist/esm/interfaces';
 
 async function makeListSearch(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
@@ -214,8 +217,9 @@ export class Qonekto implements INodeType {
 
 				for (let i = 0; i < items.length; i++) {
 					try {
-						const multiPartBody = new FormData();
-						multiPartBody.append('typ', 'dokument');
+						const parts: Parameters<typeof buildMultipartBody>[0] = [
+							{ name: 'Typ', value: 'dokument' },
+						];
 
 						const optional = this.getNodeParameter('optional fields', i) as Record<string, string>;
 
@@ -223,21 +227,21 @@ export class Qonekto implements INodeType {
 						if (datum) {
 							const date = new Date(datum);
 							date.setUTCMilliseconds(0);
-							multiPartBody.append('datum', date.toISOString().replace('.000Z', '+00:00'));
+							parts.push({ name: 'datum', value: date.toISOString().replace('.000Z', '+00:00') });
 						}
 
 						const vertrags_id = optional.vertrags_id || this.getNodeParameter('vertrags_id', i, '') as string;
 						if (vertrags_id) {
-							multiPartBody.append('zuordnung[vertrags_id]', vertrags_id);
+							parts.push({ name: 'zuordnung[vertrags_id]', value: vertrags_id });
 						}
 
 						const sparte_id = optional.sparte_id || this.getNodeParameter('sparte_id', i, '') as string;
 						if (sparte_id) {
-							multiPartBody.append('zuordnung[sparte_id]', sparte_id);
+							parts.push({ name: 'zuordnung[sparte_id]', value: sparte_id });
 						}
 
 						const kundensichtbar = optional.kundensichtbar || this.getNodeParameter('kundensichtbar', i, '') as string;
-						multiPartBody.append('meta[kundensichtbar]', JSON.stringify(!!kundensichtbar));
+						parts.push({ name: 'meta[kundensichtbar]', value: JSON.stringify(!!kundensichtbar) });
 
 						const tagsJson = optional.tagsJson || this.getNodeParameter('tags', i, '') as string;
 						if (tagsJson) {
@@ -249,23 +253,26 @@ export class Qonekto implements INodeType {
 								tags = tagsJson.split(',');
 							}
 							for (const tag of tags) {
-								multiPartBody.append('tags[]', tag);
+								parts.push({ name: 'tags[]', value: tag });
 							}
 						}
 
 						const inputDataFieldName = this.getNodeParameter('file', i) as string;
-						const { contentLength, fileContent, originalFilename, mimeType } =
-							await getItemBinaryData.call(this, inputDataFieldName, i);
+						const { fileContent, originalFilename, mimeType } = await getItemBinaryData.call(
+							this,
+							inputDataFieldName,
+							i,
+						);
 
 						const betreff = this.getNodeParameter('betreff', i, '') as string;
-						multiPartBody.append('betreff', betreff || originalFilename);
-						// @ts-expect-error FormData should be imported from 'form-data',
-						// but the import is not allowed in n8n but should still work.
-						multiPartBody.append('file', fileContent, {
+						parts.push({ name: 'betreff', value: betreff || originalFilename || '' });
+						parts.push({
+							name: 'file',
+							value: fileContent,
+							filename: betreff || originalFilename || '',
 							contentType: mimeType,
-							knownLength: contentLength,
-							filename: betreff || originalFilename,
-						} as string);
+						});
+						const multipart = buildMultipartBody(parts);
 
 						const ameise_id = this.getNodeParameter('kunde_ameise_id', i) as INodeParameterResourceLocator;
 
@@ -273,8 +280,8 @@ export class Qonekto implements INodeType {
 						// replay marker, so this one carries both itself. It posts to the same
 						// idempotency-protected route as Create File.
 						const headers: Record<string, string | number> = {
-							'Content-Type': `multipart/form-data; boundary=${multiPartBody.getBoundary()}`,
-							'Content-Length': multiPartBody.getLengthSync(),
+							'Content-Type': multipart.contentType,
+							'Content-Length': multipart.body.length,
 						};
 						const idempotencyKey = String(
 							this.getNodeParameter('idempotencyKey', i, '') ?? '',
@@ -288,7 +295,7 @@ export class Qonekto implements INodeType {
 							'kunde/' + ameise_id.value + '/archiveintrag',
 							'POST',
 							headers,
-							multiPartBody.getBuffer(),
+							multipart.body,
 							{},
 							{
 								json: false,
@@ -311,7 +318,9 @@ export class Qonekto implements INodeType {
 							returnData.push({ json: { error: error.message } });
 							continue;
 						}
-						throw error;
+						throw error instanceof NodeApiError
+							? error
+							: new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
 					}
 				}
 

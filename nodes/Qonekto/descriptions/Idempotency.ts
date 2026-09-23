@@ -47,7 +47,7 @@ export function isReplayedResponse(headers: IDataObject | undefined): boolean {
 	return String(headers?.[REPLAYED_HEADER] ?? '') === 'true';
 }
 
-export async function markIdempotentReplay(
+async function markIdempotentReplay(
 	this: IExecuteSingleFunctions,
 	items: INodeExecutionData[],
 	response: IN8nHttpFullResponse,
@@ -70,7 +70,7 @@ export async function markIdempotentReplay(
  * window, so a workflow can make a write safe to replay across runs — but only if the key
  * is the caller's own, and an empty one would claim the same key for every request.
  */
-export async function sendIdempotencyKey(
+async function sendIdempotencyKey(
 	this: IExecuteSingleFunctions,
 	requestOptions: IHttpRequestOptions,
 ): Promise<IHttpRequestOptions> {
@@ -100,7 +100,7 @@ function isIdempotentWrite(option: INodePropertyOptions): boolean {
 }
 
 /** Every operation value whose request is idempotency-protected. */
-export function idempotentWriteOperations(operations: INodeProperties[]): string[] {
+function idempotentWriteOperations(operations: INodeProperties[]): string[] {
 	const values = operations
 		.flatMap((property) => property.options ?? [])
 		.filter((option): option is INodePropertyOptions => 'value' in option)

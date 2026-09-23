@@ -57,5 +57,3 @@ export const ATOM_TIMESTAMP_VALUE =
  */
 export const DATETIME_WITH_OFFSET_VALUE =
 	'={{ $value ? (DateTime.fromISO(String($value), { setZone: true }).isValid ? DateTime.fromISO(String($value), { setZone: true }).toFormat("yyyy-MM-dd\'T\'HH:mm:ssZZ") : DateTime.fromJSDate(new Date($value)).toUTC().toFormat("yyyy-MM-dd\'T\'HH:mm:ssZZ")) : null }}';
-
-export default DATE_ONLY_VALUE;
