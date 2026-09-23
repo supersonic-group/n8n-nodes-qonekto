@@ -23,7 +23,18 @@ export class QonektoTrigger implements INodeType {
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
 
-		credentials: [{ name: 'qonektoApi', required: true }],
+		credentials: [
+			{
+				name: 'qonektoApi',
+				required: true,
+				displayOptions: { show: { authentication: ['accessToken'] } },
+			},
+			{
+				name: 'qonektoOAuth2Api',
+				required: true,
+				displayOptions: { show: { authentication: ['oAuth2'] } },
+			},
+		],
 		subtitle:
 			'={{$credentials.tenant + ": " + $parameter["action"] + " " + $parameter["subject_type"]}}',
 		defaults: {
@@ -42,6 +53,16 @@ export class QonektoTrigger implements INodeType {
 		],
 
 		properties: [
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				default: 'accessToken',
+				options: [
+					{ name: 'API Token', value: 'accessToken' },
+					{ name: 'OAuth2', value: 'oAuth2' },
+				],
+			},
 			{
 				displayName: 'Action',
 				name: 'action',
