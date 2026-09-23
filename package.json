@@ -30,7 +30,8 @@
 	"n8n": {
 		"n8nNodesApiVersion": 1,
 		"credentials": [
-			"dist/credentials/qonektoApi.credentials.js"
+			"dist/credentials/qonektoApi.credentials.js",
+			"dist/credentials/qonektoOAuth2Api.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/Qonekto/Qonekto.node.js",

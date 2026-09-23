@@ -63,7 +63,18 @@ export class Qonekto implements INodeType {
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 
-		credentials: [{ name: 'qonektoApi', required: true }],
+		credentials: [
+			{
+				name: 'qonektoApi',
+				required: true,
+				displayOptions: { show: { authentication: ['accessToken'] } },
+			},
+			{
+				name: 'qonektoOAuth2Api',
+				required: true,
+				displayOptions: { show: { authentication: ['oAuth2'] } },
+			},
+		],
 		subtitle:
 			'={{$parameter["operation"] + ": /api/" + $credentials.tenant + "/" + $parameter["resource"]}}',
 		defaults: {
@@ -83,7 +94,21 @@ export class Qonekto implements INodeType {
 
 		version: 20250926,
 
-		properties: [...Resources, ...Operations, ...Fields],
+		properties: [
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				default: 'accessToken',
+				options: [
+					{ name: 'API Token', value: 'accessToken' },
+					{ name: 'OAuth2', value: 'oAuth2' },
+				],
+			},
+			...Resources,
+			...Operations,
+			...Fields,
+		],
 	};
 
 	methods = {

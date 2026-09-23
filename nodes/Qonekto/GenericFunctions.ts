@@ -88,10 +88,18 @@ export async function qonektoApiRequestFull(
 ): Promise<IN8nHttpFullResponse> {
 	retryCount = Math.max(Math.min(1, maxRetries), retryCount);
 
+	// Evaluated like the declarative routing does it, so an expression-valued selector picks the same
+	// credential on both paths. Only the execute context takes an item index.
+	const authentication =
+		'getInputData' in this
+			? this.getNodeParameter('authentication', 0, 'accessToken')
+			: this.getNodeParameter('authentication', 'accessToken');
+	const credentialType = authentication === 'oAuth2' ? 'qonektoOAuth2Api' : 'qonektoApi';
+
 	const credentials: {
 		tenant: string;
 		base_url: string;
-	} = await this.getCredentials('qonektoApi');
+	} = await this.getCredentials(credentialType);
 
 	const options: IHttpRequestOptions = {
 		headers: {
@@ -110,7 +118,7 @@ export async function qonektoApiRequestFull(
 		delete options.body;
 	}
 	try {
-		return await this.helpers.httpRequestWithAuthentication.call(this, 'qonektoApi', options);
+		return await this.helpers.httpRequestWithAuthentication.call(this, credentialType, options);
 	} catch (error) {
 		if (error.httpCode === '429' && retryCount < maxRetries) {
 			await sleep(1000 * (retryCount + 1));
