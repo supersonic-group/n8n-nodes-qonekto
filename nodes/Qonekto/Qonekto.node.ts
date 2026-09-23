@@ -49,7 +49,7 @@ async function makeListSearch(
 			}
 			return true;
 		}),
-		paginationToken: null,
+		paginationToken: undefined,
 	};
 }
 
@@ -203,7 +203,7 @@ export class Qonekto implements INodeType {
 					paginationToken:
 						response.meta.current_page < response.meta.last_page
 							? (response.meta.current_page + 1).toString()
-							: null,
+							: undefined,
 				};
 			},
 		},
