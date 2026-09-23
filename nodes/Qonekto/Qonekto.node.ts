@@ -218,7 +218,7 @@ export class Qonekto implements INodeType {
 				for (let i = 0; i < items.length; i++) {
 					try {
 						const parts: Parameters<typeof buildMultipartBody>[0] = [
-							{ name: 'Typ', value: 'dokument' },
+							{ field: 'typ', value: 'dokument' },
 						];
 
 						const optional = this.getNodeParameter('optional fields', i) as Record<string, string>;
@@ -227,12 +227,12 @@ export class Qonekto implements INodeType {
 						if (datum) {
 							const date = new Date(datum);
 							date.setUTCMilliseconds(0);
-							parts.push({ name: 'datum', value: date.toISOString().replace('.000Z', '+00:00') });
+							parts.push({ field: 'datum', value: date.toISOString().replace('.000Z', '+00:00') });
 						}
 
 						const vertrags_id = optional.vertrags_id || this.getNodeParameter('vertrags_id', i, '') as string;
 						if (vertrags_id) {
-							parts.push({ name: 'zuordnung[vertrags_id]', value: vertrags_id });
+							parts.push({ field: 'zuordnung[vertrags_id]', value: vertrags_id });
 						}
 
 						// A resource locator in the collection; a legacy top-level value may be a plain string.
@@ -241,13 +241,13 @@ export class Qonekto implements INodeType {
 							| INodeParameterResourceLocator;
 						const sparte_id = typeof sparte === 'object' ? String(sparte.value ?? '') : sparte;
 						if (sparte_id) {
-							parts.push({ name: 'zuordnung[sparte_id]', value: sparte_id });
+							parts.push({ field: 'zuordnung[sparte_id]', value: sparte_id });
 						}
 
 						const kundensichtbar = optional.kundensichtbar || this.getNodeParameter('kundensichtbar', i, '') as string;
-						parts.push({ name: 'meta[kundensichtbar]', value: JSON.stringify(!!kundensichtbar) });
+						parts.push({ field: 'meta[kundensichtbar]', value: JSON.stringify(!!kundensichtbar) });
 
-						const tagsJson = optional.tags ||this.getNodeParameter('tags', i, '') as string;
+						const tagsJson = optional.tags || this.getNodeParameter('tags', i, '') as string;
 						if (tagsJson) {
 							let tags: string[] = [];
 							try {
@@ -257,7 +257,7 @@ export class Qonekto implements INodeType {
 								tags = tagsJson.split(',');
 							}
 							for (const tag of tags) {
-								parts.push({ name: 'tags[]', value: tag });
+								parts.push({ field: 'tags[]', value: tag });
 							}
 						}
 
@@ -269,9 +269,9 @@ export class Qonekto implements INodeType {
 						);
 
 						const betreff = this.getNodeParameter('betreff', i, '') as string;
-						parts.push({ name: 'betreff', value: betreff || originalFilename || '' });
+						parts.push({ field: 'betreff', value: betreff || originalFilename || '' });
 						parts.push({
-							name: 'file',
+							field: 'file',
 							value: fileContent,
 							filename: betreff || originalFilename || '',
 							contentType: mimeType,

@@ -15,12 +15,14 @@ import {
 } from 'n8n-workflow';
 
 type MultipartPart =
-	| { name: string; value: string }
-	| { name: string; value: Buffer; filename: string; contentType?: string };
+	| { field: string; value: string }
+	| { field: string; value: Buffer; filename: string; contentType?: string };
 
 /**
  * Encodes a multipart/form-data body. n8n Cloud forbids importing `form-data`, and this
  * produces the same bytes it did, so the archive entry endpoint sees an unchanged request.
+ * Parts use `field`, not `name`: n8n's lint autofix title-cases the `name` of any
+ * `{ name, value }` literal it takes for an option, which once sent `Typ` instead of `typ`.
  */
 export function buildMultipartBody(parts: MultipartPart[]): {
 	body: Buffer;
@@ -30,7 +32,7 @@ export function buildMultipartBody(parts: MultipartPart[]): {
 	const quote = (s: string) => s.replace(/"/g, '%22').replace(/[\r\n]/g, ' ');
 	const chunks: Buffer[] = [];
 	for (const part of parts) {
-		let header = `--${boundary}\r\nContent-Disposition: form-data; name="${quote(part.name)}"`;
+		let header = `--${boundary}\r\nContent-Disposition: form-data; name="${quote(part.field)}"`;
 		let value: Buffer;
 		if ('filename' in part) {
 			header += `; filename="${quote(part.filename)}"`;

@@ -73,3 +73,13 @@ test('a Division ID picked from the list is sent as its ID, not as the locator o
 	});
 	assert.deepStrictEqual(values(parts, 'zuordnung[sparte_id]'), ['42']);
 });
+
+test('the file arrives byte for byte with its name and type, and names the entry when no subject is set', async () => {
+	const parts = await uploadFile({});
+	const file = parts.find((p) => p.name === 'file');
+	assert.ok(file.value.equals(FILE), 'file bytes changed in transit');
+	assert.strictEqual(Buffer.from(file.filename, 'latin1').toString('utf8'), 'Prüfbericht.pdf');
+	assert.strictEqual(file.contentType, 'application/pdf');
+	assert.deepStrictEqual(values(parts, 'betreff'), ['Prüfbericht.pdf']);
+	assert.deepStrictEqual(values(parts, 'typ'), ['dokument']);
+});
