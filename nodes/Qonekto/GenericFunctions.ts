@@ -69,8 +69,8 @@ export async function qonektoApiRequest(
 		body,
 		qs,
 		mergeOptions,
-		retryCount,
 		maxRetries,
+		retryCount,
 	);
 	return response.body;
 }
