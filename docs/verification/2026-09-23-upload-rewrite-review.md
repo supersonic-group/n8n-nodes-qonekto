@@ -46,7 +46,8 @@ before the run above:
 ## Input sources and limits, second run
 
 Run later the same day, 13:30–13:40 UTC, after the size and subject checks landed (branch at
-`10bff6a`). `N8N_RESTRICT_FILE_ACCESS_TO` pointed at a scratch folder for the disk reads. Every
+`d0cbf5d`). That commit still carried `393626e`, reverted below; the revert changes only the
+multipart file name, which never reaches storage, so these results stand for the reverted code. `N8N_RESTRICT_FILE_ACCESS_TO` pointed at a scratch folder for the disk reads. Every
 stored file was downloaded again through n8n and hashed locally.
 
 | Input | Stored as | Result |
