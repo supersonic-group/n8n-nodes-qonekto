@@ -17,52 +17,52 @@ export const AddressShared: Record<string, INodeProperties> = {
 		default: 'firma',
 		options: [
 			{
-				name: 'Ferienhaus',
-				value: 'ferienhaus',
+				name: 'Branch',
+				value: 'filiale',
 			},
 			{
-				name: 'Zweitwohnsitz',
-				value: 'zweitwohnsitz',
+				name: 'Branch Office',
+				value: 'niederlassung',
 			},
 			{
-				name: 'Arbeitgeber',
-				value: 'arbeitgeber',
-			},
-			{
-				name: 'Firma',
+				name: 'Company',
 				value: 'firma',
 			},
 			{
-				name: 'Praxis',
-				value: 'praxis',
-			},
-			{
-				name: 'Kanzlei',
-				value: 'kanzlei',
-			},
-			{
-				name: 'Buero',
-				value: 'buero',
-			},
-			{
-				name: 'Lager',
-				value: 'lager',
-			},
-			{
-				name: 'Niederlassung',
-				value: 'niederlassung',
+				name: 'Employer',
+				value: 'arbeitgeber',
 			},
 			{
 				name: 'Garage',
 				value: 'garage',
 			},
 			{
-				name: 'Filiale',
-				value: 'filiale',
+				name: 'Holiday Home',
+				value: 'ferienhaus',
 			},
 			{
-				name: 'Sonstiges',
+				name: 'Law Office',
+				value: 'kanzlei',
+			},
+			{
+				name: 'Office',
+				value: 'buero',
+			},
+			{
+				name: 'Other',
 				value: 'sonstiges',
+			},
+			{
+				name: 'Practice',
+				value: 'praxis',
+			},
+			{
+				name: 'Second Residence',
+				value: 'zweitwohnsitz',
+			},
+			{
+				name: 'Warehouse',
+				value: 'lager',
 			},
 		],
 		routing: {
@@ -92,7 +92,7 @@ export const AddressShared: Record<string, INodeProperties> = {
 		name: 'addressSupplement',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 80 Zeichen haben',
+		description: 'At most 80 characters',
 		routing: {
 			send: {
 				property: 'addressSupplement',

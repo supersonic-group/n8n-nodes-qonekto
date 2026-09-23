@@ -13,9 +13,9 @@ export const ContractProducts: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Get Sparte Product Template',
+				name: 'Get Division Product Template',
 				value: 'Get Sparte Product Template',
-				action: 'Get sparte product template',
+				action: 'Get division product template',
 				routing: {
 					request: {
 						method: 'GET',
@@ -49,9 +49,9 @@ export const ContractProducts: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Create KFZ Contract Products',
+				name: 'Create Motor Vehicle Contract Products',
 				value: 'Create KFZ Contract Products',
-				action: 'Create kfz contract products',
+				action: 'Create motor vehicle contract products',
 				routing: {
 					request: {
 						method: 'PUT',

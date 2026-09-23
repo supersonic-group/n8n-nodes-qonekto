@@ -21,7 +21,7 @@ export const ListKunden: INodeProperties[] = [
 				displayName: 'Search',
 				name: 'search',
 				description:
-					'Searches for all Kunden beginning with keyword in `vorname`, `nachname` or a match in any `kommunikation` fields. Cannot use filter parameter when passing search parameter.',
+					'Searches for all customers beginning with the keyword in `vorname` or `nachname`, or matching any `kommunikation` field. Cannot be combined with the filter parameter.',
 				default: '',
 				type: 'string',
 				routing: {
@@ -101,13 +101,13 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Vorname',
+		displayName: 'First Name',
 		name: 'vorname',
 		type: 'string',
 		default: '',
 		required: true,
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Ansprechpartner. value darf maximal 255 Zeichen haben.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the contact person. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'vorname',
@@ -124,13 +124,13 @@ export const CreateKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Nachname',
+		displayName: 'Last Name',
 		name: 'nachname',
 		type: 'string',
 		default: '',
 		required: true,
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Firmennamen. value darf maximal 255 Zeichen haben.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the company name. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'nachname',
@@ -185,6 +185,20 @@ export const FilterKunden: INodeProperties[] = [
 		default: {},
 		options: [
 			{
+				displayName: 'Address Informally (Du)',
+				name: 'per_du',
+				type: 'boolean',
+				default: false,
+				routing: {
+					send: {
+						property: 'per_du',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
 				displayName: 'Ameise ID',
 				name: 'ameise_id',
 				type: 'number',
@@ -203,89 +217,26 @@ export const FilterKunden: INodeProperties[] = [
 				...Shared['Vermittler ID'],
 			},
 			{
-				...Shared['Anrede ID'],
-			},
-			{
-				displayName: 'Vorname',
-				name: 'vorname',
-				type: 'string',
+				displayName: 'Broker Mandate Created At',
+				name: 'maklervollmacht_created_at',
+				type: 'dateTime',
 				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
+				description: 'Filter by date the broker mandate was created',
 				routing: {
 					send: {
-						property: 'vorname',
+						property: 'maklervollmacht_created_at',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ $value }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
 			{
-				displayName: 'Nachname',
-				name: 'nachname',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'nachname',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Titel',
-				name: 'titel',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'titel',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Strasse',
-				name: 'strasse',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'strasse',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Plz',
-				name: 'plz',
-				type: 'string',
-				default: '',
-				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
-				routing: {
-					send: {
-						property: 'plz',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Ort',
+				displayName: 'City',
 				name: 'ort',
 				type: 'string',
 				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
+				description: 'At most 255 characters',
 				routing: {
 					send: {
 						property: 'ort',
@@ -296,10 +247,24 @@ export const FilterKunden: INodeProperties[] = [
 				},
 			},
 			{
+				displayName: 'Communication',
+				name: 'kommunikation',
+				type: 'json',
+				default: 'null',
+				routing: {
+					send: {
+						property: 'kommunikation',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ JSON.parse($value) }}',
+					},
+				},
+			},
+			{
 				...Shared['Land ID'],
 			},
 			{
-				displayName: 'Geburtsdatum',
+				displayName: 'Date of Birth',
 				name: 'geburtsdatum',
 				type: 'dateTime',
 				default: '',
@@ -314,75 +279,57 @@ export const FilterKunden: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Beruf',
-				name: 'beruf',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'beruf',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Per Du',
-				name: 'per_du',
-				type: 'boolean',
-				default: false,
-				routing: {
-					send: {
-						property: 'per_du',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Nationalitaet',
-				name: 'nationalitaet',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'nationalitaet',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				...Shared['Rechtsform ID'],
-			},
-			{
-				displayName: 'Benutzername Simplr',
-				name: 'benutzername_simplr',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'benutzername_simplr',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Verstorben',
+				displayName: 'Deceased',
 				name: 'verstorben',
 				type: 'boolean',
 				default: false,
 				routing: {
 					send: {
 						property: 'verstorben',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Details',
+				name: 'details',
+				type: 'json',
+				default: 'null',
+				routing: {
+					send: {
+						property: 'details',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ JSON.parse($value) }}',
+					},
+				},
+			},
+			{
+				displayName: 'First Name',
+				name: 'vorname',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'vorname',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Last Name',
+				name: 'nachname',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'nachname',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
@@ -405,45 +352,98 @@ export const FilterKunden: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Maklervollmacht Created At',
-				name: 'maklervollmacht_created_at',
-				type: 'dateTime',
+				...Shared['Rechtsform ID'],
+			},
+			{
+				displayName: 'Nationality',
+				name: 'nationalitaet',
+				type: 'string',
 				default: '',
-				description: 'Filter by date the Maklervollmacht was created',
+				description: 'At most 255 characters',
 				routing: {
 					send: {
-						property: 'maklervollmacht_created_at',
+						property: 'nationalitaet',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: DATE_ONLY_VALUE,
+						value: '={{ $value }}',
 					},
 				},
 			},
 			{
-				displayName: 'Kommunikation',
-				name: 'kommunikation',
-				type: 'json',
-				default: 'null',
+				displayName: 'Occupation',
+				name: 'beruf',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
 				routing: {
 					send: {
-						property: 'kommunikation',
+						property: 'beruf',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ JSON.parse($value) }}',
+						value: '={{ $value }}',
 					},
 				},
 			},
 			{
-				displayName: 'Details',
-				name: 'details',
-				type: 'json',
-				default: 'null',
+				displayName: 'Postal Code',
+				name: 'plz',
+				type: 'string',
+				default: '',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
 				routing: {
 					send: {
-						property: 'details',
+						property: 'plz',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ JSON.parse($value) }}',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				...Shared['Anrede ID'],
+			},
+			{
+				displayName: 'Simplr Username',
+				name: 'benutzername_simplr',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'benutzername_simplr',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Street',
+				name: 'strasse',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'strasse',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Title',
+				name: 'titel',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'titel',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
 					},
 				},
 			},
@@ -515,12 +515,12 @@ const KundeFields: INodeProperties[] = [
 		...Shared['Anrede ID'],
 	},
 	{
-		displayName: 'Vorname',
+		displayName: 'First Name',
 		name: 'vorname',
 		type: 'string',
 		default: '',
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Ansprechpartner. value darf maximal 255 Zeichen haben.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the contact person. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'vorname',
@@ -531,12 +531,12 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Nachname',
+		displayName: 'Last Name',
 		name: 'nachname',
 		type: 'string',
 		default: '',
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Firmennamen. value darf maximal 255 Zeichen haben.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the company name. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'nachname',
@@ -547,12 +547,12 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Titel',
+		displayName: 'Title',
 		name: 'titel',
 		type: 'string',
 		default: '',
 		description:
-			'Wird nicht verwendet, wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. value darf maximal 255 Zeichen haben.',
+			'Not used if the salutation (anrede_id) is a legal entity (juristische_person = true). At most 255 characters.',
 		routing: {
 			send: {
 				property: 'titel',
@@ -563,11 +563,11 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Strasse',
+		displayName: 'Street',
 		name: 'strasse',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
+		description: 'At most 255 characters',
 		routing: {
 			send: {
 				property: 'strasse',
@@ -578,7 +578,7 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'PLZ',
+		displayName: 'Postal Code',
 		name: 'plz',
 		type: 'string',
 		default: '',
@@ -593,11 +593,11 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Ort',
+		displayName: 'City',
 		name: 'ort',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
+		description: 'At most 255 characters',
 		routing: {
 			send: {
 				property: 'ort',
@@ -611,12 +611,12 @@ const KundeFields: INodeProperties[] = [
 		...Shared['Land ID'],
 	},
 	{
-		displayName: 'Geburtsdatum',
+		displayName: 'Date of Birth',
 		name: 'geburtsdatum',
 		type: 'string',
 		default: '',
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the founding date. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
 		routing: {
 			send: {
 				property: 'geburtsdatum',
@@ -627,12 +627,12 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Beruf',
+		displayName: 'Occupation',
 		name: 'beruf',
 		type: 'string',
 		default: '',
 		description:
-			'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld die Branche. value darf maximal 255 Zeichen haben.',
+			'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the industry. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'beruf',
@@ -643,7 +643,7 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Per Du',
+		displayName: 'Address Informally (Du)',
 		name: 'per_du',
 		type: 'boolean',
 		default: false,
@@ -658,12 +658,12 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Nationalitaet',
+		displayName: 'Nationality',
 		name: 'nationalitaet',
 		type: 'string',
 		default: '',
 		description:
-			'Wird aktuell nicht an die Ameise übergeben. value darf maximal 255 Zeichen haben.',
+			'Currently not passed to Ameise. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'nationalitaet',
@@ -677,11 +677,11 @@ const KundeFields: INodeProperties[] = [
 		...Shared['Rechtsform ID'],
 	},
 	{
-		displayName: 'Benutzername Simplr',
+		displayName: 'Simplr Username',
 		name: 'benutzername_simplr',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 255 Zeichen haben',
+		description: 'At most 255 characters',
 		routing: {
 			send: {
 				property: 'benutzername_simplr',
@@ -692,7 +692,7 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Verstorben',
+		displayName: 'Deceased',
 		name: 'verstorben',
 		type: 'boolean',
 		default: false,
@@ -707,11 +707,11 @@ const KundeFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Kommunikation',
+		displayName: 'Communication',
 		name: 'kommunikation',
 		type: 'json',
 		default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-		description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
+		description: 'All default communication data for this customer',
 		routing: {
 			send: {
 				property: 'kommunikation',
@@ -727,7 +727,7 @@ const KundeFields: INodeProperties[] = [
 		type: 'json',
 		default:
 			'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-		description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
+		description: 'Customer details as an object keyed by field ID, with the corresponding value',
 		routing: {
 			send: {
 				property: 'details',
@@ -857,7 +857,7 @@ export const UpsertKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Kunde Fields to Set only for Newly Created Customer',
+		displayName: 'Customer Fields to Set Only for Newly Created Customer',
 		name: '_default',
 		type: 'collection',
 		description:
@@ -893,9 +893,9 @@ export const ShowKunde: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'With Kommunikationen',
+		displayName: 'With Communications',
 		name: 'with-kommunikationen',
-		description: 'Whether to load and return kommunikationen and default fields for the kunde',
+		description: 'Whether to load and return communications and default fields for the customer',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -916,7 +916,7 @@ export const ShowKunde: INodeProperties[] = [
 	{
 		displayName: 'With Details',
 		name: 'with-details',
-		description: 'Whether to load and return details for the kunde',
+		description: 'Whether to load and return details for the customer',
 		default: true,
 		type: 'boolean',
 		routing: {
@@ -954,141 +954,7 @@ export const UpdateKunde: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				...Shared['Vermittler ID'],
-			},
-			{
-				...Shared['Anrede ID'],
-			},
-			{
-				displayName: 'Vorname',
-				name: 'vorname',
-				type: 'string',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Ansprechpartner. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'vorname',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Nachname',
-				name: 'nachname',
-				type: 'string',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld den Firmennamen. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'nachname',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Titel',
-				name: 'titel',
-				type: 'string',
-				default: '',
-				description:
-					'Wird nicht verwendet, wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'titel',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Strasse',
-				name: 'strasse',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'strasse',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Plz',
-				name: 'plz',
-				type: 'string',
-				default: '',
-				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
-				routing: {
-					send: {
-						property: 'plz',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Ort',
-				name: 'ort',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'ort',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				...Shared['Land ID'],
-			},
-			{
-				displayName: 'Geburtsdatum',
-				name: 'geburtsdatum',
-				type: 'dateTime',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
-				routing: {
-					send: {
-						property: 'geburtsdatum',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: DATE_ONLY_VALUE,
-					},
-				},
-			},
-			{
-				displayName: 'Beruf',
-				name: 'beruf',
-				type: 'string',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld die Branche. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'beruf',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Per Du',
+				displayName: 'Address Informally (Du)',
 				name: 'per_du',
 				type: 'boolean',
 				default: false,
@@ -1103,41 +969,59 @@ export const UpdateKunde: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Nationalitaet',
-				name: 'nationalitaet',
+				...Shared['Vermittler ID'],
+			},
+			{
+				displayName: 'City',
+				name: 'ort',
 				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'ort',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Communication',
+				name: 'kommunikation',
+				type: 'json',
+				default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
+				description: 'All default communication data for this customer',
+				routing: {
+					send: {
+						property: 'kommunikation',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ JSON.parse($value) }}',
+					},
+				},
+			},
+			{
+				...Shared['Land ID'],
+			},
+			{
+				displayName: 'Date of Birth',
+				name: 'geburtsdatum',
+				type: 'dateTime',
 				default: '',
 				description:
-					'Wird aktuell nicht an die Ameise übergeben. value darf maximal 255 Zeichen haben.',
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the founding date. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
 				routing: {
 					send: {
-						property: 'nationalitaet',
+						property: 'geburtsdatum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ $value }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
 			{
-				...Shared['Rechtsform ID'],
-			},
-			{
-				displayName: 'Benutzername Simplr',
-				name: 'benutzername_simplr',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'benutzername_simplr',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Verstorben',
+				displayName: 'Deceased',
 				name: 'verstorben',
 				type: 'boolean',
 				default: false,
@@ -1152,14 +1036,15 @@ export const UpdateKunde: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Kommunikation',
-				name: 'kommunikation',
+				displayName: 'Details',
+				name: 'details',
 				type: 'json',
-				default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-				description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
+				default:
+					'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
+				description: 'Customer details as an object keyed by field ID, with the corresponding value',
 				routing: {
 					send: {
-						property: 'kommunikation',
+						property: 'details',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ JSON.parse($value) }}',
@@ -1167,18 +1052,133 @@ export const UpdateKunde: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Details',
-				name: 'details',
-				type: 'json',
-				default:
-					'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-				description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
+				displayName: 'First Name',
+				name: 'vorname',
+				type: 'string',
+				default: '',
+				description:
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the contact person. At most 255 characters.',
 				routing: {
 					send: {
-						property: 'details',
+						property: 'vorname',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ JSON.parse($value) }}',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Last Name',
+				name: 'nachname',
+				type: 'string',
+				default: '',
+				description:
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the company name. At most 255 characters.',
+				routing: {
+					send: {
+						property: 'nachname',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				...Shared['Rechtsform ID'],
+			},
+			{
+				displayName: 'Nationality',
+				name: 'nationalitaet',
+				type: 'string',
+				default: '',
+				description:
+					'Currently not passed to Ameise. At most 255 characters.',
+				routing: {
+					send: {
+						property: 'nationalitaet',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Occupation',
+				name: 'beruf',
+				type: 'string',
+				default: '',
+				description:
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the industry. At most 255 characters.',
+				routing: {
+					send: {
+						property: 'beruf',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Postal Code',
+				name: 'plz',
+				type: 'string',
+				default: '',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
+				routing: {
+					send: {
+						property: 'plz',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				...Shared['Anrede ID'],
+			},
+			{
+				displayName: 'Simplr Username',
+				name: 'benutzername_simplr',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'benutzername_simplr',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Street',
+				name: 'strasse',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'strasse',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Title',
+				name: 'titel',
+				type: 'string',
+				default: '',
+				description:
+					'Not used if the salutation (anrede_id) is a legal entity (juristische_person = true). At most 255 characters.',
+				routing: {
+					send: {
+						property: 'titel',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
 					},
 				},
 			},
@@ -1261,7 +1261,7 @@ export const UploadFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Betreff',
+		displayName: 'Subject',
 		name: 'betreff',
 		type: 'string',
 		default: '',
@@ -1295,19 +1295,19 @@ export const CreateFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Typ',
+		displayName: 'Type',
 		name: 'typ',
 		type: 'options',
 		default: 'sonstiges',
 		options: [
-			{ name: 'Fax', value: 'fax' },
-			{ name: 'E-Mail', value: 'email' },
-			{ name: 'SMS', value: 'sms' },
-			{ name: 'Telefon', value: 'telefon' },
-			{ name: 'Brief', value: 'brief' },
-			{ name: 'Persönlich', value: 'persoenlich' },
 			{ name: 'Chat', value: 'chat' },
-			{ name: 'Sonstiges', value: 'sonstiges' },
+			{ name: 'Email', value: 'email' },
+			{ name: 'Fax', value: 'fax' },
+			{ name: 'In Person', value: 'persoenlich' },
+			{ name: 'Letter', value: 'brief' },
+			{ name: 'Other', value: 'sonstiges' },
+			{ name: 'Phone', value: 'telefon' },
+			{ name: 'SMS', value: 'sms' },
 		],
 		required: true,
 		displayOptions: {
@@ -1326,7 +1326,7 @@ export const CreateFile: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Betreff',
+		displayName: 'Subject',
 		name: 'betreff',
 		type: 'string',
 		default: '',

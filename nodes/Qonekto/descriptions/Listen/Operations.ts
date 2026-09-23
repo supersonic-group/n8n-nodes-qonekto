@@ -13,86 +13,9 @@ export const Listen: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Anreden',
-				value: 'Anreden',
-				action: 'Anreden',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/anreden',
-					},
-				},
-			},
-			{
-				name: 'Gesellschaften',
-				value: 'Gesellschaften',
-				action: 'Gesellschaften',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/gesellschaften',
-					},
-				},
-			},
-			{
-				name: 'Kunden Detail Felder',
-				value: 'Kunden Detail Felder',
-				action: 'Kunden detail felder',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/kunden_detail_felder',
-					},
-				},
-			},
-			{
-				name: 'Länder',
-				value: 'Länder',
-				action: 'Laender',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/laender',
-					},
-				},
-			},
-			{
-				name: 'Rechtsformen',
-				value: 'Rechtsformen',
-				action: 'Rechtsformen',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/rechtsformen',
-					},
-				},
-			},
-			{
-				name: 'Sparten',
-				value: 'Sparten',
-				action: 'Sparten',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/sparten',
-					},
-				},
-			},
-			{
-				name: 'Status',
-				value: 'Status',
-				action: 'Status',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/status',
-					},
-				},
-			},
-			{
-				name: 'Vermittler',
+				name: 'List Brokers',
 				value: 'Vermittler',
-				action: 'Vermittler',
+				action: 'List brokers',
 				routing: {
 					request: {
 						method: 'GET',
@@ -101,13 +24,90 @@ export const Listen: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Zahlweisen',
+				name: 'List Countries',
+				value: 'Länder',
+				action: 'List countries',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/laender',
+					},
+				},
+			},
+			{
+				name: 'List Customer Detail Fields',
+				value: 'Kunden Detail Felder',
+				action: 'List customer detail fields',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/kunden_detail_felder',
+					},
+				},
+			},
+			{
+				name: 'List Divisions',
+				value: 'Sparten',
+				action: 'List divisions',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/sparten',
+					},
+				},
+			},
+			{
+				name: 'List Insurers',
+				value: 'Gesellschaften',
+				action: 'List insurers',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/gesellschaften',
+					},
+				},
+			},
+			{
+				name: 'List Legal Forms',
+				value: 'Rechtsformen',
+				action: 'List legal forms',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/rechtsformen',
+					},
+				},
+			},
+			{
+				name: 'List Payment Methods',
 				value: 'Zahlweisen',
-				action: 'Zahlweisen',
+				action: 'List payment methods',
 				routing: {
 					request: {
 						method: 'GET',
 						url: '=/zahlweisen',
+					},
+				},
+			},
+			{
+				name: 'List Salutations',
+				value: 'Anreden',
+				action: 'List salutations',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/anreden',
+					},
+				},
+			},
+			{
+				name: 'List Statuses',
+				value: 'Status',
+				action: 'List statuses',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/status',
 					},
 				},
 			},

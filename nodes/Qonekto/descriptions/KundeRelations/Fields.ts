@@ -79,7 +79,7 @@ export const CreateCustomerRelation: INodeProperties[] = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 14 Zeichen haben.',
+		description: 'Must be between 1 and 14 characters',
 		routing: {
 			send: {
 				property: 'relatedCustomerId',
@@ -101,7 +101,7 @@ export const CreateCustomerRelation: INodeProperties[] = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 50 Zeichen haben.',
+		description: 'Must be between 1 and 50 characters',
 		routing: {
 			send: {
 				property: 'relationText',
@@ -123,7 +123,7 @@ export const CreateCustomerRelation: INodeProperties[] = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 50 Zeichen haben.',
+		description: 'Must be between 1 and 50 characters',
 		routing: {
 			send: {
 				property: 'inverseRelationText',
@@ -152,12 +152,12 @@ export const DeleteCustomerRelation: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Related Kunde ID',
+		displayName: 'Related Customer Ameise ID',
 		name: 'relatedKunde',
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The Ameise ID of the related Kunde',
+		description: 'The Ameise ID of the related customer',
 		displayOptions: {
 			show: {
 				resource: ['KundeRelations'],

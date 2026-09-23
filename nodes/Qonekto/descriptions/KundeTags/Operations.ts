@@ -13,9 +13,9 @@ export const KundeTags: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List Kunde Tags',
+				name: 'List Customer Tags',
 				value: 'List Kunde Tags',
-				action: 'List kunde tags',
+				action: 'List customer tags',
 				routing: {
 					request: {
 						method: 'GET',
@@ -24,9 +24,9 @@ export const KundeTags: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Set Kunde Tags',
+				name: 'Set Customer Tags',
 				value: 'Set Kunde Tags',
-				action: 'Set kunde tags',
+				action: 'Set customer tags',
 				routing: {
 					request: {
 						method: 'PUT',
@@ -35,9 +35,9 @@ export const KundeTags: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Add Kunde Tags',
+				name: 'Add Customer Tags',
 				value: 'Add Kunde Tags',
-				action: 'Add kunde tags',
+				action: 'Add customer tags',
 				routing: {
 					request: {
 						method: 'POST',
@@ -46,9 +46,9 @@ export const KundeTags: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Remove Kunde Tags',
+				name: 'Remove Customer Tags',
 				value: 'Remove Kunde Tags',
-				action: 'Remove kunde tags',
+				action: 'Remove customer tags',
 				routing: {
 					request: {
 						method: 'DELETE',

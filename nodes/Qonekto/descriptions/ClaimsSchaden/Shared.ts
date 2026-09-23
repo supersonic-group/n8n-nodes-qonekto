@@ -17,11 +17,11 @@ export const ClaimShared: Record<string, INodeProperties> = {
 		default: 'offen',
 		options: [
 			{
-				name: 'Offen',
+				name: 'Open',
 				value: 'offen',
 			},
 			{
-				name: 'Geschlossen',
+				name: 'Closed',
 				value: 'geschlossen',
 			},
 		],
@@ -39,7 +39,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 		name: 'customNumber',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 36 Zeichen haben',
+		description: 'At most 36 characters',
 		routing: {
 			send: {
 				property: 'customNumber',
@@ -54,7 +54,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 		name: 'comment',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 1000 Zeichen haben',
+		description: 'At most 1000 characters',
 		routing: {
 			send: {
 				property: 'comment',
@@ -69,7 +69,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 		name: 'claimDate',
 		type: 'dateTime',
 		default: '',
-		description: 'Value muss ein gültiges Datum sein',
+		description: 'Must be a valid date',
 		routing: {
 			send: {
 				property: 'claimDate',
@@ -84,7 +84,7 @@ export const ClaimShared: Record<string, INodeProperties> = {
 		name: 'notificationDate',
 		type: 'dateTime',
 		default: '',
-		description: 'Value muss ein gültiges Datum sein',
+		description: 'Must be a valid date',
 		routing: {
 			send: {
 				property: 'notificationDate',

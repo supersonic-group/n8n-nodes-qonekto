@@ -44,7 +44,7 @@ export const KundeNotesShared: Record<string, INodeProperties> = {
 		type: 'string',
 		default: '',
 		required: true,
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 500 Zeichen haben.',
+		description: 'Must be between 1 and 500 characters',
 		routing: {
 			send: {
 				property: 'text',

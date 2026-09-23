@@ -13,31 +13,9 @@ export const Kunde: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List Kunden',
-				value: 'List Kunden',
-				action: 'List kunden',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/kunde',
-					},
-				},
-			},
-			{
-				name: 'Filter Kunden',
-				value: 'Filter Kunden',
-				action: 'Filter kunden',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '=/kunde/filter',
-					},
-				},
-			},
-			{
-				name: 'Create Kunde',
+				name: 'Create Customer',
 				value: 'Create Kunde',
-				action: 'Create kunde',
+				action: 'Create customer',
 				routing: {
 					request: {
 						method: 'POST',
@@ -46,31 +24,21 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Show Kunde',
-				value: 'Show Kunde',
-				action: 'Show kunde',
+				name: 'Create File',
+				value: 'Create File',
+				action: 'Create file',
+				description: 'Create a file with the provided content in the customer\'s contact history',
 				routing: {
 					request: {
-						method: 'GET',
-						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}',
+						method: 'POST',
+						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}/archiveintrag',
 					},
 				},
 			},
 			{
-				name: 'Update Kunde',
-				value: 'Update Kunde',
-				action: 'Update kunde',
-				routing: {
-					request: {
-						method: 'PUT',
-						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}',
-					},
-				},
-			},
-			{
-				name: 'Upsert Kunde',
+				name: 'Create or Update Customer',
 				value: 'Upsert Kunde',
-				action: 'Upsert kunde',
+				action: 'Create or update customer',
 				routing: {
 					request: {
 						method: 'PUT',
@@ -79,11 +47,33 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Filter Customers',
+				value: 'Filter Kunden',
+				action: 'Filter customers',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/kunde/filter',
+					},
+				},
+			},
+			{
+				name: 'Get Customer',
+				value: 'Show Kunde',
+				action: 'Get customer',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}',
+					},
+				},
+			},
+			{
 				name: 'List Archive Entries',
 				value: 'List Archive Entries',
 				action: 'List archive entries',
 				description:
-					'List the Archiveintraege in a customer Kontakthistorie. Whether an entry has downloadable content is only known at download time.',
+					'List the archive entries in a customer\'s contact history. Whether an entry has downloadable content is only known at download time.',
 				routing: {
 					request: {
 						method: 'GET',
@@ -92,22 +82,32 @@ export const Kunde: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'List Customers',
+				value: 'List Kunden',
+				action: 'List customers',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/kunde',
+					},
+				},
+			},
+			{
+				name: 'Update Customer',
+				value: 'Update Kunde',
+				action: 'Update customer',
+				routing: {
+					request: {
+						method: 'PUT',
+						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}',
+					},
+				},
+			},
+			{
 				name: 'Upload File',
 				value: 'Upload File',
 				action: 'Upload file',
-				description: 'Upload provided file to Kontakthistorie',
-			},
-			{
-				name: 'Create File',
-				value: 'Create File',
-				action: 'Create file',
-				description: 'Create file with provided content in Kontakthistorie',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '=/kunde/{{$parameter["kunde_ameise_id"]}}/archiveintrag',
-					},
-				},
+				description: 'Upload the provided file to the customer\'s contact history',
 			},
 		],
 		default: 'List Kunden',

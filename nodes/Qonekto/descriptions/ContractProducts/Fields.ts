@@ -5,10 +5,10 @@ import { DATE_ONLY_VALUE } from '../Routing';
 export const GetSparteProductTemplate: INodeProperties[] = [
 	{
 		...Shared['Sparte ID'],
-		displayName: 'Ameise Sparte ID',
+		displayName: 'Ameise Division ID',
 		name: 'sparte_ameise_id',
 		required: true,
-		description: 'The ID of the Sparte in Ameise',
+		description: 'The ID of the division in Ameise',
 		routing: undefined,
 		displayOptions: {
 			show: {
@@ -42,7 +42,7 @@ export const UpdateContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Anweisungen',
+		displayName: 'Instructions',
 		name: 'anweisungen',
 		type: 'json',
 		default:
@@ -72,7 +72,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Beziehungswert',
+		displayName: 'Keeper Relationship Value',
 		name: 'halter_beziehungswert',
 		type: 'options',
 		default: 1,
@@ -102,7 +102,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Vorname',
+		displayName: 'Keeper First Name',
 		name: 'halter_vorname',
 		type: 'string',
 		default: '',
@@ -123,7 +123,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Nachname',
+		displayName: 'Keeper Last Name',
 		name: 'halter_nachname',
 		type: 'string',
 		default: '',
@@ -144,7 +144,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Strasse',
+		displayName: 'Keeper Street',
 		name: 'halter_strasse',
 		type: 'string',
 		default: '',
@@ -166,7 +166,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter PLZ',
+		displayName: 'Keeper Postal Code',
 		name: 'halter_plz',
 		type: 'string',
 		default: '',
@@ -187,7 +187,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Ort',
+		displayName: 'Keeper City',
 		name: 'halter_ort',
 		type: 'string',
 		default: '',
@@ -208,7 +208,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Geburtsdatum',
+		displayName: 'Keeper Date of Birth',
 		name: 'halter_geburtsdatum',
 		type: 'dateTime',
 		default: '',
@@ -229,7 +229,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Geschlecht',
+		displayName: 'Keeper Gender',
 		name: 'halter_geschlecht',
 		type: 'options',
 		default: 1,
@@ -254,7 +254,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Halter Personentyp',
+		displayName: 'Keeper Person Type',
 		name: 'halter_personentyp',
 		type: 'options',
 		default: 1,
@@ -286,7 +286,7 @@ export const CreateKfzContractProducts: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				displayName: 'Fahrer',
+				displayName: 'Drivers',
 				name: 'Fahrer',
 				type: 'json',
 				default: '[]',

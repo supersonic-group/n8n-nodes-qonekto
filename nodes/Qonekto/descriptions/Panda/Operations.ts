@@ -13,15 +13,15 @@ export const Panda: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Get All Customer Links',
-				value: 'Get All Customer Links',
-				action: 'Get all customer links',
+				name: 'Archive A Tender',
+				value: 'Archive A Tender',
+				action: 'Archive a tender',
 				description:
-					'Retrieves all customer links created by the currently logged-in broker that have not been processed yet',
+					'Archives a tender. The Panda API defines no un-archive operation, so this is irreversible.',
 				routing: {
 					request: {
-						method: 'GET',
-						url: '=/panda/customer-links',
+						method: 'POST',
+						url: '=/panda/tenders/{{$parameter["tenderId"]}}/archive',
 					},
 				},
 			},
@@ -39,13 +39,12 @@ export const Panda: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get Active Tenders For A Customer',
-				value: 'Get Active Tenders For A Customer',
-				action: 'Get active tenders for a customer',
-				description: 'Retrieves all active tenders for a customer',
+				name: 'Create A Tender',
+				value: 'Create A Tender',
+				action: 'Create a tender',
 				routing: {
 					request: {
-						method: 'GET',
+						method: 'POST',
 						url: '=/panda/tenders',
 					},
 				},
@@ -64,26 +63,27 @@ export const Panda: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Create A Tender',
-				value: 'Create A Tender',
-				action: 'Create a tender',
+				name: 'Get Active Tenders For A Customer',
+				value: 'Get Active Tenders For A Customer',
+				action: 'Get active tenders for a customer',
+				description: 'Retrieves all active tenders for a customer',
 				routing: {
 					request: {
-						method: 'POST',
+						method: 'GET',
 						url: '=/panda/tenders',
 					},
 				},
 			},
 			{
-				name: 'Archive A Tender',
-				value: 'Archive A Tender',
-				action: 'Archive a tender',
+				name: 'Get All Customer Links',
+				value: 'Get All Customer Links',
+				action: 'Get all customer links',
 				description:
-					'Archives a tender. The Panda API defines no un-archive operation, so this is irreversible.',
+					'Retrieves all customer links created by the currently logged-in broker that have not been processed yet',
 				routing: {
 					request: {
-						method: 'POST',
-						url: '=/panda/tenders/{{$parameter["tenderId"]}}/archive',
+						method: 'GET',
+						url: '=/panda/customer-links',
 					},
 				},
 			},

@@ -196,7 +196,7 @@ export class Qonekto implements INodeType {
 							name: (item.vorname + ' ' + item.nachname).trim() + ' (#' + item.ameise_id + ')',
 							value: item.ameise_id,
 							description:
-								'Kundennummer: ' + item.ameise_id + ' • Vermittler: ' + item.vermittler_id,
+								'Customer number: ' + item.ameise_id + ' • Broker: ' + item.vermittler_id,
 							url: 'https://maklerinfo.biz/maklerportal/?show=kunde&kunde=' + item.ameise_id,
 						}),
 					),

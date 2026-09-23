@@ -13,6 +13,50 @@ export const ClaimsSchaden: INodeProperties[] = [
 		},
 		options: [
 			{
+				name: 'Create Claim',
+				value: 'Create Claim',
+				action: 'Create claim',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/vertrag/{{$parameter["vertrag_ameise_id"]}}/schaden',
+					},
+				},
+			},
+			{
+				name: 'Delete Claim',
+				value: 'Delete Claim',
+				action: 'Delete claim',
+				routing: {
+					request: {
+						method: 'DELETE',
+						url: '=/schaden/{{$parameter["claimId"]}}',
+					},
+				},
+			},
+			{
+				name: 'Get Claim',
+				value: 'Get Claim',
+				action: 'Get claim',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/schaden/{{$parameter["claimId"]}}',
+					},
+				},
+			},
+			{
+				name: 'Get Claim Statuses',
+				value: 'Get Claim Statuses',
+				action: 'Get claim statuses',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/schaden/statuses',
+					},
+				},
+			},
+			{
 				name: 'List Claims By Contract',
 				value: 'List Claims By Contract',
 				action: 'List claims by contract',
@@ -35,28 +79,6 @@ export const ClaimsSchaden: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Create Claim',
-				value: 'Create Claim',
-				action: 'Create claim',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '=/vertrag/{{$parameter["vertrag_ameise_id"]}}/schaden',
-					},
-				},
-			},
-			{
-				name: 'Get Claim',
-				value: 'Get Claim',
-				action: 'Get claim',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/schaden/{{$parameter["claimId"]}}',
-					},
-				},
-			},
-			{
 				name: 'Update Claim',
 				value: 'Update Claim',
 				action: 'Update claim',
@@ -64,28 +86,6 @@ export const ClaimsSchaden: INodeProperties[] = [
 					request: {
 						method: 'PUT',
 						url: '=/schaden/{{$parameter["claimId"]}}',
-					},
-				},
-			},
-			{
-				name: 'Delete Claim',
-				value: 'Delete Claim',
-				action: 'Delete claim',
-				routing: {
-					request: {
-						method: 'DELETE',
-						url: '=/schaden/{{$parameter["claimId"]}}',
-					},
-				},
-			},
-			{
-				name: 'Get Claim Statuses',
-				value: 'Get Claim Statuses',
-				action: 'Get claim statuses',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/schaden/statuses',
 					},
 				},
 			},

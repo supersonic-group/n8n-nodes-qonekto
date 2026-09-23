@@ -15,7 +15,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 		name: 'assignee',
 		type: 'string',
 		default: '',
-		description: 'Value muss mindestens 8 Zeichen lang sein. value darf maximal 255 Zeichen haben.',
+		description: 'Must be between 8 and 255 characters',
 		routing: {
 			send: {
 				property: 'assignee',
@@ -30,7 +30,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 		name: 'title',
 		type: 'string',
 		default: '',
-		description: 'Value muss mindestens 1 Zeichen lang sein. value darf maximal 100 Zeichen haben.',
+		description: 'Must be between 1 and 100 characters',
 		routing: {
 			send: {
 				property: 'title',
@@ -101,7 +101,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 		name: 'description',
 		type: 'string',
 		default: '',
-		description: 'Value darf maximal 1000 Zeichen haben',
+		description: 'At most 1000 characters',
 		routing: {
 			send: {
 				property: 'description',
@@ -116,7 +116,7 @@ export const TaskShared: Record<string, INodeProperties> = {
 		name: 'dueDate',
 		type: 'dateTime',
 		default: '',
-		description: 'Value muss ein gültiges Datum sein',
+		description: 'Must be a valid date',
 		routing: {
 			send: {
 				property: 'dueDate',

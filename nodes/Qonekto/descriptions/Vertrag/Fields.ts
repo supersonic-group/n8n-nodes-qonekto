@@ -5,10 +5,10 @@ import { returnAllField } from '../Pagination';
 
 export const ListVertraege: INodeProperties[] = [
 	{
-		displayName: 'Optional Kunde Filter',
+		displayName: 'Optional Customer Filter',
 		name: 'optional kunde filter',
 		type: 'collection',
-		placeholder: 'Filter by Ameise Kundennummer',
+		placeholder: 'Filter by Ameise customer number',
 		default: {},
 		options: [
 			{
@@ -43,7 +43,7 @@ export const ListVertraege: INodeProperties[] = [
 				displayName: 'Search',
 				name: 'search',
 				description:
-					'Searches for all Vertraege beginning with keyword in `versicherungsscheinnummer`, or `risiko`',
+					'Searches for all contracts beginning with the keyword in `versicherungsscheinnummer` or `risiko`',
 				default: '',
 				type: 'string',
 				routing: {
@@ -113,12 +113,12 @@ export const ListVertraege: INodeProperties[] = [
 
 export const CreateVertrag: INodeProperties[] = [
 	{
-		displayName: 'Kunde ID',
+		displayName: 'Customer ID',
 		name: 'kunde_id',
 		type: 'resourceLocator',
 		default: '',
 		required: true,
-		description: 'Select a Kunde by Ameise ID',
+		description: 'Select a customer by Ameise ID',
 		modes: [
 			{
 				displayName: 'ID',
@@ -150,7 +150,7 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
-		displayName: 'Beginn',
+		displayName: 'Start Date',
 		name: 'beginn',
 		type: 'dateTime',
 		default: '',
@@ -166,7 +166,7 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
-		displayName: 'Beitrag Netto',
+		displayName: 'Net Premium',
 		name: 'beitrag_netto',
 		type: 'number',
 		default: '',
@@ -182,7 +182,7 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
-		displayName: 'Versicherungsscheinnummer',
+		displayName: 'Policy Number',
 		name: 'versicherungsscheinnummer',
 		type: 'string',
 		default: '',
@@ -198,7 +198,7 @@ export const CreateVertrag: INodeProperties[] = [
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
 	{
-		displayName: 'Risiko',
+		displayName: 'Risk',
 		name: 'risiko',
 		type: 'string',
 		default: '',
@@ -221,11 +221,11 @@ export const CreateVertrag: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				displayName: 'Vermittler ID',
+				displayName: 'Broker ID',
 				name: 'vermittler_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Vermittler',
+				description: 'Select a broker',
 				modes: [
 					{
 						displayName: 'List',
@@ -258,11 +258,11 @@ export const CreateVertrag: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Sparte ID',
+				displayName: 'Division ID',
 				name: 'sparte_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Sparte',
+				description: 'Select a division',
 				modes: [
 					{
 						displayName: 'List',
@@ -282,11 +282,26 @@ export const CreateVertrag: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Gesellschaft ID',
+				displayName: 'Expiry Date',
+				name: 'ablauf',
+				type: 'dateTime',
+				default: '',
+				description: 'Must be on or after the start date',
+				routing: {
+					send: {
+						property: 'ablauf',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: DATE_ONLY_VALUE,
+					},
+				},
+			},
+			{
+				displayName: 'Insurer ID',
 				name: 'gesellschaft_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Gesellschaft',
+				description: 'Select an insurer',
 				modes: [
 					{
 						displayName: 'List',
@@ -299,6 +314,30 @@ export const CreateVertrag: INodeProperties[] = [
 				routing: {
 					send: {
 						property: 'gesellschaft_id',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Payment Method ID',
+				name: 'zahlweise_id',
+				type: 'resourceLocator',
+				default: '',
+				description: 'Select a payment method',
+				modes: [
+					{
+						displayName: 'List',
+						name: 'list',
+						type: 'list',
+						typeOptions: { searchListMethod: 'getZahlweisen', searchable: true },
+					},
+					{ displayName: 'ID', name: 'id', type: 'string' },
+				],
+				routing: {
+					send: {
+						property: 'zahlweise_id',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
@@ -330,45 +369,6 @@ export const CreateVertrag: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				displayName: 'Zahlweise ID',
-				name: 'zahlweise_id',
-				type: 'resourceLocator',
-				default: '',
-				description: 'Select a Zahlweise',
-				modes: [
-					{
-						displayName: 'List',
-						name: 'list',
-						type: 'list',
-						typeOptions: { searchListMethod: 'getZahlweisen', searchable: true },
-					},
-					{ displayName: 'ID', name: 'id', type: 'string' },
-				],
-				routing: {
-					send: {
-						property: 'zahlweise_id',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Ablauf',
-				name: 'ablauf',
-				type: 'dateTime',
-				default: '',
-				description: 'Must be on or after Beginn',
-				routing: {
-					send: {
-						property: 'ablauf',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: DATE_ONLY_VALUE,
-					},
-				},
-			},
 		],
 		displayOptions: { show: { resource: ['Vertrag'], operation: ['Create Vertrag'] } },
 	},
@@ -383,11 +383,11 @@ export const FilterVertraege: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				displayName: 'Vermittler ID',
+				displayName: 'Broker ID',
 				name: 'vermittler_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Vermittler',
+				description: 'Select a broker',
 				modes: [
 					{
 						displayName: 'List',
@@ -420,11 +420,11 @@ export const FilterVertraege: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Kunde ID',
+				displayName: 'Customer ID',
 				name: 'kunde_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Kunde by Ameise ID',
+				description: 'Select a customer by Ameise ID',
 				modes: [
 					{
 						displayName: 'ID',
@@ -458,11 +458,11 @@ export const FilterVertraege: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Sparte ID',
+				displayName: 'Division ID',
 				name: 'sparte_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Sparte',
+				description: 'Select a division',
 				modes: [
 					{
 						displayName: 'List',
@@ -482,11 +482,25 @@ export const FilterVertraege: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Gesellschaft ID',
+				displayName: 'Expiry Date',
+				name: 'ablauf',
+				type: 'dateTime',
+				default: '',
+				routing: {
+					send: {
+						property: 'ablauf',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: DATE_ONLY_VALUE,
+					},
+				},
+			},
+			{
+				displayName: 'Insurer ID',
 				name: 'gesellschaft_id',
 				type: 'resourceLocator',
 				default: '',
-				description: 'Select a Gesellschaft',
+				description: 'Select an insurer',
 				modes: [
 					{
 						displayName: 'List',
@@ -502,6 +516,86 @@ export const FilterVertraege: INodeProperties[] = [
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Net Premium',
+				name: 'beitrag_netto',
+				type: 'number',
+				default: '',
+				routing: {
+					send: {
+						property: 'beitrag_netto',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Payment Method ID',
+				name: 'zahlweise_id',
+				type: 'resourceLocator',
+				default: '',
+				description: 'Select a payment method',
+				modes: [
+					{
+						displayName: 'List',
+						name: 'list',
+						type: 'list',
+						typeOptions: { searchListMethod: 'getZahlweisen', searchable: true },
+					},
+					{ displayName: 'ID', name: 'id', type: 'string' },
+				],
+				routing: {
+					send: {
+						property: 'zahlweise_id',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Policy Number',
+				name: 'versicherungsscheinnummer',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'versicherungsscheinnummer',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Risk',
+				name: 'risiko',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'risiko',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Start Date',
+				name: 'beginn',
+				type: 'dateTime',
+				default: '',
+				routing: {
+					send: {
+						property: 'beginn',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
@@ -526,100 +620,6 @@ export const FilterVertraege: INodeProperties[] = [
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Zahlweise ID',
-				name: 'zahlweise_id',
-				type: 'resourceLocator',
-				default: '',
-				description: 'Select a Zahlweise',
-				modes: [
-					{
-						displayName: 'List',
-						name: 'list',
-						type: 'list',
-						typeOptions: { searchListMethod: 'getZahlweisen', searchable: true },
-					},
-					{ displayName: 'ID', name: 'id', type: 'string' },
-				],
-				routing: {
-					send: {
-						property: 'zahlweise_id',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Versicherungsscheinnummer',
-				name: 'versicherungsscheinnummer',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						property: 'versicherungsscheinnummer',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Risiko',
-				name: 'risiko',
-				type: 'string',
-				default: '',
-				routing: {
-					send: {
-						property: 'risiko',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Beitrag Netto',
-				name: 'beitrag_netto',
-				type: 'number',
-				default: '',
-				routing: {
-					send: {
-						property: 'beitrag_netto',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Beginn',
-				name: 'beginn',
-				type: 'dateTime',
-				default: '',
-				routing: {
-					send: {
-						property: 'beginn',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: DATE_ONLY_VALUE,
-					},
-				},
-			},
-			{
-				displayName: 'Ablauf',
-				name: 'ablauf',
-				type: 'dateTime',
-				default: '',
-				routing: {
-					send: {
-						property: 'ablauf',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: DATE_ONLY_VALUE,
 					},
 				},
 			},

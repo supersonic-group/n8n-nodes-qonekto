@@ -8,31 +8,11 @@ export const Resources: INodeProperties[] = [
 		noDataExpression: true,
 		options: [
 			{
-				name: 'Kunde',
-				value: 'Kunde',
+				name: 'Claim',
+				value: 'ClaimsSchaden',
 			},
 			{
-				name: 'Kunde Tag',
-				value: 'KundeTags',
-			},
-			{
-				name: 'Kunde Additional Address',
-				value: 'KundeAdditionalAddresses',
-			},
-			{
-				name: 'Kunde Note',
-				value: 'KundeNotes',
-			},
-			{
-				name: 'Kunde Relation',
-				value: 'KundeRelations',
-			},
-			{
-				name: 'Kunde Notification',
-				value: 'KundeNotifications',
-			},
-			{
-				name: 'Vertrag',
+				name: 'Contract',
 				value: 'Vertrag',
 			},
 			{
@@ -44,28 +24,48 @@ export const Resources: INodeProperties[] = [
 				value: 'ContractProducts',
 			},
 			{
-				name: 'Listen',
+				name: 'Customer',
+				value: 'Kunde',
+			},
+			{
+				name: 'Customer Additional Address',
+				value: 'KundeAdditionalAddresses',
+			},
+			{
+				name: 'Customer Note',
+				value: 'KundeNotes',
+			},
+			{
+				name: 'Customer Notification',
+				value: 'KundeNotifications',
+			},
+			{
+				name: 'Customer Relation',
+				value: 'KundeRelations',
+			},
+			{
+				name: 'Customer Tag',
+				value: 'KundeTags',
+			},
+			{
+				name: 'Lookup List',
 				value: 'Listen',
+			},
+			{
+				name: 'Misc',
+				value: 'Misc',
 			},
 			{
 				name: 'Panda',
 				value: 'Panda',
 			},
 			{
-				name: 'Claims Schaden',
-				value: 'ClaimsSchaden',
-			},
-			{
-				name: 'Tasks Aufgaben',
-				value: 'TasksAufgaben',
-			},
-			{
 				name: 'Pipeline',
 				value: 'Pipeline',
 			},
 			{
-				name: 'Misc',
-				value: 'Misc',
+				name: 'Task',
+				value: 'TasksAufgaben',
 			},
 		],
 		default: 'Kunde',

@@ -12,21 +12,6 @@ export const ListTasks: INodeProperties[] = [
 		default: {},
 		options: [
 			{
-				displayName: 'Search',
-				name: 'search',
-				type: 'string',
-				default: '',
-				description: 'Searches task title and description',
-				routing: {
-					send: {
-						type: 'query',
-						property: 'search',
-						value: '={{ $value }}',
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
 				displayName: 'Assignee',
 				name: 'assignee',
 				type: 'string',
@@ -42,24 +27,90 @@ export const ListTasks: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Statuses',
-				name: 'statuses',
-				type: 'multiOptions',
-				default: [],
-				options: [
-					{
-						name: 'Open',
-						value: 'open',
-					},
-					{
-						name: 'Closed',
-						value: 'closed',
-					},
-				],
+				displayName: 'Contract',
+				name: 'contract',
+				type: 'number',
+				default: 0,
+				description: 'Filters by contract Ameise ID',
 				routing: {
 					send: {
 						type: 'query',
-						property: 'statuses',
+						property: 'contract',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Customer',
+				name: 'customer',
+				type: 'number',
+				default: 0,
+				description: 'Filters by customer Ameise ID',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'customer',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Due Date From',
+				name: 'dueDateFrom',
+				type: 'dateTime',
+				default: '',
+				description: 'Earliest due date, inclusive',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'dueDateFrom',
+						value: DATETIME_WITH_OFFSET_VALUE,
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Due Date To',
+				name: 'dueDateTo',
+				type: 'dateTime',
+				default: '',
+				description: 'Latest due date, inclusive',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'dueDateTo',
+						value: DATETIME_WITH_OFFSET_VALUE,
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Include Customer Archives',
+				name: 'includeCustomerArchives',
+				type: 'boolean',
+				default: false,
+				description: "Whether to include the customer's archives in the results",
+				routing: {
+					send: {
+						type: 'query',
+						property: 'includeCustomerArchives',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Include Customer Contracts',
+				name: 'includeCustomerContracts',
+				type: 'boolean',
+				default: false,
+				description: "Whether to include the customer's contracts in the results",
+				routing: {
+					send: {
+						type: 'query',
+						property: 'includeCustomerContracts',
 						value: '={{ $value }}',
 						propertyInDotNotation: false,
 					},
@@ -98,90 +149,15 @@ export const ListTasks: INodeProperties[] = [
 				},
 			},
 			{
-				displayName: 'Due Date From',
-				name: 'dueDateFrom',
-				type: 'dateTime',
+				displayName: 'Search',
+				name: 'search',
+				type: 'string',
 				default: '',
-				description: 'Earliest due date, inclusive',
+				description: 'Searches task title and description',
 				routing: {
 					send: {
 						type: 'query',
-						property: 'dueDateFrom',
-						value: DATETIME_WITH_OFFSET_VALUE,
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
-				displayName: 'Due Date To',
-				name: 'dueDateTo',
-				type: 'dateTime',
-				default: '',
-				description: 'Latest due date, inclusive',
-				routing: {
-					send: {
-						type: 'query',
-						property: 'dueDateTo',
-						value: DATETIME_WITH_OFFSET_VALUE,
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
-				displayName: 'Contract',
-				name: 'contract',
-				type: 'number',
-				default: 0,
-				description: 'Filters by Vertrag Ameise ID',
-				routing: {
-					send: {
-						type: 'query',
-						property: 'contract',
-						value: '={{ $value }}',
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
-				displayName: 'Customer',
-				name: 'customer',
-				type: 'number',
-				default: 0,
-				description: 'Filters by Kunde Ameise ID',
-				routing: {
-					send: {
-						type: 'query',
-						property: 'customer',
-						value: '={{ $value }}',
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
-				displayName: 'Include Customer Contracts',
-				name: 'includeCustomerContracts',
-				type: 'boolean',
-				default: false,
-				description: "Whether to include the customer's contracts in the results",
-				routing: {
-					send: {
-						type: 'query',
-						property: 'includeCustomerContracts',
-						value: '={{ $value }}',
-						propertyInDotNotation: false,
-					},
-				},
-			},
-			{
-				displayName: 'Include Customer Archives',
-				name: 'includeCustomerArchives',
-				type: 'boolean',
-				default: false,
-				description: "Whether to include the customer's archives in the results",
-				routing: {
-					send: {
-						type: 'query',
-						property: 'includeCustomerArchives',
+						property: 'search',
 						value: '={{ $value }}',
 						propertyInDotNotation: false,
 					},
@@ -238,6 +214,30 @@ export const ListTasks: INodeProperties[] = [
 					send: {
 						type: 'query',
 						property: 'sortOrder',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Statuses',
+				name: 'statuses',
+				type: 'multiOptions',
+				default: [],
+				options: [
+					{
+						name: 'Open',
+						value: 'open',
+					},
+					{
+						name: 'Closed',
+						value: 'closed',
+					},
+				],
+				routing: {
+					send: {
+						type: 'query',
+						property: 'statuses',
 						value: '={{ $value }}',
 						propertyInDotNotation: false,
 					},

@@ -3,20 +3,20 @@ import { ATOM_TIMESTAMP_VALUE, DATE_ONLY_VALUE } from '../Routing';
 
 export const Shared: Record<string, INodeProperties> = {
 	'Vertrag Ameise ID': {
-		displayName: 'Ameise Vertragsnummer',
+		displayName: 'Ameise Contract Number',
 		name: 'vertrag_ameise_id',
 		type: 'string',
 		default: '',
 		required: true,
-		description: 'The ID of the Vertrag in Ameise',
+		description: 'The ID of the contract in Ameise',
 	},
 	'Kunde Ameise ID': {
-		displayName: 'Ameise Kundennummer',
+		displayName: 'Ameise Customer Number',
 		name: 'kunde_ameise_id',
 		type: 'resourceLocator',
 		default: '',
 		required: true,
-		description: 'The ID of the Kunde in Ameise',
+		description: 'The ID of the customer in Ameise',
 		modes: [
 			{
 				displayName: 'ID',
@@ -45,11 +45,11 @@ export const Shared: Record<string, INodeProperties> = {
 		],
 	},
 	'Anrede ID': {
-		displayName: 'Anrede ID',
+		displayName: 'Salutation ID',
 		name: 'anrede_id',
 		type: 'resourceLocator',
 		default: '',
-		description: 'Select an Anrede',
+		description: 'Select a salutation',
 		modes: [
 			{
 				displayName: 'List',
@@ -76,11 +76,11 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Vermittler ID': {
-		displayName: 'Vermittler ID',
+		displayName: 'Broker ID',
 		name: 'vermittler_id',
 		type: 'resourceLocator',
 		default: '',
-		description: 'Select a Vermittler',
+		description: 'Select a broker',
 		modes: [
 			{
 				displayName: 'List',
@@ -116,11 +116,11 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Land ID': {
-		displayName: 'Land ID',
+		displayName: 'Country ID',
 		name: 'land_id',
 		type: 'resourceLocator',
 		default: '',
-		description: 'Select a Land',
+		description: 'Select a country',
 		modes: [
 			{
 				displayName: 'List',
@@ -147,11 +147,11 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Rechtsform ID': {
-		displayName: 'Rechtsform ID',
+		displayName: 'Legal Form ID',
 		name: 'rechtsform_id',
 		type: 'resourceLocator',
 		default: '',
-		description: 'Select a Rechtsform (required if Anrede is a juristic person)',
+		description: 'Select a legal form (required if the salutation is a legal entity)',
 		modes: [
 			{
 				displayName: 'List',
@@ -178,11 +178,11 @@ export const Shared: Record<string, INodeProperties> = {
 		},
 	},
 	'Sparte ID': {
-		displayName: 'Sparte ID',
+		displayName: 'Division ID',
 		name: 'sparte_id',
 		type: 'resourceLocator',
 		default: '',
-		description: 'Select a Sparte',
+		description: 'Select a division',
 		modes: [
 			{
 				displayName: 'List',
@@ -219,103 +219,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 		default: {},
 		options: [
 			{
-				...Shared['Vermittler ID'],
-			},
-			{
-				displayName: 'Titel',
-				name: 'titel',
-				type: 'string',
-				default: '',
-				description:
-					'Wird nicht verwendet, wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'titel',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Strasse',
-				name: 'strasse',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'strasse',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Plz',
-				name: 'plz',
-				type: 'string',
-				default: '',
-				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
-				routing: {
-					send: {
-						property: 'plz',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Ort',
-				name: 'ort',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'ort',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Geburtsdatum',
-				name: 'geburtsdatum',
-				type: 'dateTime',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld das Gründungsdatum. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
-				routing: {
-					send: {
-						property: 'geburtsdatum',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: DATE_ONLY_VALUE,
-					},
-				},
-			},
-			{
-				displayName: 'Beruf',
-				name: 'beruf',
-				type: 'string',
-				default: '',
-				description:
-					'Wenn anrede_id zu einer Anrede gehört, wo juristische_person = true ist bezeichnet dieses Feld die Branche. value darf maximal 255 Zeichen haben.',
-				routing: {
-					send: {
-						property: 'beruf',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Per Du',
+				displayName: 'Address Informally (Du)',
 				name: 'per_du',
 				type: 'boolean',
 				default: false,
@@ -330,41 +234,56 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Nationalitaet',
-				name: 'nationalitaet',
+				...Shared['Vermittler ID'],
+			},
+			{
+				displayName: 'City',
+				name: 'ort',
 				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'ort',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Communication',
+				name: 'kommunikation',
+				type: 'json',
+				default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
+				description: 'All default communication data for this customer',
+				routing: {
+					send: {
+						property: 'kommunikation',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ JSON.parse($value) }}',
+					},
+				},
+			},
+			{
+				displayName: 'Date of Birth',
+				name: 'geburtsdatum',
+				type: 'dateTime',
 				default: '',
 				description:
-					'Wird aktuell nicht an die Ameise übergeben. value darf maximal 255 Zeichen haben.',
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the founding date. Must be a valid date in the format <code>Y-m-d,d.m.Y</code>.',
 				routing: {
 					send: {
-						property: 'nationalitaet',
+						property: 'geburtsdatum',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ $value }}',
+						value: DATE_ONLY_VALUE,
 					},
 				},
 			},
 			{
-				...Shared['Rechtsform ID'],
-			},
-			{
-				displayName: 'Benutzername Simplr',
-				name: 'benutzername_simplr',
-				type: 'string',
-				default: '',
-				description: 'Value darf maximal 255 Zeichen haben',
-				routing: {
-					send: {
-						property: 'benutzername_simplr',
-						propertyInDotNotation: false,
-						type: 'body',
-						value: '={{ $value }}',
-					},
-				},
-			},
-			{
-				displayName: 'Verstorben',
+				displayName: 'Deceased',
 				name: 'verstorben',
 				type: 'boolean',
 				default: false,
@@ -379,14 +298,15 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Kommunikation',
-				name: 'kommunikation',
+				displayName: 'Details',
+				name: 'details',
 				type: 'json',
-				default: '{\n  "email": "info@muster.test",\n  "website": "https://url.test"\n}',
-				description: 'Alle Standard-Kommunikationsdaten für diesen Kunden',
+				default:
+					'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
+				description: 'Customer details as an object keyed by field ID, with the corresponding value',
 				routing: {
 					send: {
-						property: 'kommunikation',
+						property: 'details',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: '={{ JSON.parse($value) }}',
@@ -394,18 +314,98 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Details',
-				name: 'details',
-				type: 'json',
-				default:
-					'{\n  "feld_1_float": 12.2,\n  "feld_2_int": 3,\n  "feld_3_text": "test",\n  "feld_4_bool": false,\n  "feld_5_date": "2024-01-23"\n}',
-				description: 'Kunden-Details als Objekt mit Feld-ID Schlüssel und dem entsprechenden Wert',
+				...Shared['Rechtsform ID'],
+			},
+			{
+				displayName: 'Nationality',
+				name: 'nationalitaet',
+				type: 'string',
+				default: '',
+				description:
+					'Currently not passed to Ameise. At most 255 characters.',
 				routing: {
 					send: {
-						property: 'details',
+						property: 'nationalitaet',
 						propertyInDotNotation: false,
 						type: 'body',
-						value: '={{ JSON.parse($value) }}',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Occupation',
+				name: 'beruf',
+				type: 'string',
+				default: '',
+				description:
+					'If the salutation (anrede_id) is a legal entity (juristische_person = true), this field holds the industry. At most 255 characters.',
+				routing: {
+					send: {
+						property: 'beruf',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Postal Code',
+				name: 'plz',
+				type: 'string',
+				default: '',
+				description: 'For German addresses 4 or 5 digits. Other countries allow up to 10 characters of letters, digits, spaces and hyphens.',
+				routing: {
+					send: {
+						property: 'plz',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Simplr Username',
+				name: 'benutzername_simplr',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'benutzername_simplr',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Street',
+				name: 'strasse',
+				type: 'string',
+				default: '',
+				description: 'At most 255 characters',
+				routing: {
+					send: {
+						property: 'strasse',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Title',
+				name: 'titel',
+				type: 'string',
+				default: '',
+				description:
+					'Not used if the salutation (anrede_id) is a legal entity (juristische_person = true). At most 255 characters.',
+				routing: {
+					send: {
+						property: 'titel',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
 					},
 				},
 			},
@@ -419,7 +419,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 		default: {},
 		options: [
 			{
-				displayName: 'Mitteilung Benutzername',
+				displayName: 'Notify Username',
 				name: 'mitteilung-benutzername',
 				description: 'Whether to send the customer the account username via email (if given)',
 				default: false,
@@ -434,7 +434,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Mitteilung Passwort Link',
+				displayName: 'Notify Password Link',
 				name: 'mitteilung-passwort-link',
 				description:
 					'Whether to send the customer a link to reset their account password via email (if given)',
@@ -450,10 +450,10 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Mitteilung Erstinfo Unterbinden',
+				displayName: 'Suppress Initial Information',
 				name: 'mitteilung-erstinfo-unterbinden',
 				description:
-					'Whether to suppress sending the customer the Erstinformationen nach §11 der Vermittlerverordnung via email (if given)',
+					'Whether to suppress sending the customer the initial information required by §11 VersVermV (Erstinformation) via email (if given)',
 				default: true,
 				type: 'boolean',
 				routing: {
@@ -475,7 +475,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 		default: {},
 		options: [
 			{
-				displayName: 'Datum',
+				displayName: 'Date',
 				name: 'datum',
 				type: 'dateTime',
 				default: '',
@@ -490,9 +490,9 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Vertrag ID',
+				displayName: 'Contract ID',
 				name: 'vertrags_id',
-				description: 'Ameise ID of the related Vertrag',
+				description: 'Ameise ID of the related contract',
 				type: 'string',
 				default: '',
 				routing: {
@@ -516,7 +516,7 @@ export const SharedCollections: Record<string, INodeProperties> = {
 				},
 			},
 			{
-				displayName: 'Kundensichtbar',
+				displayName: 'Visible to Customer',
 				name: 'kundensichtbar',
 				description: 'Whether to allow the customer to view the created file',
 				type: 'boolean',

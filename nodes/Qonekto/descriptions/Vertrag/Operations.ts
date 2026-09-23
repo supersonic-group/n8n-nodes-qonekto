@@ -13,20 +13,20 @@ export const Vertrag: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List Vertraege',
-				value: 'List Vertraege',
-				action: 'List vertraege',
+				name: 'Create Contract',
+				value: 'Create Vertrag',
+				action: 'Create contract',
 				routing: {
 					request: {
-						method: 'GET',
+						method: 'POST',
 						url: '=/vertrag',
 					},
 				},
 			},
 			{
-				name: 'Filter Vertraege',
+				name: 'Filter Contracts',
 				value: 'Filter Vertraege',
-				action: 'Filter vertraege',
+				action: 'Filter contracts',
 				routing: {
 					request: {
 						method: 'POST',
@@ -35,20 +35,9 @@ export const Vertrag: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Create Vertrag',
-				value: 'Create Vertrag',
-				action: 'Create vertrag',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '=/vertrag',
-					},
-				},
-			},
-			{
-				name: 'Show Vertrag',
+				name: 'Get Contract',
 				value: 'Show Vertrag',
-				action: 'Show vertrag',
+				action: 'Get contract',
 				routing: {
 					request: {
 						method: 'GET',
@@ -57,11 +46,22 @@ export const Vertrag: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'List Contracts',
+				value: 'List Vertraege',
+				action: 'List contracts',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/vertrag',
+					},
+				},
+			},
+			{
 				name: 'List Documents',
 				value: 'List Documents',
 				action: 'List documents',
 				description:
-					'List the Archiveintraege assigned to a contract. Contract documents carry no typ and no attachments.',
+					'List the archive entries assigned to a contract. Contract documents carry no type and no attachments.',
 				routing: {
 					request: {
 						method: 'GET',

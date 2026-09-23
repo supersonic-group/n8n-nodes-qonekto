@@ -8,7 +8,7 @@ export const Shared: Record<string, INodeProperties> = {
 		default: '["Tag"]',
 		required: true,
 		description:
-			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. value darf maximal 255 Zeichen haben.',
+			'Must match the regex /^[\\w\\-\\s:()äöüÄÖÜß\\/?]+$/. At most 255 characters.',
 		routing: {
 			send: {
 				property: 'tags',

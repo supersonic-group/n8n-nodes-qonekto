@@ -30,7 +30,7 @@ export const ChangeContractBankAccount: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		description: 'Value muss mindestens 1 Zeichen lang sein. Value darf maximal 34 Zeichen haben.',
+		description: 'Must be between 1 and 34 characters',
 		routing: {
 			send: {
 				property: 'iban',

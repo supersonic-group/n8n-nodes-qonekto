@@ -122,7 +122,7 @@ export const CreateACustomerLink: INodeProperties[] = [
 		type: 'string',
 		placeholder: 'name@email.com',
 		default: '',
-		description: 'Value muss eine gültige E-Mail-Adresse sein',
+		description: 'Must be a valid email address',
 		routing: {
 			send: {
 				property: 'email',
