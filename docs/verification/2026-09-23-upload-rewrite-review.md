@@ -43,6 +43,40 @@ before the run above:
   passed the object to `form-data`; the new encoder turned it into `[object Object]`. Division
   links on uploads never worked before this fix.
 
+## Input sources and limits, second run
+
+Run later the same day, 13:30–13:40 UTC, after the size and subject checks landed (branch at
+`10bff6a`). `N8N_RESTRICT_FILE_ACCESS_TO` pointed at a scratch folder for the disk reads. Every
+stored file was downloaded again through n8n and hashed locally.
+
+| Input | Stored as | Result |
+| --- | --- | --- |
+| Read Files from Disk, 2 KB PDF | filesystem binary | ok, bytes identical |
+| Read Files from Disk, 9.5 MB | filesystem binary | ok, bytes identical, 2.2 s |
+| Read Files from Disk, 10.5 MB | filesystem binary | refused before sending: "The file is 10.5 MB; Qonekto accepts files up to 10 MB" |
+| Convert to File from base64, no subject | filesystem binary | ok, bytes identical, subject `converted-äöü.txt` |
+| Code node binary with no file name, no subject | inline base64 | refused before sending: "Set a Subject: the file has no name to use as one" |
+| Code node binary with no MIME type | inline base64 | ok, bytes identical, sent as `application/octet-stream` |
+
+Before the two checks, the same 10.5 MB file drew a bare HTTP 413 from the server after being sent
+in full, and the nameless file drew the API's German 422 "Betreff muss ausgefüllt werden".
+
+Database and S3 binary storage were not exercised. The node reads files through n8n's
+`getBinaryDataBuffer`, which resolves every storage mode, and that call is unchanged since 2.1.1.
+
+### Why some downloads arrive as a ZIP
+
+An entry whose subject is not a file name (`n8n verify: disk read 2 KB`) downloads as a ZIP holding
+one file named after the subject, `n8n_verify__disk_read_2_KB.dat`. The bytes inside are
+identical to the upload. An entry whose subject is the file name (`Prüfbericht Größe.pdf`)
+downloads as the file itself.
+
+The node cannot influence this. `KundeArchivCtrl::store` forwards only the file's bytes, its MIME
+type and the subject (as `X-Dio-Betreff`) to Ameise; the multipart file name never leaves the
+connector. Sending the file's own name instead of the subject (`393626e`) was tried and reverted
+(`10bff6a`) for that reason. Keeping the extension in stored files would need a connector change,
+or a subject that ends in the extension.
+
 ## Not exercised
 
 - The trigger's webhook lifecycle. Its error paths are covered by `test/trigger.test.js`; the happy
@@ -52,6 +86,9 @@ before the run above:
 
 ## Records left behind
 
-On review, customer `5002352953` keeps three archive entries (`bf87fec5df0dd7620124`,
-`f3dc7ee63d2c19554792`, `8ca6f2b8d75235bed885`); the API has no delete for them. The note was
+On review, customer `5002352953` keeps eleven archive entries, which the API cannot delete:
+`bf87fec5df0dd7620124`, `f3dc7ee63d2c19554792` and `8ca6f2b8d75235bed885` from the first run,
+and `d12d5668d72950a88228`, `77e9817d864655d2e4b4`, `6e856fad63c7edbf99d7`,
+`d9b02cfb4096ddf81cda`, `2e1acba5166b5ebc4887`, `811c69bc66e424598a2d`, `5fd68ff77b80b8326601`
+and `a9aa970a2fd50e370b65` from the input runs. The note was
 deleted. In the dev n8n, the `qonekto verify: *` workflows remain and can be deleted.
