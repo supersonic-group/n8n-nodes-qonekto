@@ -8,7 +8,10 @@ const { Qonekto } = require('../dist/nodes/Qonekto/Qonekto.node.js');
 const FILE = Buffer.from('%PDF-1.4\r\n\x00\xff binary', 'latin1');
 
 // Runs Upload File once. `file` and `fileName` describe the incoming binary.
-function runUpload(parameters, { file = FILE, fileName = 'Prüfbericht.pdf' } = {}) {
+function runUpload(parameters, binary = {}) {
+	const file = binary.file ?? FILE;
+	// An explicit `fileName: undefined` means the binary has no name, as n8n leaves it.
+	const fileName = 'fileName' in binary ? binary.fileName : 'Prüfbericht.pdf';
 	const params = {
 		authentication: 'accessToken',
 		kunde_ameise_id: { __rl: true, mode: 'id', value: '170430' },
@@ -103,4 +106,15 @@ test('a file over the 10 MB limit fails before uploading, naming the size and th
 
 test('a file of exactly 10 MB is still uploaded', async () => {
 	await uploadFile({}, { file: Buffer.alloc(10 * 1024 * 1024) });
+});
+
+test('a file without a name needs a subject, and says so instead of sending a request Qonekto rejects', async () => {
+	const { run, requests } = runUpload({ betreff: '' }, { fileName: undefined });
+	await assert.rejects(run, /Set a Subject/);
+	assert.strictEqual(requests.length, 0);
+});
+
+test('a file without a name is uploaded under its subject', async () => {
+	const parts = await uploadFile({ betreff: 'Scan' }, { fileName: undefined });
+	assert.strictEqual(parts.find((p) => p.name === 'file').filename, 'Scan');
 });

@@ -280,6 +280,13 @@ export class Qonekto implements INodeType {
 						}
 
 						const betreff = this.getNodeParameter('betreff', i, '') as string;
+						if (!betreff && !originalFilename) {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Set a Subject: the file has no name to use as one',
+								{ itemIndex: i },
+							);
+						}
 						parts.push({ field: 'betreff', value: betreff || originalFilename || '' });
 						parts.push({
 							field: 'file',
