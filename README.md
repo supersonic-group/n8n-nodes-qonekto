@@ -66,7 +66,13 @@ when configuring the node).
 
 ## Credentials
 
-This node uses a bearer token, a tenant identifier, and a selectable base URL to authenticate against the Qonekto API.
+Both nodes authenticate with either an API token or OAuth2, chosen with the node's Authentication parameter. API Token
+is the default, so existing workflows keep working unchanged.
+
+### API Token
+
+This credential uses a bearer token, a tenant identifier, and a selectable base URL to authenticate against the
+Qonekto API.
 
 - API Token (required): Used as a Bearer token for the Authorization header.
 - Tenant (required): Your Qonekto tenant identifier used to build the base URL.
@@ -85,6 +91,47 @@ How to obtain credentials
 Security
 
 - n8n stores credentials securely. Avoid hardcoding tokens; configure them via n8n’s Credentials UI.
+
+### OAuth2
+
+The Qonekto OAuth2 API credential signs you in to Qonekto instead of using a pasted token. There is no client ID or
+secret to enter: n8n registers itself with Qonekto on connect and uses PKCE.
+
+- Tenant (required): Your Qonekto tenant identifier.
+- Base URL (required): The API host. Currently available option: Production (https://app.qonekto.de/api/).
+
+Requirements
+
+- n8n 2.35.0 or later. It fixed token refresh for self-registering OAuth2 credentials; on older versions a
+  credential may stop working after the first hour.
+- n8n's public URL must use HTTPS (or be `localhost`), because Qonekto only accepts such redirect URLs. Behind a
+  reverse proxy, set `N8N_EDITOR_BASE_URL` (or `WEBHOOK_URL`) to the public HTTPS address.
+
+How to connect
+
+1. Create a Qonekto OAuth2 API credential, enter tenant and base URL, and click Connect my account.
+2. The first connect from a new n8n instance registers it with Qonekto. Until Qonekto support has approved it, the
+   sign-in page says the application is "noch nicht freigegeben". Ask Qonekto support to approve the client named
+   "n8n" with your n8n host, then click Connect again.
+3. Sign in to Qonekto and grant access. Keep full access (`api-full`): with read-only access, every write operation
+   and activating a Qonekto Trigger fail with "Invalid ability provided." To fix a read-only grant, reconnect and grant
+   full access.
+
+Each instance is approved once; further credentials, for other tenants too, need no new approval.
+
+Troubleshooting
+
+- "The resource parameter must name a tenant MCP or API URL" at sign-in: the tenant does not exist on that host.
+  Check the tenant identifier.
+- Moving n8n to another host registers a new client, which needs approval again.
+- Registration runs on every Connect click and is limited to 10 per hour per IP address.
+- A credential unused for 30 days loses its refresh token and must be reconnected.
+
+MCP
+
+The Qonekto nodes do not use MCP. To use Qonekto's MCP server from n8n, use n8n's built-in MCP Client Tool node with an
+MCP OAuth2 API credential whose server URL is your tenant's MCP URL, `https://app.qonekto.de/api/{tenant}/mcp`. It
+registers and connects the same way; that connection is separate from the one the Qonekto nodes use.
 
 ## Resources
 

@@ -3,6 +3,9 @@
     "description": "Startet den Workflow, wenn eine Qonekto-Event mit der gewünschten Aktion für den gewünschten Objekt-Typ auftritt"
   },
   "nodeView": {
+    "authentication.displayName": "Authentifizierung",
+    "authentication.options.accessToken.name": "API-Token",
+    "authentication.options.oAuth2.name": "OAuth2",
     "action": {
       "displayName": "Aktion",
       "description": "Die Aktion auf die gewartet werden soll"

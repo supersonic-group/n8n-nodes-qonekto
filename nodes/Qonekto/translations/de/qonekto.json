@@ -1,1 +1,7 @@
-{}
+{
+  "nodeView": {
+    "authentication.displayName": "Authentifizierung",
+    "authentication.options.accessToken.name": "API-Token",
+    "authentication.options.oAuth2.name": "OAuth2"
+  }
+}
