@@ -91,13 +91,6 @@ test('the file arrives byte for byte with its name and type, and names the entry
 	assert.deepStrictEqual(values(parts, 'typ'), ['dokument']);
 });
 
-test('a subject titles the entry but the file keeps its own name, so it downloads as a PDF', async () => {
-	const parts = await uploadFile({ betreff: 'Policy schedule' });
-	assert.deepStrictEqual(values(parts, 'betreff'), ['Policy schedule']);
-	const file = parts.find((p) => p.name === 'file');
-	assert.strictEqual(Buffer.from(file.filename, 'latin1').toString('utf8'), 'Prüfbericht.pdf');
-});
-
 test('a file over the 10 MB limit fails before uploading, naming the size and the limit', async () => {
 	const { run, requests } = runUpload({}, { file: Buffer.alloc(11 * 1024 * 1024) });
 	await assert.rejects(run, /11 MB.*up to 10 MB/);

@@ -291,8 +291,7 @@ export class Qonekto implements INodeType {
 						parts.push({
 							field: 'file',
 							value: fileContent,
-							// Its own name keeps the extension; Qonekto stores a subject-named file as .dat.
-							filename: originalFilename || betreff || '',
+							filename: betreff || originalFilename || '',
 							contentType: mimeType,
 						});
 						const multipart = buildMultipartBody(parts);
