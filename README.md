@@ -9,6 +9,7 @@ automate tasks in n8n.
 
 [Installation](#installation)
 [Operations](#operations)
+[Usage](#usage)
 [Credentials](#credentials)
 [Resources](#resources)
 [Version history](CHANGELOG.md)
@@ -114,6 +115,33 @@ description lists which are.
 
 Note: The exact input fields for each operation are provided in the node’s parameters within n8n (see the Fields panel
 when configuring the node).
+
+## Usage
+
+1. Create a Qonekto credential (see [Credentials](#credentials)) and pick it in the node.
+2. Choose a resource and an operation. IDs are Ameise IDs, the numbers Qonekto shows for customers
+   and contracts; the Customer field can also search by name.
+3. List operations return one page by default. Turn on **Return All** to get one item per record
+   across all pages.
+4. Writes accept an optional **Idempotency Key**. Sending the same key again within 24 hours
+   returns the first result instead of writing twice, which makes retries safe.
+
+**Upload File** takes a binary property from the incoming item (`data` by default), so put a
+node that produces a file in front of it: HTTP Request with the response format set to File, a
+form upload, or an email attachment.
+
+The Qonekto Trigger's output is the event Qonekto sends. For customer events, `subject_id` is the
+customer's Ameise ID, so the next node can use `{{ $json.subject_id }}`.
+
+### Example workflows
+
+Import these in n8n with **Import from File**, then pick your credential in each Qonekto node:
+
+- [`examples/upload-document-to-customer.json`](examples/upload-document-to-customer.json):
+  downloads a PDF and files it, tagged and visible to the customer, in a customer's contact
+  history.
+- [`examples/note-on-new-customer.json`](examples/note-on-new-customer.json): adds an info note
+  to every customer created in Qonekto.
 
 ## Credentials
 

@@ -1,0 +1,55 @@
+{
+	"name": "Qonekto: add a note to every new customer",
+	"nodes": [
+		{
+			"id": "0b4f7c52-0002-4a00-9000-000000000001",
+			"name": "New Customer",
+			"type": "n8n-nodes-qonekto.qonektoTrigger",
+			"typeVersion": 20250926,
+			"position": [
+				0,
+				0
+			],
+			"parameters": {
+				"action": "created",
+				"subject_type": "ameise.kunde"
+			},
+			"webhookId": "0b4f7c52-0002-4a00-9000-0000000000ff"
+		},
+		{
+			"id": "0b4f7c52-0002-4a00-9000-000000000002",
+			"name": "Add Welcome Note",
+			"type": "n8n-nodes-qonekto.qonekto",
+			"typeVersion": 20250926,
+			"position": [
+				260,
+				0
+			],
+			"parameters": {
+				"resource": "KundeNotes",
+				"operation": "Add Customer Note",
+				"kunde_ameise_id": {
+					"__rl": true,
+					"mode": "id",
+					"value": "={{ $json.subject_id }}"
+				},
+				"type": "info",
+				"text": "Created in Qonekto; welcome call pending."
+			}
+		}
+	],
+	"connections": {
+		"New Customer": {
+			"main": [
+				[
+					{
+						"node": "Add Welcome Note",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"settings": {}
+}

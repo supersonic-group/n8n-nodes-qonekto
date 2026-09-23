@@ -1,0 +1,85 @@
+{
+	"name": "Qonekto: upload a document to a customer's contact history",
+	"nodes": [
+		{
+			"id": "0b4f7c52-0001-4a00-9000-000000000001",
+			"name": "When clicking 'Execute workflow'",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [
+				0,
+				0
+			],
+			"parameters": {}
+		},
+		{
+			"id": "0b4f7c52-0001-4a00-9000-000000000002",
+			"name": "Download Document",
+			"type": "n8n-nodes-base.httpRequest",
+			"typeVersion": 4.2,
+			"position": [
+				220,
+				0
+			],
+			"parameters": {
+				"url": "https://example.com/policy-schedule.pdf",
+				"options": {
+					"response": {
+						"response": {
+							"responseFormat": "file"
+						}
+					}
+				}
+			}
+		},
+		{
+			"id": "0b4f7c52-0001-4a00-9000-000000000003",
+			"name": "Upload to Customer",
+			"type": "n8n-nodes-qonekto.qonekto",
+			"typeVersion": 20250926,
+			"position": [
+				440,
+				0
+			],
+			"parameters": {
+				"operation": "Upload File",
+				"kunde_ameise_id": {
+					"__rl": true,
+					"mode": "id",
+					"value": "5000000000"
+				},
+				"file": "data",
+				"betreff": "Policy schedule",
+				"optional fields": {
+					"tags": "[\"n8n\",\"policy\"]",
+					"kundensichtbar": true
+				}
+			}
+		}
+	],
+	"connections": {
+		"When clicking 'Execute workflow'": {
+			"main": [
+				[
+					{
+						"node": "Download Document",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Download Document": {
+			"main": [
+				[
+					{
+						"node": "Upload to Customer",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"settings": {}
+}
