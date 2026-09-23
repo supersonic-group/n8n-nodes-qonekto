@@ -9,7 +9,7 @@ not a test suite: nothing re-runs it.
 | | |
 | --- | --- |
 | Node | `n8n-nodes-qonekto` on branch `feature/oauth2-credential`, at `17cbbed` (action node), `47cf44a` (trigger) and `f9cf83e` (the rest) |
-| Connector | `https://review.qonekto.de`, deployed from `mvp-connector` branch `review`. The later steps ran on `2301ccc0` or newer; its richer `whoami` token block appears in their output, not in the earlier ones |
+| Connector | `https://review.qonekto.de`, deployed from `mvp-connector` branch `review`. The steps from 09:39 UTC on ran on `2301ccc0` or newer — its richer `whoami` token block appears in their output. The deployed commit for the earlier steps was not recorded; it predates `2301ccc0` |
 | Tenant | `testmakler` |
 | Date | 2026-09-23, 08:28–09:45 UTC |
 | Runner | n8n 2.37.10 from `@n8n/node-cli` 0.46.4 (`n8n-node dev`), at `http://localhost:5678`, driven by hand in the editor |
@@ -20,12 +20,12 @@ not a test suite: nothing re-runs it.
 | Step | Result | Evidence |
 | --- | --- | --- |
 | Connect, pending client | ok, via the superadmin bypass | Discovery, registration and consent at 08:28 UTC; the client was still pending and the connecting user is a superadmin, so the grant was forced (mvp-connector ADR 0058) |
-| Connect, approved client | ok | The client was approved afterwards; every later step used it |
+| Connect, approved client | ok, via the MCP credential only | The client was approved after the first connect. The Qonekto OAuth2 credential was not reconnected afterwards; the MCP connect below is the connect that ran against the approved client |
 | Who Am I, OAuth2 | ok | Tenant `testmakler`, token named "n8n" |
 | Kunde search dropdown, OAuth2 | ok | Search list loaded through the shared request helper |
 | Add and Delete Customer Note, OAuth2 | ok | Note `9b3de8dda4` created, then deleted |
 | Trigger activate and deactivate, OAuth2 | ok | n8n log: webhook added 09:18:14 UTC, removed 09:18:26 UTC, no errors |
-| Refresh | ok | Who Am I at 09:39:08 UTC, after the first access token had expired, without reconnecting. `whoami` reported type `oauth`, abilities `api-read api-full`, the client above, and `access_token_expires_at` 10:39:08 UTC — an access token issued at the time of the call |
+| Refresh | ok | Who Am I at 09:39:08 UTC, 71 minutes after the only connect of this credential (08:28 UTC), so its first access token had expired. `whoami` reported type `oauth`, abilities `api-read api-full`, the client above, and `access_token_expires_at` 10:39:08 UTC — a new access token issued at the time of the call, without reconnecting. That n8n sends `resource` on refresh rests on its source (`createOAuth2ClientForRefresh`); the server accepts a refresh without it, so the run cannot show it |
 | Who Am I, API token | ok | Token type `manual`; Base URL set by expression to review |
 | Trigger activate and deactivate, API token | ok | |
 | MCP Client node with an MCP OAuth2 API credential | ok | Server URL `https://review.qonekto.de/api/testmakler/mcp`; connected with the approved client, no new approval; tool `list-customers` returned 590 customers |

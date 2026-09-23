@@ -104,8 +104,8 @@ Requirements
 
 - n8n 2.35.0 or later. It fixed token refresh for self-registering OAuth2 credentials; on older versions a
   credential may stop working after the first hour.
-- n8n's public URL must use HTTPS (or be `localhost`), because Qonekto only accepts such redirect URLs. Behind a
-  reverse proxy, set `N8N_EDITOR_BASE_URL` (or `WEBHOOK_URL`) to the public HTTPS address.
+- n8n's public URL must use HTTPS (or be a loopback address such as `localhost`), because Qonekto only accepts such
+  redirect URLs. Behind a reverse proxy, set `N8N_EDITOR_BASE_URL` (or `WEBHOOK_URL`) to the public HTTPS address.
 
 How to connect
 
@@ -121,8 +121,9 @@ Each instance is approved once; further credentials, for other tenants too, need
 
 Troubleshooting
 
-- "The resource parameter must name a tenant MCP or API URL" at sign-in: the tenant does not exist on that host.
-  Check the tenant identifier.
+- "The resource parameter must name a tenant MCP or API URL" in n8n's connect window after sign-in: n8n could not
+  build your tenant's URL. Check the tenant identifier, and that a Base URL set by expression ends with a slash
+  (`https://…/api/`). n8n still registers in that case, which counts against the limit below.
 - Moving n8n to another host registers a new client, which needs approval again.
 - Registration runs on every Connect click and is limited to 10 per hour per IP address.
 - A credential unused for 30 days loses its refresh token and must be reconnected.
