@@ -24,3 +24,5 @@ build (what CI runs), plus the live run on review/testmakler. Baseline on ff4795
    **Final review.**
 
 ## Ledger
+
+- Checkpoint 1: BASE 2691668, reviewed HEAD 17cbbed; next interval BASE 17cbbed. Correctness: no findings. Fidelity: 0 fixed; deferred to slice 4 — API token run on both nodes, subtitle with OAuth2 selected; rejected — credential property order (mirrors qonektoApi, CONVENTIONS scopes itself to descriptions). Out of branch: 429 retry arguments swapped in qonektoApiRequest, raised to the user.
