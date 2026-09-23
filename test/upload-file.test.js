@@ -66,3 +66,10 @@ test('tags set under Optional Fields are sent, so the archive entry is tagged', 
 	const parts = await uploadFile({ 'optional fields': { tags: '["Vertrag","n8n"]' } });
 	assert.deepStrictEqual(values(parts, 'tags[]'), ['Vertrag', 'n8n']);
 });
+
+test('a Division ID picked from the list is sent as its ID, not as the locator object', async () => {
+	const parts = await uploadFile({
+		'optional fields': { sparte_id: { __rl: true, mode: 'list', value: '42', cachedResultName: 'Kfz' } },
+	});
+	assert.deepStrictEqual(values(parts, 'zuordnung[sparte_id]'), ['42']);
+});

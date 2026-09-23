@@ -235,7 +235,11 @@ export class Qonekto implements INodeType {
 							parts.push({ name: 'zuordnung[vertrags_id]', value: vertrags_id });
 						}
 
-						const sparte_id = optional.sparte_id || this.getNodeParameter('sparte_id', i, '') as string;
+						// A resource locator in the collection; a legacy top-level value may be a plain string.
+						const sparte = (optional.sparte_id || this.getNodeParameter('sparte_id', i, '')) as
+							| string
+							| INodeParameterResourceLocator;
+						const sparte_id = typeof sparte === 'object' ? String(sparte.value ?? '') : sparte;
 						if (sparte_id) {
 							parts.push({ name: 'zuordnung[sparte_id]', value: sparte_id });
 						}
