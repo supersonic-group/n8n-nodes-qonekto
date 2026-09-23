@@ -291,7 +291,8 @@ export class Qonekto implements INodeType {
 						parts.push({
 							field: 'file',
 							value: fileContent,
-							filename: betreff || originalFilename || '',
+							// Ameise takes the stored file's extension from this name; the subject has none.
+							filename: originalFilename || betreff || '',
 							contentType: mimeType,
 						});
 						const multipart = buildMultipartBody(parts);
