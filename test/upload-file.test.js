@@ -7,7 +7,8 @@ const { Qonekto } = require('../dist/nodes/Qonekto/Qonekto.node.js');
 
 const FILE = Buffer.from('%PDF-1.4\r\n\x00\xff binary', 'latin1');
 
-function uploadFile(parameters) {
+// Runs Upload File once. `file` and `fileName` describe the incoming binary.
+function runUpload(parameters, { file = FILE, fileName = 'Prüfbericht.pdf' } = {}) {
 	const params = {
 		authentication: 'accessToken',
 		kunde_ameise_id: { __rl: true, mode: 'id', value: '170430' },
@@ -25,8 +26,8 @@ function uploadFile(parameters) {
 		getNode: () => ({ name: 'Qonekto', type: 'n8n-nodes-qonekto.qonekto', typeVersion: 1, parameters: {} }),
 		continueOnFail: () => false,
 		helpers: {
-			assertBinaryData: () => ({ fileName: 'Prüfbericht.pdf', mimeType: 'application/pdf' }),
-			getBinaryDataBuffer: async () => FILE,
+			assertBinaryData: () => ({ fileName, mimeType: 'application/pdf' }),
+			getBinaryDataBuffer: async () => file,
 			httpRequestWithAuthentication: async (_credentialType, options) => {
 				requests.push(options);
 				return { body: { id: 1 }, headers: {}, statusCode: 201 };
@@ -35,11 +36,14 @@ function uploadFile(parameters) {
 			constructExecutionMetaData: (items) => items,
 		},
 	};
-	const run = new Qonekto().customOperations.Kunde['Upload File'].call(context);
-	return run.then(() => {
-		assert.strictEqual(requests.length, 1);
-		return parseMultipart(requests[0]);
-	});
+	return { run: new Qonekto().customOperations.Kunde['Upload File'].call(context), requests };
+}
+
+async function uploadFile(parameters, binary) {
+	const { run, requests } = runUpload(parameters, binary);
+	await run;
+	assert.strictEqual(requests.length, 1);
+	return parseMultipart(requests[0]);
 }
 
 // Splits a multipart/form-data body into { name, filename, contentType, value } parts.
@@ -82,4 +86,11 @@ test('the file arrives byte for byte with its name and type, and names the entry
 	assert.strictEqual(file.contentType, 'application/pdf');
 	assert.deepStrictEqual(values(parts, 'betreff'), ['Prüfbericht.pdf']);
 	assert.deepStrictEqual(values(parts, 'typ'), ['dokument']);
+});
+
+test('a subject titles the entry but the file keeps its own name, so it downloads as a PDF', async () => {
+	const parts = await uploadFile({ betreff: 'Policy schedule' });
+	assert.deepStrictEqual(values(parts, 'betreff'), ['Policy schedule']);
+	const file = parts.find((p) => p.name === 'file');
+	assert.strictEqual(Buffer.from(file.filename, 'latin1').toString('utf8'), 'Prüfbericht.pdf');
 });
