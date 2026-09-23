@@ -61,6 +61,13 @@ not evidence of a wrong key. Option values containing dots (the Base URL) cannot
 shapes, the `Shared` module, naming and casing. Follow it; `npm run lint` enforces part of it
 but not all.
 
+## Tests
+
+`npm test` runs `node:test` suites in `test/` against the compiled node, so build first (CI does).
+They call the node the way n8n does and assert on the request handed to `httpRequestWithAuthentication`.
+Beware `eslint --fix`: an n8n rule title-cases the `name` of any `{ name, value }` literal it takes for an
+option, which once turned the multipart field `typ` into `Typ`. Keep non-option objects off that shape.
+
 ## n8n verification
 
 n8n verifies a published version by running `npx @n8n/scan-community-package n8n-nodes-qonekto`: it
