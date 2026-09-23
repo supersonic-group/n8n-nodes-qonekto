@@ -78,6 +78,24 @@ connector. Sending the file's own name instead of the subject (`393626e`) was tr
 (`10bff6a`) for that reason. Keeping the extension in stored files would need a connector change,
 or a subject that ends in the extension.
 
+## Own file name, after the connector fix
+
+mvp-connector `62303014` passes the multipart file name to Ameise as the `name` parameter of the
+Content-Type, and Ameise takes the stored file's extension from it. The node now sends the file's
+own name there (`6eff548`). Run 14:55–15:00 UTC, after `deploy:review` of that commit, with every
+subject free of dots. Ameise treats anything after the last dot of a subject as an extension, so a
+subject like `verify 2.2.1: …` masks the result.
+
+| Input | Subject | Download |
+| --- | --- | --- |
+| `small.pdf` from disk | `n8n verify own filename ASCII name` | the PDF itself, bytes identical |
+| same bytes named `Prüfbericht Größe.pdf` | `n8n verify own filename umlaut name` | the PDF itself, bytes identical |
+| same bytes named `Police` (no extension) | `n8n verify own filename no extension` | the PDF itself, bytes identical; the connector derives `.pdf` from the content |
+| 10 bytes named `Rohdaten.bin`, `application/octet-stream` | `n8n verify own filename unknown binary` | a ZIP holding `Rohdaten.bin`, bytes identical |
+
+The same node code against review before the deploy returned every entry as a ZIP holding
+`<subject>.dat`.
+
 ## Not exercised
 
 - The trigger's webhook lifecycle. Its error paths are covered by `test/trigger.test.js`; the happy
@@ -91,5 +109,9 @@ On review, customer `5002352953` keeps eleven archive entries, which the API can
 `bf87fec5df0dd7620124`, `f3dc7ee63d2c19554792` and `8ca6f2b8d75235bed885` from the first run,
 and `d12d5668d72950a88228`, `77e9817d864655d2e4b4`, `6e856fad63c7edbf99d7`,
 `d9b02cfb4096ddf81cda`, `2e1acba5166b5ebc4887`, `811c69bc66e424598a2d`, `5fd68ff77b80b8326601`
-and `a9aa970a2fd50e370b65` from the input runs. The note was
+and `a9aa970a2fd50e370b65` from the input runs. The own-file-name runs added twelve more:
+`ef01fe02305689d7167b`, `718d8c5fd36d9eae69eb`, `84c030f4d46e131e8c3a`, `9c51089b275d5479fcc8`,
+`6e37370e87f390cf7054`, `de1c36c131469d6341c3`, `e8953fb387b2c025f8d4`, `542a41f84dc6f5faae26`
+(before the deploy), and `28948d38d488cd09fc87`, `624d2de0dda01fbb422e`, `022b507a38097e39a551`,
+`82d08d2eec352cc8bbec` (after). The note was
 deleted. In the dev n8n, the `qonekto verify: *` workflows remain and can be deleted.
