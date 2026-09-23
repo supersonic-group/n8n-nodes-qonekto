@@ -94,3 +94,13 @@ test('a subject titles the entry but the file keeps its own name, so it download
 	const file = parts.find((p) => p.name === 'file');
 	assert.strictEqual(Buffer.from(file.filename, 'latin1').toString('utf8'), 'Prüfbericht.pdf');
 });
+
+test('a file over the 10 MB limit fails before uploading, naming the size and the limit', async () => {
+	const { run, requests } = runUpload({}, { file: Buffer.alloc(11 * 1024 * 1024) });
+	await assert.rejects(run, /11 MB.*up to 10 MB/);
+	assert.strictEqual(requests.length, 0, 'the file must not be uploaded only to be refused');
+});
+
+test('a file of exactly 10 MB is still uploaded', async () => {
+	await uploadFile({}, { file: Buffer.alloc(10 * 1024 * 1024) });
+});

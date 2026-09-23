@@ -29,6 +29,9 @@ import {
 	isReplayedResponse,
 } from './descriptions/Idempotency';
 
+// The archive entry endpoint's limit: `file` is `max:10240` (KB) in mvp-connector's KundeArchivRequest.
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
 async function makeListSearch(
 	self: IExecuteFunctions | ILoadOptionsFunctions,
 	uri: string,
@@ -267,6 +270,14 @@ export class Qonekto implements INodeType {
 							inputDataFieldName,
 							i,
 						);
+						if (fileContent.length > MAX_UPLOAD_BYTES) {
+							const megabytes = Math.round((fileContent.length / 1024 / 1024) * 10) / 10;
+							throw new NodeOperationError(
+								this.getNode(),
+								`The file is ${megabytes} MB; Qonekto accepts files up to 10 MB`,
+								{ itemIndex: i },
+							);
+						}
 
 						const betreff = this.getNodeParameter('betreff', i, '') as string;
 						parts.push({ field: 'betreff', value: betreff || originalFilename || '' });
