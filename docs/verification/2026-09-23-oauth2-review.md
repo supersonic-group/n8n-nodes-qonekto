@@ -29,7 +29,7 @@ not a test suite: nothing re-runs it.
 | Who Am I, API token | ok | Token type `manual`; Base URL set by expression to review |
 | Trigger activate and deactivate, API token | ok | |
 | MCP Client node with an MCP OAuth2 API credential | ok | Server URL `https://review.qonekto.de/api/testmakler/mcp`; connected with the approved client, no new approval; tool `list-customers` returned 590 customers |
-| Subtitle with OAuth2 selected | not checked | |
+| Subtitle with OAuth2 selected | not checkable | n8n 2.37.10's canvas does not draw node subtitles, so there is nothing to see |
 
 ## Observations
 
