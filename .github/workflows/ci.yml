@@ -32,3 +32,7 @@ jobs:
 
       - name: Run build
         run: npm run build
+
+      - name: Run tests
+        # Exercises the compiled node, so it runs after the build.
+        run: npm test
