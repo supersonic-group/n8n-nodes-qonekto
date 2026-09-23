@@ -20,46 +20,97 @@ nodes documentation.
 
 ## Operations
 
-The node exposes the following resources and operations.
+The Qonekto node exposes the following resources and operations. Paths are relative to
+`{base_url}{tenant}`; IDs in paths are Ameise IDs.
 
-- Kunde (Customer)
-    - Create Kunde — POST /kunde
-    - Filter Kunden — POST /kunde/filter
-    - List Kunden — GET /kunde
-    - Show Kunde — GET /kunde/{ameise_id}
-    - Update Kunde — PUT /kunde/{ameise_id}
-    - Upsert Kunde — PUT /kunde/upsert
-  - Upload File — POST /kunde/{kunde_ameise_id}/archiveintrag
+- Claim
+  - Create Claim — POST /vertrag/{vertrag_ameise_id}/schaden
+  - Delete Claim — DELETE /schaden/{claimId}
+  - Get Claim — GET /schaden/{claimId}
+  - Get Claim Statuses — GET /schaden/statuses
+  - List Claims By Contract — GET /vertrag/{vertrag_ameise_id}/schaden
+  - List Claims By Customer — GET /kunde/{kunde_ameise_id}/schaden
+  - Update Claim — PUT /schaden/{claimId}
+- Contract
+  - Create Contract — POST /vertrag
+  - Filter Contracts — POST /vertrag/filter
+  - Get Contract — GET /vertrag/{vertrag_ameise_id}
+  - List Contracts — GET /vertrag
+  - List Documents — GET /vertrag/{vertrag_ameise_id}/dokument
+- Contract Bank Account
+  - Get Contract Bank Account — GET /vertrag/{vertrag_ameise_id}/bank-account
+  - Change Contract Bank Account — PUT /vertrag/{vertrag_ameise_id}/bank-account
+- Contract Product
+  - Get Division Product Template — GET /sparte/{sparte_ameise_id}/produkttemplate
+  - Get Contract Products — GET /vertrag/{vertrag_ameise_id}/produkte
+  - Update Contract Products — PATCH /vertrag/{vertrag_ameise_id}/produkte
+  - Create Motor Vehicle Contract Products — PUT /vertrag/{vertrag_ameise_id}/produkte
+- Customer
+  - Create Customer — POST /kunde
   - Create File — POST /kunde/{kunde_ameise_id}/archiveintrag
-
-- Kunden-Tag (Customer Tags)
-    - List Customer Tags — GET /kunde/{ameise_id}/tags
-    - Set Customer Tags — PUT /kunde/{ameise_id}/tags
-    - Add Customer Tags — POST /kunde/{ameise_id}/tags
-    - Remove Customer Tags — DELETE /kunde/{ameise_id}/tags
-
-- Listen (Lookup lists)
-    - Anreden — GET /anreden
-    - Gesellschaften — GET /gesellschaften
-    - Kunden Detail Felder — GET /kunden_detail_felder
-    - Länder — GET /laender
-    - Rechtsformen — GET /rechtsformen
-    - Sparten — GET /sparten
-    - Status — GET /status
-    - Vermittler — GET /vermittler
-    - Zahlweisen — GET /zahlweisen
-
-- Panda
-    - Create A Customer Link — POST /panda/customer-links
-    - Create A Tender — POST /panda/tenders
-    - Get Active Tenders For A Customer — GET /panda/tenders
-    - Get All Customer Links — GET /panda/customer-links
-
-- Pipeline
-    - Trigger Pipeline Import From CRM — GET /pipeline/{pipeline_id}/trigger-from-crm
-
+  - Create or Update Customer — PUT /kunde/upsert
+  - Filter Customers — POST /kunde/filter
+  - Get Customer — GET /kunde/{kunde_ameise_id}
+  - List Archive Entries — GET /kunde/{kunde_ameise_id}/archiveintrag
+  - List Customers — GET /kunde
+  - Update Customer — PUT /kunde/{kunde_ameise_id}
+  - Upload File — POST /kunde/{kunde_ameise_id}/archiveintrag
+- Customer Additional Address
+  - List Customer Additional Addresses — GET /kunde/{kunde_ameise_id}/additional-addresses
+  - Create Customer Additional Address — POST /kunde/{kunde_ameise_id}/additional-addresses
+  - Update Customer Additional Address — PUT /kunde/{kunde_ameise_id}/additional-addresses/{address}
+  - Delete Customer Additional Address — DELETE /kunde/{kunde_ameise_id}/additional-addresses/{address}
+- Customer Note
+  - List Customer Notes — GET /kunde/{kunde_ameise_id}/notes
+  - Add Customer Note — POST /kunde/{kunde_ameise_id}/notes
+  - Edit Customer Note — PUT /kunde/{kunde_ameise_id}/notes/{note}
+  - Delete Customer Note — DELETE /kunde/{kunde_ameise_id}/notes/{note}
+- Customer Notification
+  - Send Customer Notification — POST /kunde/{kunde_ameise_id}/notifications
+- Customer Relation
+  - List Customer Relations — GET /kunde/{kunde_ameise_id}/relations
+  - Create Customer Relation — POST /kunde/{kunde_ameise_id}/relations
+  - Delete Customer Relation — DELETE /kunde/{kunde_ameise_id}/relations/{relatedKunde}
+- Customer Tag
+  - List Customer Tags — GET /kunde/{kunde_ameise_id}/tags
+  - Set Customer Tags — PUT /kunde/{kunde_ameise_id}/tags
+  - Add Customer Tags — POST /kunde/{kunde_ameise_id}/tags
+  - Remove Customer Tags — DELETE /kunde/{kunde_ameise_id}/tags
+- Lookup List
+  - List Brokers — GET /vermittler
+  - List Countries — GET /laender
+  - List Customer Detail Fields — GET /kunden_detail_felder
+  - List Divisions — GET /sparten
+  - List Insurers — GET /gesellschaften
+  - List Legal Forms — GET /rechtsformen
+  - List Payment Methods — GET /zahlweisen
+  - List Salutations — GET /anreden
+  - List Statuses — GET /status
 - Misc
-    - Who Am I — GET /whoami
+  - Who Am I — GET /whoami
+- Panda
+  - Archive A Tender — POST /panda/tenders/{tenderId}/archive
+  - Create A Customer Link — POST /panda/customer-links
+  - Create A Tender — POST /panda/tenders
+  - Get A Tender — GET /panda/tenders/{tenderId}
+  - Get Active Tenders For A Customer — GET /panda/tenders
+  - Get All Customer Links — GET /panda/customer-links
+- Pipeline
+  - Trigger Pipeline Import From CRM — GET /pipeline/{pipeline_id}/trigger-from-crm
+- Task
+  - Change Task Status — PATCH /aufgabe/{taskId}/status
+  - Create Task — POST /aufgabe
+  - Delete Task — DELETE /aufgabe/{taskId}
+  - Get Task — GET /aufgabe/{taskId}
+  - List Tasks — GET /aufgabe
+  - Update Task — PUT /aufgabe/{taskId}
+
+### Qonekto Trigger
+
+Starts a workflow when Qonekto reports an event. Pick an action (Created, Updated, Deleted, Archive Entry
+Created) and a subject type (Customer, Contract, Broker, …); activating the workflow registers a webhook
+with Qonekto and deactivating it removes the webhook again. Not every pair is supported; the node's Action
+description lists which are.
 
 Note: The exact input fields for each operation are provided in the node’s parameters within n8n (see the Fields panel
 when configuring the node).
@@ -111,7 +162,7 @@ How to connect
 
 1. Create a Qonekto OAuth2 API credential, enter tenant and base URL, and click Connect my account.
 2. The first connect from a new n8n instance registers it with Qonekto. Until Qonekto support has approved it, the
-   sign-in page says the application is "noch nicht freigegeben". Ask Qonekto support to approve the client named
+   sign-in page says the application is "noch nicht freigegeben" (not yet approved). Ask Qonekto support to approve the client named
    "n8n" with your n8n host, then click Connect again.
 3. Sign in to Qonekto and grant access. Keep full access (`api-full`): with read-only access, every write operation
    and activating a Qonekto Trigger fail with "Invalid ability provided." To fix a read-only grant, reconnect and grant

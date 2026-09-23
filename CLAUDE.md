@@ -46,8 +46,9 @@ The files under `*/translations/de/` are in the key shape n8n's editor reads —
 `nodeView.<param>.displayName` and `nodeView.<param>.options.<value>.displayName`, never dotted keys
 or `.name` — but n8n (checked 2.37.10 through 2.41.0) renders none of them: it registers a community
 node's translation under the short node name and looks it up under the full type, and reads credential
-translations only from `n8n-nodes-base`. Keep them in that shape anyway; an unrendered label is not
-evidence of a wrong key. Option values containing dots (the Base URL) cannot be keyed at all.
+translations only from `n8n-nodes-base`. Still true on n8n `master` as of 2026-09-23, which also ships no
+locale but `en` for the editor or any built-in node. Keep them in that shape anyway; an unrendered label is
+not evidence of a wrong key. Option values containing dots (the Base URL) cannot be keyed at all.
 
 ## Local dev
 
@@ -59,3 +60,15 @@ evidence of a wrong key. Option values containing dots (the Base URL) cannot be 
 `nodes/Qonekto/descriptions/CONVENTIONS.md` is the reference — field property order, routing
 shapes, the `Shared` module, naming and casing. Follow it; `npm run lint` enforces part of it
 but not all.
+
+## n8n verification
+
+n8n verifies a published version by running `npx @n8n/scan-community-package n8n-nodes-qonekto`: it
+lints the GitHub source the npm provenance points at, plus the tarball's `dist/`. `npm run lint` runs the
+same rule set only while `eslint.config.mjs` is the unmodified default and `package.json` has
+`n8n.strict: true`. A hand-copied config once disabled the ordering rules and dropped the
+`@n8n/community-nodes` plugin, so lint was green while the scanner failed. The scanner checks only
+published versions; check `main` before a release by importing `analyzePackage` and
+`SOURCE_FILE_PATTERNS` from the scanner package and running them against the repo and `dist/`.
+Anything outside `n8n-workflow`, `crypto` and a few others is a forbidden import, including Node
+built-ins such as `url` and `stream`, even as type-only imports.

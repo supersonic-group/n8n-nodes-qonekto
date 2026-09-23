@@ -2,7 +2,9 @@
 
 Reference for writing the description files by hand. Descriptions are hand-written against the
 API source — see the repo root `CLAUDE.md` for where the contract lives. `npm run lint` enforces
-some of the rules below (each is marked); the rest are convention and are not checked.
+some of the rules below (each is marked); the rest are convention and are not checked. Lint runs
+n8n's default config in strict mode, the same rules n8n's verification scanner applies — keep
+`eslint.config.mjs` unmodified, or lint passes while the submission fails.
 
 ## Rules
 
@@ -16,7 +18,7 @@ some of the rules below (each is marked); the rest are convention and are not ch
    genuinely useful information beyond the action name. *(Lint:
    `node-param-option-description-identical-to-name`.)*
 
-4. **The operation selector's `default` is the first operation's value** — e.g.
+4. **The operation selector's `default` is a real operation value** — e.g.
    `default: 'List Claims By Contract'`. Never `''`.
 
 5. **`action` is sentence case** — only the first word is capitalized: `'List claims by
@@ -46,12 +48,12 @@ some of the rules below (each is marked); the rest are convention and are not ch
    `{{$parameter["some_id"]}}` must define the matching field:
    ```ts
    {
-       displayName: 'Ameise Vertragsnummer',
+       displayName: 'Ameise Contract Number',
        name: 'vertrag_ameise_id',
        type: 'string',
        default: '',
        required: true,
-       description: 'The ID of the Vertrag in Ameise',
+       description: 'The ID of the contract in Ameise',
        displayOptions: { show: { resource: ['...'], operation: ['...'] } },
    }
    ```
@@ -144,6 +146,18 @@ some of the rules below (each is marked); the rest are convention and are not ch
     force-uppercases a bare `id` token, which will silently turn a real field name into a wrong
     one — pick an example that avoids it rather than accepting the autofix.
 
+15. **Everything a user reads is English; everything the API reads stays as it is.** n8n only
+    verifies nodes whose UI is English, so `displayName`, option `name`, `action`,
+    `description`, `placeholder` and `hint` are English (Kunde → Customer, Vertrag → Contract,
+    Sparte → Division, Vermittler → Broker, Gesellschaft → Insurer — the Trigger node's terms).
+    Parameter `name`s and option `value`s keep their German API spelling: saved workflows store
+    them, so renaming one silently breaks every workflow that uses it. The API's German
+    validation messages are paraphrased (`At most 255 characters`), not pasted.
+
+16. **Lists of five or more options, and collections, are alphabetical by label.** *(Lint:
+    `node-param-options-type-unsorted-items`, `node-param-collection-type-unsorted-items`.)*
+    The rules report their autofix as available but apply nothing; reorder by hand.
+
 ## Conventions
 
 ### Operations.ts structure
@@ -175,14 +189,15 @@ export const ResourceName: INodeProperties[] = [
                 },
             },
         ],
-        default: 'First Operation Name',  // always set to first option
+        default: 'Operation Name',  // any real operation value
     },
 ];
 
 export default ResourceName;
 ```
 
-Operations are ordered to match the API's route order, not alphabetically.
+Operations are alphabetical by `name` once there are five or more (rule 16); shorter lists
+follow the API's route order.
 
 ### Fields.ts structure
 
