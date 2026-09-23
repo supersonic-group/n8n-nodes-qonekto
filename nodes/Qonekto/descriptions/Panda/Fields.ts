@@ -245,53 +245,53 @@ export const CreateATender: INodeProperties[] = [
 		default: '',
 		required: true,
 		description: `Panda Insurance Line ID, possible values:
-1: Betriebshaftpflicht
-2: Geschäftsinhalt
-3: gewerbliche Rechtsschutz
+1: Business liability
+2: Business contents
+3: Commercial legal expenses
 4: Cyber
-5: gewerbliches Gebäude
+5: Commercial building
 80: MultiRisk
-6: Vermögensschadenhaftpflicht
-7: Berufshaftpflicht für Ärzte
-8: Maschinen (stationär)
-9: Berufshaftpflicht für Architekten und Ingenieure
-11: Unternehmens D&O
-12: persönliche D&O
-17: Elektronik
-28: Warenkredit
-27: Mietkaution
-15: Vertrauensschaden
-26: Kaution
-16: Glasbruch
-24: Warentransport
-23: Autoinhalt (Werkverkehr)
-10: Maschinen (mobil)
-20: Montage
-41: KFZ Handel-Handwerk
-38: Gruppen-Unfall
-25: Verkehrshaftung
-31: Betriebskosten-/Praxisausfall (infolge Krankheit)
-34: Berufshaftpflicht für Architekten und Ingenieure (Objektschadendeckung)
-14: Bauherrenhaftpflicht (gewerblich)
-21: Bauleistung (gewerblich)
-47: KFZ Flotten
-48: Private Krankenvollversicherung
-49: Berufsunfähigkeit
-50: Wohngebäude
-51: Risikoleben
-52: Betriebsunterbrechung (MBU)
-53: KV Zusatz
-54: PKW (BETA)
-55: Hausrat (BETA)
-56: Tierkrankenversicherung (BETA)
-57: Unfallversicherung (BETA)
-58: Privat-Rechtsschutz (BETA)
-59: Veranstaltungshaftpflicht (BETA)
-61: KFZ Old / Youngtimer
-62: KFZ Premium Cars / Exoten
-63: Privathaftpflicht
-64: Hundehalterhaftpflicht
-65: Pferdehalterhaftpflicht`,
+6: Financial loss liability
+7: Professional liability for doctors
+8: Machinery (stationary)
+9: Professional liability for architects and engineers
+11: Corporate D&O
+12: Personal D&O
+17: Electronics
+28: Trade credit
+27: Rent deposit
+15: Fidelity
+26: Surety bond
+16: Glass breakage
+24: Goods in transit
+23: Vehicle contents (own-account transport)
+10: Machinery (mobile)
+20: Erection
+41: Motor trade
+38: Group accident
+25: Carrier liability
+31: Business interruption from illness (practice)
+34: Professional liability for architects and engineers (project cover)
+14: Commercial builder's liability
+21: Construction all risks (commercial)
+47: Motor fleet
+48: Private comprehensive health
+49: Occupational disability
+50: Residential building
+51: Term life
+52: Machinery business interruption
+53: Supplementary health
+54: Car (BETA)
+55: Household contents (BETA)
+56: Pet health (BETA)
+57: Accident (BETA)
+58: Private legal expenses (BETA)
+59: Event liability (BETA)
+61: Classic and youngtimer cars
+62: Premium and exotic cars
+63: Personal liability
+64: Dog owner liability
+65: Horse owner liability`,
 		routing: {
 			send: {
 				property: 'insuranceLineId',
