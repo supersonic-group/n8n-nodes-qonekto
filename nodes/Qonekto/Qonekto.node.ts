@@ -98,7 +98,8 @@ export class Qonekto implements INodeType {
 			pagination: paginateAllPages,
 		},
 
-		version: 20250926,
+		// 20260925 turned the Kunde timestamp filters into text fields; see descriptions/Kunde/Fields.ts.
+		version: [20250926, 20260925],
 
 		properties: [
 			{

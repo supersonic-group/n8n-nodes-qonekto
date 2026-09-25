@@ -7,6 +7,7 @@ import {
 	INodeParameterResourceLocator,
 } from 'n8n-workflow/dist/esm/interfaces';
 import { DATE_ONLY_VALUE } from '../Routing';
+import { validateTimestampFilter } from './TimestampFilter';
 import { returnAllField } from '../Pagination';
 
 export const ListKunden: INodeProperties[] = [
@@ -221,13 +222,42 @@ export const FilterKunden: INodeProperties[] = [
 				name: 'maklervollmacht_created_at',
 				type: 'dateTime',
 				default: '',
-				description: 'Filter by date the broker mandate was created',
+				description:
+					'Matches customers whose broker mandate was created on this date, over the whole day in German time (Europe/Berlin). The time of day is ignored.',
 				routing: {
 					send: {
 						property: 'maklervollmacht_created_at',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: DATE_ONLY_VALUE,
+					},
+				},
+				displayOptions: {
+					show: {
+						'@version': [{ _cnd: { lt: 20260925 } }],
+					},
+				},
+			},
+			{
+				displayName: 'Broker Mandate Created At',
+				name: 'maklervollmacht_created_at',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. 2024-05-01',
+				description:
+					'Matches customers whose broker mandate was created in this period, read in German time (Europe/Berlin): a year (2024), month (2024-05) or date (2024-05-01) matches all of it, an ISO 8601 time (2024-05-01T10:00:00+02:00) matches to the second',
+				routing: {
+					send: {
+						property: 'maklervollmacht_created_at',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+						preSend: [validateTimestampFilter('maklervollmacht_created_at')],
+					},
+				},
+				displayOptions: {
+					show: {
+						'@version': [{ _cnd: { gte: 20260925 } }],
 					},
 				},
 			},
@@ -341,13 +371,42 @@ export const FilterKunden: INodeProperties[] = [
 				name: 'last_simplr_login_at',
 				type: 'dateTime',
 				default: '',
-				description: 'Filter by last Simplr login timestamp',
+				description:
+					'Matches customers whose last Simplr login was on this date, over the whole day in German time (Europe/Berlin). The time of day is ignored.',
 				routing: {
 					send: {
 						property: 'last_simplr_login_at',
 						propertyInDotNotation: false,
 						type: 'body',
 						value: DATE_ONLY_VALUE,
+					},
+				},
+				displayOptions: {
+					show: {
+						'@version': [{ _cnd: { lt: 20260925 } }],
+					},
+				},
+			},
+			{
+				displayName: 'Last Simplr Login At',
+				name: 'last_simplr_login_at',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. 2024-05-01',
+				description:
+					'Matches customers whose last Simplr login falls in this period, read in German time (Europe/Berlin): a year (2024), month (2024-05) or date (2024-05-01) matches all of it, an ISO 8601 time (2024-05-01T10:00:00+02:00) matches to the second',
+				routing: {
+					send: {
+						property: 'last_simplr_login_at',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+						preSend: [validateTimestampFilter('last_simplr_login_at')],
+					},
+				},
+				displayOptions: {
+					show: {
+						'@version': [{ _cnd: { gte: 20260925 } }],
 					},
 				},
 			},
