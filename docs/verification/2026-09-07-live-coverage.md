@@ -263,5 +263,12 @@ to run once connector branch `fix/bank-account-deviant-validation` is deployed:
 | `deviant` false, IBAN only | accepted; body is `{ iban, deviant: false }` |
 | `deviant` true, holder fields, no birthdate | accepted; body has no `birthdate` key |
 
-Open: the Nation picker sends the Land `ameise_id`; the connector expects a two-letter ISO code.
-Whether the two are the same has not been checked against `/laender`.
+The Nation picker sends the Land `ameise_id`, and that is the two-letter ISO code the connector
+expects: in the connector's local test tenant all 231 Land rows carry a lower-case two-letter code
+(`ad`, `ae`, `af`, ...), and a PUT with `nation: "de"` on INTE was accepted and read back as
+`{id: "de", text: "Deutschland"}`. Checked against that table and INTE only, not a production tenant.
+
+The connector side was probed on INTE directly (not through this node): `{ iban, deviant: false }`
+and `deviant: true` with the full address and no birthdate both return 200, and holder fields with
+`deviant: false` are rejected upstream. The connector fix is merged on its `dev` branch but not yet
+deployed, so the two cases above have not been run through the node.
