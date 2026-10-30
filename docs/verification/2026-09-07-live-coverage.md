@@ -250,3 +250,18 @@ Two things fall out of this that are worth acting on, neither of them the node's
 Verified 2026-09-07 12:21–12:30 UTC against connector `ce01a4c0`, with `vermittler_id` set to
 `03A71H` and with the full and minimal optional sets; both attempts fail identically at the
 connector's own validation.
+
+## Change Contract Bank Account after the deviant fix (not yet run live)
+
+The "ok" row above predates the fix: 2.3.0 sent the holder fields and a mandatory birthdate even
+with `deviant` false, which the connector or the Stocks API rejects. The node now sends only
+`{ iban, deviant }` for `deviant` false, and drops an empty birthdate for `deviant` true. Two cases
+to run once connector branch `fix/bank-account-deviant-validation` is deployed:
+
+| Case | Expected |
+| --- | --- |
+| `deviant` false, IBAN only | accepted; body is `{ iban, deviant: false }` |
+| `deviant` true, holder fields, no birthdate | accepted; body has no `birthdate` key |
+
+Open: the Nation picker sends the Land `ameise_id`; the connector expects a two-letter ISO code.
+Whether the two are the same has not been checked against `/laender`.
